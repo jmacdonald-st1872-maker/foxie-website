@@ -62,6 +62,37 @@ label{display:flex;justify-content:space-between;align-items:center;padding:16px
 <script>
 function show(id,el){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');document.getElementById('title').textContent=id==='admin'?'JJ Admin':id==='maps'?'Maps & Traffic':id==='search'?'Web Search':'Foxie'}
 function toggle(x){x.classList.toggle('on')}function fakeSearch(){let q=document.getElementById('searchInput').value.trim();document.getElementById('results').textContent=q?`Foxie would search the web for: “${q}”`:'Type something to search.'}
-async function send(){let i=document.getElementById('chatInput'),m=i.value.trim();if(!m)return;let box=document.getElementById('messages');box.innerHTML+=`<div class="msg me">${esc(m)}</div><div class="msg fox" id="thinking">Foxie is thinking... 🦊</div>`;i.value='';box.scrollTop=box.scrollHeight;try{let r=await fetch('https://foxie-backend.onrender.com/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})});let d=await r.json();document.getElementById('thinking').textContent=d.reply||'Sorry, I could not get a response.'}catch(e){document.getElementById('thinking').textContent='Foxie could not connect to the backend.'}box.scrollTop=box.scrollHeight}function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-</script>
+async function send(){
+  let i=document.getElementById('chatInput');
+  let m=i.value.trim();
+  if(!m)return;
+  let box=document.getElementById('messages');
+  box.innerHTML+=`<div class="msg me">${esc(m)}</div><div class="msg fox" id="thinking">Foxie is thinking... 🦊</div>`;
+  i.value='';
+  box.scrollTop=box.scrollHeight;
+
+  try{
+    let r=await fetch('https://foxie-backend.onrender.com/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:m})
+    });
+
+    let d=await r.json();
+
+    if(!r.ok){
+      document.getElementById('thinking').textContent=
+        'Foxie error: '+(d.detail||'Backend error '+r.status);
+      return;
+    }
+
+    document.getElementById('thinking').textContent=
+      d.reply||'Sorry, I could not get a response.';
+  }catch(e){
+    document.getElementById('thinking').textContent=
+      'Foxie could not connect to the backend.';
+  }
+
+  box.scrollTop=box.scrollHeight;
+}</script>
 </body></html>

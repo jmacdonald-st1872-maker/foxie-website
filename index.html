@@ -62,6 +62,14 @@ label{display:flex;justify-content:space-between;align-items:center;padding:16px
 <script>
 function show(id,el){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');document.getElementById('title').textContent=id==='admin'?'JJ Admin':id==='maps'?'Maps & Traffic':id==='search'?'Web Search':'Foxie'}
 function toggle(x){x.classList.toggle('on')}function fakeSearch(){let q=document.getElementById('searchInput').value.trim();document.getElementById('results').textContent=q?`Foxie would search the web for: “${q}”`:'Type something to search.'}
+  function esc(text){
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 async function send(){
   let i=document.getElementById('chatInput');
   let m=i.value.trim();

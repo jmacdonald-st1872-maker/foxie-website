@@ -43,8 +43,6 @@ button{
   height:100vh;
 }
 
-/* SIDEBAR */
-
 .sidebar{
   width:250px;
   background:rgba(3,10,6,.96);
@@ -105,8 +103,6 @@ button{
   color:var(--green);
 }
 
-/* MAIN */
-
 .main{
   flex:1;
   min-width:0;
@@ -159,8 +155,6 @@ h1,h2,h3{
 .green{
   color:var(--green);
 }
-
-/* CARDS */
 
 .card{
   background:linear-gradient(145deg,rgba(8,25,14,.94),rgba(4,13,8,.94));
@@ -217,8 +211,6 @@ h1,h2,h3{
   gap:10px;
   flex-wrap:wrap;
 }
-
-/* AVATAR STUDIO */
 
 .avatarLayout{
   display:grid;
@@ -341,8 +333,6 @@ h1,h2,h3{
   border-color:var(--green);
 }
 
-/* 3D WORLD */
-
 #world3d{
   height:calc(100vh - 108px);
   min-height:550px;
@@ -394,8 +384,6 @@ h1,h2,h3{
   color:#9bb79f;
 }
 
-/* SOCIAL */
-
 .socialTabs{
   display:flex;
   gap:8px;
@@ -444,8 +432,6 @@ h1,h2,h3{
   color:var(--green);
 }
 
-/* GAMES */
-
 .gameCard{
   min-height:190px;
   display:flex;
@@ -457,9 +443,8 @@ h1,h2,h3{
   font-size:38px;
 }
 
-/* MOBILE */
-
 @media(max-width:900px){
+
   body{
     overflow:auto;
   }
@@ -507,6 +492,7 @@ h1,h2,h3{
 }
 
 @media(max-width:600px){
+
   .page{
     padding:12px;
   }
@@ -531,32 +517,74 @@ h1,h2,h3{
 <div id="app">
 
   <aside class="sidebar">
+
     <div class="logo">🦊 FOXIE</div>
-    <div class="tag">Your world. Your people. Your games.</div>
+
+    <div class="tag">
+      Your world. Your people. Your games.
+    </div>
 
     <nav class="nav">
-      <button class="active" data-page="home">🏠 Home</button>
-      <button data-page="social">🎬 Social</button>
-      <button data-page="avatar">🧍 Avatar</button>
-      <button data-page="world">🌎 Foxie World</button>
-      <button data-page="games">🎮 Games</button>
-      <button data-page="messages">💬 Messages</button>
-      <button data-page="search">🔎 Search</button>
-      <button data-page="maps">🗺️ Maps</button>
-      <button data-page="creator">👑 Creator Mode</button>
+
+      <button class="active" data-page="home">
+        🏠 Home
+      </button>
+
+      <button data-page="social">
+        🎬 Social
+      </button>
+
+      <button data-page="avatar">
+        🧍 Avatar
+      </button>
+
+      <button data-page="world">
+        🌎 Foxie World
+      </button>
+
+      <button data-page="games">
+        🎮 Games
+      </button>
+
+      <button data-page="messages">
+        💬 Messages
+      </button>
+
+      <button data-page="search">
+        🔎 Search
+      </button>
+
+      <button data-page="maps">
+        🗺️ Maps
+      </button>
+
+      <button data-page="creator">
+        👑 Creator Mode
+      </button>
+
     </nav>
 
     <div class="sidebarBottom">
       <div>FOXIE ONLINE</div>
-      <div class="creatorName">Created by Jayden Wayne Macdonald</div>
+      <div class="creatorName">
+        Created by Jayden Wayne Macdonald
+      </div>
     </div>
+
   </aside>
 
   <main class="main">
 
     <header class="topbar">
-      <div class="status">🟢 Foxie systems online</div>
-      <div class="clock" id="clock">--:--:--</div>
+
+      <div class="status">
+        🟢 Foxie systems online
+      </div>
+
+      <div class="clock" id="clock">
+        --:--:--
+      </div>
+
     </header>
 
     <div class="pages">
@@ -566,147 +594,292 @@ h1,h2,h3{
       <section class="page active" id="home">
 
         <div class="bigHero">
-          <div style="font-size:12px;color:#83a88b">WELCOME TO</div>
-          <h1>FOXIE <span class="green">🦊</span></h1>
+
+          <div style="font-size:12px;color:#83a88b">
+            WELCOME TO
+          </div>
+
+          <h1>
+            FOXIE <span class="green">🦊</span>
+          </h1>
+
           <p style="color:#9eb5a2">
-            One place for your friends, avatar, games, world, messages and creators.
+            One place for your friends, avatar, games, world,
+            messages and creators.
           </p>
 
           <div class="row">
-            <button class="btn" onclick="showPage('avatar')">Create Avatar</button>
-            <button class="btn secondary" onclick="showPage('world')">Enter World</button>
-            <button class="btn secondary" onclick="showPage('social')">Open Social</button>
+
+            <button
+              class="btn"
+              onclick="showPage('avatar')"
+            >
+              Create Avatar
+            </button>
+
+            <button
+              class="btn secondary"
+              onclick="showPage('world')"
+            >
+              Enter World
+            </button>
+
+            <button
+              class="btn secondary"
+              onclick="showPage('social')"
+            >
+              Open Social
+            </button>
+
           </div>
+
         </div>
 
         <div class="grid">
 
           <div class="card">
+
             <h3>🧍 3D Avatar</h3>
+
             <p style="color:#91a895">
               Build your own detailed Foxie character.
             </p>
+
           </div>
 
           <div class="card">
+
             <h3>🌎 3D World</h3>
+
             <p style="color:#91a895">
               Explore the Foxie universe.
             </p>
+
           </div>
 
           <div class="card">
+
             <h3>🎬 Social</h3>
+
             <p style="color:#91a895">
               Posts, photos, short videos and stories.
             </p>
+
           </div>
 
           <div class="card">
+
             <h3>🎮 Games</h3>
+
             <p style="color:#91a895">
               Play and compete inside Foxie.
             </p>
+
           </div>
 
         </div>
 
-        <div class="card" style="margin-top:15px">
+        <div
+          class="card"
+          style="margin-top:15px"
+        >
+
           <h3>🦊 Foxie AI</h3>
 
-          <div id="chatMessages"
-               style="height:180px;overflow:auto;background:#020704;border-radius:10px;padding:12px;margin-bottom:10px">
+          <div
+            id="chatMessages"
+            style="
+              height:180px;
+              overflow:auto;
+              background:#020704;
+              border-radius:10px;
+              padding:12px;
+              margin-bottom:10px
+            "
+          >
+
             <div style="color:#8faa94">
               Foxie: Hey! I'm ready. 🦊
             </div>
+
           </div>
 
           <div class="row">
+
             <input
               id="chatInput"
               class="nameInput"
               style="flex:1"
               placeholder="Talk to Foxie..."
             >
-            <button class="btn" onclick="sendChat()">Send</button>
+
+            <button
+              class="btn"
+              onclick="sendChat()"
+            >
+              Send
+            </button>
+
           </div>
+
         </div>
 
       </section>
+
 
       <!-- SOCIAL -->
 
       <section class="page" id="social">
 
         <div class="bigHero">
-          <h1>Foxie <span class="green">Social</span></h1>
+
+          <h1>
+            Foxie <span class="green">Social</span>
+          </h1>
+
           <p style="color:#91a895">
-            Posts, photos, short videos, stories and creators — all inside Foxie.
+            Posts, photos, short videos, stories and creators —
+            all inside Foxie.
           </p>
+
         </div>
 
         <div class="socialTabs">
-          <button class="btn">For You</button>
-          <button class="btn secondary">Following</button>
-          <button class="btn secondary">Trending</button>
-          <button class="btn secondary">Stories</button>
+
+          <button class="btn">
+            For You
+          </button>
+
+          <button class="btn secondary">
+            Following
+          </button>
+
+          <button class="btn secondary">
+            Trending
+          </button>
+
+          <button class="btn secondary">
+            Stories
+          </button>
+
         </div>
 
         <div class="feed">
 
           <div class="card post">
+
             <div class="postHead">
-              <div class="miniAvatar">🦊</div>
-              <div>
-                <strong>Foxie</strong>
-                <div style="font-size:11px;color:#718a76">@foxie • now</div>
+
+              <div class="miniAvatar">
+                🦊
               </div>
+
+              <div>
+
+                <strong>
+                  Foxie
+                </strong>
+
+                <div
+                  style="font-size:11px;color:#718a76"
+                >
+                  @foxie • now
+                </div>
+
+              </div>
+
             </div>
 
             <p>
               Welcome to the new Foxie social world. 🦊💚
             </p>
 
-            <div style="
-              height:220px;
-              border-radius:12px;
-              background:
-                radial-gradient(circle at 50% 40%,rgba(57,255,20,.2),transparent 30%),
-                linear-gradient(135deg,#06130a,#020604);
-              display:grid;
-              place-items:center;
-              font-size:60px;
-            ">🦊</div>
+            <div
+              style="
+                height:220px;
+                border-radius:12px;
+                background:
+                  radial-gradient(
+                    circle at 50% 40%,
+                    rgba(57,255,20,.2),
+                    transparent 30%
+                  ),
+                  linear-gradient(
+                    135deg,
+                    #06130a,
+                    #020604
+                  );
+                display:grid;
+                place-items:center;
+                font-size:60px;
+              "
+            >
+              🦊
+            </div>
 
             <div class="postActions">
-              <button class="action">❤️ Like</button>
-              <button class="action">💬 Comment</button>
-              <button class="action">↗️ Share</button>
-              <button class="action">🔖 Save</button>
+
+              <button class="action">
+                ❤️ Like
+              </button>
+
+              <button class="action">
+                💬 Comment
+              </button>
+
+              <button class="action">
+                ↗️ Share
+              </button>
+
+              <button class="action">
+                🔖 Save
+              </button>
+
             </div>
+
           </div>
 
           <div class="card post">
+
             <div class="postHead">
-              <div class="miniAvatar">👤</div>
-              <div>
-                <strong>Your Foxie profile</strong>
-                <div style="font-size:11px;color:#718a76">@you</div>
+
+              <div class="miniAvatar">
+                👤
               </div>
+
+              <div>
+
+                <strong>
+                  Your Foxie profile
+                </strong>
+
+                <div
+                  style="font-size:11px;color:#718a76"
+                >
+                  @you
+                </div>
+
+              </div>
+
             </div>
 
             <p style="color:#a2b8a6">
               Your posts will appear here when you start creating.
             </p>
 
-            <button class="btn" onclick="showPage('avatar')">
+            <button
+              class="btn"
+              onclick="showPage('avatar')"
+            >
               Customize my profile
             </button>
+
           </div>
 
         </div>
 
       </section>
+
 
       <!-- AVATAR -->
 
@@ -722,7 +895,10 @@ h1,h2,h3{
               🖱️ Drag = rotate &nbsp; • &nbsp; Wheel = zoom
             </div>
 
-            <div class="avatarName" id="avatarNameDisplay">
+            <div
+              class="avatarName"
+              id="avatarNameDisplay"
+            >
               Foxie Player
             </div>
 
@@ -732,14 +908,18 @@ h1,h2,h3{
 
             <div class="card">
 
-              <h2>🧍 Avatar Studio</h2>
+              <h2>
+                🧍 Avatar Studio
+              </h2>
 
               <p style="color:#829986;font-size:13px">
                 Build your detailed 3D Foxie character.
               </p>
 
               <div class="controlSection">
+
                 <h3>Name</h3>
+
                 <input
                   id="avatarName"
                   class="nameInput"
@@ -747,52 +927,123 @@ h1,h2,h3{
                   maxlength="20"
                   value="Foxie Player"
                 >
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Skin</h3>
-                <div class="swatches" id="skinOptions"></div>
+
+                <div
+                  class="swatches"
+                  id="skinOptions"
+                ></div>
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Body</h3>
-                <div class="options" id="bodyOptions"></div>
+
+                <div
+                  class="options"
+                  id="bodyOptions"
+                ></div>
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Hair</h3>
-                <div class="options" id="hairOptions"></div>
+
+                <div
+                  class="options"
+                  id="hairOptions"
+                ></div>
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Top</h3>
-                <div class="options" id="topOptions"></div>
+
+                <div
+                  class="options"
+                  id="topOptions"
+                ></div>
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Pants</h3>
-                <div class="options" id="pantsOptions"></div>
+
+                <div
+                  class="options"
+                  id="pantsOptions"
+                ></div>
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Shoes</h3>
-                <div class="options" id="shoeOptions"></div>
+
+                <div
+                  class="options"
+                  id="shoeOptions"
+                ></div>
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Head</h3>
-                <div class="options" id="headOptions"></div>
+
+                <div
+                  class="options"
+                  id="headOptions"
+                ></div>
+
               </div>
 
               <div class="controlSection">
+
                 <h3>Foxie Extras</h3>
-                <div class="options" id="extraOptions"></div>
+
+                <div
+                  class="options"
+                  id="extraOptions"
+                ></div>
+
               </div>
 
-              <div class="row" style="margin-top:15px">
-                <button class="btn" onclick="randomAvatar()">🎲 Random</button>
-                <button class="btn" onclick="saveAvatar()">💾 Save</button>
-                <button class="btn secondary" onclick="resetAvatar()">↩ Reset</button>
+              <div
+                class="row"
+                style="margin-top:15px"
+              >
+
+                <button
+                  class="btn"
+                  onclick="randomAvatar()"
+                >
+                  🎲 Random
+                </button>
+
+                <button
+                  class="btn"
+                  onclick="saveAvatar()"
+                >
+                  💾 Save
+                </button>
+
+                <button
+                  class="btn secondary"
+                  onclick="resetAvatar()"
+                >
+                  ↩ Reset
+                </button>
+
               </div>
 
             </div>
@@ -803,15 +1054,25 @@ h1,h2,h3{
 
       </section>
 
+
       <!-- WORLD -->
 
       <section class="page" id="world">
 
-        <div class="bigHero" style="margin-bottom:12px">
-          <h1>🌎 Foxie <span class="green">World</span></h1>
+        <div
+          class="bigHero"
+          style="margin-bottom:12px"
+        >
+
+          <h1>
+            🌎 Foxie <span class="green">World</span>
+          </h1>
+
           <p style="color:#91a895">
-            Your 3D world is starting here. Use WASD or the arrow keys.
+            Your 3D world is starting here.
+            Use WASD or the arrow keys.
           </p>
+
         </div>
 
         <div id="world3d">
@@ -819,21 +1080,32 @@ h1,h2,h3{
           <canvas id="worldCanvas"></canvas>
 
           <div class="worldHUD">
+
             <div class="hudBox">
               <strong>FOXIE WORLD</strong>
             </div>
 
             <div class="hudBox">
-              Weather: <strong id="weatherText">Clear</strong>
+              Weather:
+              <strong id="weatherText">
+                Clear
+              </strong>
             </div>
 
             <div class="hudBox">
-              Time: <strong id="worldTime">--:--</strong>
+              Time:
+              <strong id="worldTime">
+                --:--
+              </strong>
             </div>
 
             <div class="hudBox">
-              XP: <strong id="xpText">0</strong>
+              XP:
+              <strong id="xpText">
+                0
+              </strong>
             </div>
+
           </div>
 
           <div class="worldControls">
@@ -845,215 +1117,376 @@ h1,h2,h3{
 
       </section>
 
+
       <!-- GAMES -->
 
       <section class="page" id="games">
 
         <div class="bigHero">
-          <h1>🎮 Foxie <span class="green">Games</span></h1>
+
+          <h1>
+            🎮 Foxie <span class="green">Games</span>
+          </h1>
+
           <p style="color:#91a895">
             The Foxie game universe.
           </p>
+
         </div>
 
         <div class="grid">
 
           <div class="card gameCard">
+
             <div>
-              <div class="gameIcon">🏎️</div>
-              <h3>Foxie Racing</h3>
+
+              <div class="gameIcon">
+                🏎️
+              </div>
+
+              <h3>
+                Foxie Racing
+              </h3>
+
               <p style="color:#91a895">
                 3D driving and racing.
               </p>
+
             </div>
-            <button class="btn" onclick="showPage('world')">
+
+            <button
+              class="btn"
+              onclick="showPage('world')"
+            >
               Enter
             </button>
+
           </div>
 
           <div class="card gameCard">
+
             <div>
-              <div class="gameIcon">♟️</div>
-              <h3>3D Chess</h3>
+
+              <div class="gameIcon">
+                ♟️
+              </div>
+
+              <h3>
+                3D Chess
+              </h3>
+
               <p style="color:#91a895">
                 A future competitive chess arena.
               </p>
+
             </div>
+
             <button class="btn secondary">
               Coming Soon
             </button>
+
           </div>
 
           <div class="card gameCard">
+
             <div>
-              <div class="gameIcon">⚽</div>
-              <h3>Foxie Football</h3>
+
+              <div class="gameIcon">
+                ⚽
+              </div>
+
+              <h3>
+                Foxie Football
+              </h3>
+
               <p style="color:#91a895">
                 Multiplayer football arena.
               </p>
+
             </div>
+
             <button class="btn secondary">
               Coming Soon
             </button>
+
           </div>
 
           <div class="card gameCard">
+
             <div>
-              <div class="gameIcon">🐍</div>
-              <h3>Foxie Snake 3D</h3>
+
+              <div class="gameIcon">
+                🐍
+              </div>
+
+              <h3>
+                Foxie Snake 3D
+              </h3>
+
               <p style="color:#91a895">
                 Arcade snake with a 3D world.
               </p>
+
             </div>
+
             <button class="btn secondary">
               Coming Soon
             </button>
+
           </div>
 
           <div class="card gameCard">
+
             <div>
-              <div class="gameIcon">🏆</div>
-              <h3>Hourly Tournaments</h3>
+
+              <div class="gameIcon">
+                🏆
+              </div>
+
+              <h3>
+                Hourly Tournaments
+              </h3>
+
               <p style="color:#91a895">
                 Compete for titles, XP and cosmetics.
               </p>
+
             </div>
+
             <button class="btn secondary">
               Coming Soon
             </button>
+
           </div>
 
           <div class="card gameCard">
+
             <div>
-              <div class="gameIcon">🌌</div>
-              <h3>Foxie Adventure</h3>
+
+              <div class="gameIcon">
+                🌌
+              </div>
+
+              <h3>
+                Foxie Adventure
+              </h3>
+
               <p style="color:#91a895">
                 Explore huge 3D environments.
               </p>
+
             </div>
+
             <button class="btn secondary">
               Coming Soon
             </button>
+
           </div>
 
         </div>
 
       </section>
+
 
       <!-- MESSAGES -->
 
       <section class="page" id="messages">
 
         <div class="bigHero">
-          <h1>💬 Foxie <span class="green">Messages</span></h1>
+
+          <h1>
+            💬 Foxie <span class="green">Messages</span>
+          </h1>
+
           <p style="color:#91a895">
             Your private conversations will live here.
           </p>
+
         </div>
 
         <div class="grid">
 
           <div class="card">
-            <h3>🟢 Friends</h3>
+
+            <h3>
+              🟢 Friends
+            </h3>
+
             <p style="color:#91a895">
               Your online friends will appear here.
             </p>
+
           </div>
 
           <div class="card">
-            <h3>👥 Groups</h3>
+
+            <h3>
+              👥 Groups
+            </h3>
+
             <p style="color:#91a895">
               Create group conversations.
             </p>
+
           </div>
 
           <div class="card">
-            <h3>📷 Media</h3>
+
+            <h3>
+              📷 Media
+            </h3>
+
             <p style="color:#91a895">
               Share photos, videos and your Foxie avatar.
             </p>
+
           </div>
 
         </div>
 
       </section>
+
 
       <!-- SEARCH -->
 
       <section class="page" id="search">
 
         <div class="bigHero">
-          <h1>🔎 Foxie <span class="green">Search</span></h1>
+
+          <h1>
+            🔎 Foxie <span class="green">Search</span>
+          </h1>
+
           <input
             class="nameInput"
             placeholder="Search people, games, posts and worlds..."
           >
+
         </div>
 
         <div class="grid">
+
           <div class="card">
-            <h3>👤 People</h3>
-            <p style="color:#91a895">Find Foxie users and creators.</p>
+
+            <h3>
+              👤 People
+            </h3>
+
+            <p style="color:#91a895">
+              Find Foxie users and creators.
+            </p>
+
           </div>
 
           <div class="card">
-            <h3>🎮 Games</h3>
-            <p style="color:#91a895">Discover Foxie games.</p>
+
+            <h3>
+              🎮 Games
+            </h3>
+
+            <p style="color:#91a895">
+              Discover Foxie games.
+            </p>
+
           </div>
 
           <div class="card">
-            <h3>🎬 Content</h3>
-            <p style="color:#91a895">Find posts and short videos.</p>
+
+            <h3>
+              🎬 Content
+            </h3>
+
+            <p style="color:#91a895">
+              Find posts and short videos.
+            </p>
+
           </div>
+
         </div>
 
       </section>
+
 
       <!-- MAPS -->
 
       <section class="page" id="maps">
 
         <div class="bigHero">
-          <h1>🗺️ Foxie <span class="green">Maps</span></h1>
+
+          <h1>
+            🗺️ Foxie <span class="green">Maps</span>
+          </h1>
+
           <p style="color:#91a895">
             The map system will connect to Foxie World.
           </p>
+
         </div>
 
-        <div class="card" style="
-          height:400px;
-          display:grid;
-          place-items:center;
-          background:
-            linear-gradient(rgba(57,255,20,.04) 1px,transparent 1px),
-            linear-gradient(90deg,rgba(57,255,20,.04) 1px,transparent 1px),
-            #030805;
-          background-size:35px 35px;
-        ">
+        <div
+          class="card"
+          style="
+            height:400px;
+            display:grid;
+            place-items:center;
+            background:
+              linear-gradient(
+                rgba(57,255,20,.04) 1px,
+                transparent 1px
+              ),
+              linear-gradient(
+                90deg,
+                rgba(57,255,20,.04) 1px,
+                transparent 1px
+              ),
+              #030805;
+            background-size:35px 35px;
+          "
+        >
+
           <div style="text-align:center">
-            <div style="font-size:55px">🗺️</div>
-            <h2>Foxie World Map</h2>
+
+            <div style="font-size:55px">
+              🗺️
+            </div>
+
+            <h2>
+              Foxie World Map
+            </h2>
+
             <p style="color:#7f987f">
               3D locations will appear here.
             </p>
+
           </div>
+
         </div>
 
       </section>
+
 
       <!-- CREATOR -->
 
       <section class="page" id="creator">
 
         <div class="bigHero">
-          <h1>👑 Creator <span class="green">Mode</span></h1>
+
+          <h1>
+            👑 Creator <span class="green">Mode</span>
+          </h1>
+
           <p style="color:#91a895">
             Secure creator tools for the authenticated owner account.
           </p>
+
         </div>
 
         <div class="card">
-          <h3>🔐 Security</h3>
+
+          <h3>
+            🔐 Security
+          </h3>
+
           <p style="color:#91a895">
             A display name must never grant administrator access.
             Creator Mode needs real authentication before owner tools
@@ -1063,16 +1496,17 @@ h1,h2,h3{
           <button class="btn secondary">
             Creator authentication coming next
           </button>
+
         </div>
 
       </section>
 
     </div>
+
   </main>
+
 </div>
 
-
-<!-- THREE.JS -->
 
 <script type="module">
 
@@ -1101,10 +1535,12 @@ let avatarData =
   {...avatarDefaults};
 
 function saveLocal(){
+
   localStorage.setItem(
     "foxieAvatar3D",
     JSON.stringify(avatarData)
   );
+
 }
 
 
@@ -1115,44 +1551,60 @@ function saveLocal(){
 window.showPage = function(page){
 
   document.querySelectorAll(".page")
-    .forEach(p=>p.classList.remove("active"));
+    .forEach(p=>{
+      p.classList.remove("active");
+    });
 
   document.querySelectorAll(".nav button")
-    .forEach(b=>b.classList.remove("active"));
+    .forEach(b=>{
+      b.classList.remove("active");
+    });
 
-  const target=document.getElementById(page);
+  const target =
+    document.getElementById(page);
 
   if(target){
     target.classList.add("active");
   }
 
-  const button=document.querySelector(
-    `.nav button[data-page="${page}"]`
-  );
+  const button =
+    document.querySelector(
+      `.nav button[data-page="${page}"]`
+    );
 
   if(button){
     button.classList.add("active");
   }
 
   if(page==="avatar"){
+
     setTimeout(()=>{
       resizeAvatarRenderer();
       renderAvatar();
     },50);
+
   }
 
   if(page==="world"){
+
     setTimeout(()=>{
       resizeWorldRenderer();
     },50);
+
   }
+
 };
 
 document.querySelectorAll(".nav button")
 .forEach(button=>{
-  button.addEventListener("click",()=>{
-    showPage(button.dataset.page);
-  });
+
+  button.addEventListener(
+    "click",
+    ()=>{
+      showPage(button.dataset.page);
+    }
+  );
+
 });
 
 
@@ -1162,19 +1614,32 @@ document.querySelectorAll(".nav button")
 
 function updateClock(){
 
-  const now=new Date();
+  const now =
+    new Date();
 
-  document.getElementById("clock").textContent =
+  document.getElementById(
+    "clock"
+  ).textContent =
     now.toLocaleTimeString();
 
-  document.getElementById("worldTime").textContent =
-    now.toLocaleTimeString([],{
-      hour:"2-digit",
-      minute:"2-digit"
-    });
+  document.getElementById(
+    "worldTime"
+  ).textContent =
+    now.toLocaleTimeString(
+      [],
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
 }
 
-setInterval(updateClock,1000);
+setInterval(
+  updateClock,
+  1000
+);
+
 updateClock();
 
 
@@ -1186,7 +1651,6 @@ let avatarScene;
 let avatarCamera;
 let avatarRenderer;
 let avatarRoot;
-let avatarMixer;
 
 let avatarRotation=0;
 let avatarZoom=5.4;
@@ -1194,17 +1658,22 @@ let dragging=false;
 let previousMouseX=0;
 
 const avatarCanvas =
-  document.getElementById("avatarCanvas");
+  document.getElementById(
+    "avatarCanvas"
+  );
 
 
 function createAvatarScene(){
 
-  avatarScene=new THREE.Scene();
+  avatarScene =
+    new THREE.Scene();
 
   avatarScene.background =
-    new THREE.Color("#030805");
+    new THREE.Color(
+      "#030805"
+    );
 
-  avatarCamera=
+  avatarCamera =
     new THREE.PerspectiveCamera(
       42,
       1,
@@ -1218,7 +1687,7 @@ function createAvatarScene(){
     avatarZoom
   );
 
-  avatarRenderer=
+  avatarRenderer =
     new THREE.WebGLRenderer({
       canvas:avatarCanvas,
       antialias:true,
@@ -1226,23 +1695,29 @@ function createAvatarScene(){
     });
 
   avatarRenderer.setPixelRatio(
-    Math.min(window.devicePixelRatio,2)
+    Math.min(
+      window.devicePixelRatio,
+      2
+    )
   );
 
   avatarRenderer.shadowMap.enabled=true;
-  avatarRenderer.shadowMap.type=
+
+  avatarRenderer.shadowMap.type =
     THREE.PCFSoftShadowMap;
 
-  const ambient=
+  const ambient =
     new THREE.HemisphereLight(
       0x9cffb0,
       0x050805,
       2
     );
 
-  avatarScene.add(ambient);
+  avatarScene.add(
+    ambient
+  );
 
-  const key=
+  const key =
     new THREE.DirectionalLight(
       0xffffff,
       3
@@ -1256,9 +1731,11 @@ function createAvatarScene(){
 
   key.castShadow=true;
 
-  avatarScene.add(key);
+  avatarScene.add(
+    key
+  );
 
-  const rim=
+  const rim =
     new THREE.PointLight(
       0x39ff14,
       7,
@@ -1271,9 +1748,11 @@ function createAvatarScene(){
     -2
   );
 
-  avatarScene.add(rim);
+  avatarScene.add(
+    rim
+  );
 
-  const floor=
+  const floor =
     new THREE.Mesh(
       new THREE.CylinderGeometry(
         2.1,
@@ -1288,15 +1767,21 @@ function createAvatarScene(){
       })
     );
 
-  floor.position.y=-1.78;
+  floor.position.y =
+    -1.78;
+
   floor.receiveShadow=true;
 
-  avatarScene.add(floor);
+  avatarScene.add(
+    floor
+  );
 
-  avatarRoot=
+  avatarRoot =
     new THREE.Group();
 
-  avatarScene.add(avatarRoot);
+  avatarScene.add(
+    avatarRoot
+  );
 
   avatarCanvas.addEventListener(
     "pointerdown",
@@ -1316,37 +1801,49 @@ function createAvatarScene(){
   window.addEventListener(
     "pointermove",
     e=>{
-      if(!dragging)return;
 
-      const dx=
-        e.clientX-previousMouseX;
+      if(!dragging)
+        return;
 
-      avatarRotation+=dx*.01;
+      const dx =
+        e.clientX -
+        previousMouseX;
 
-      previousMouseX=e.clientX;
+      avatarRotation +=
+        dx*.01;
+
+      previousMouseX =
+        e.clientX;
+
     }
   );
 
   avatarCanvas.addEventListener(
     "wheel",
     e=>{
+
       e.preventDefault();
 
-      avatarZoom+=e.deltaY*.006;
+      avatarZoom +=
+        e.deltaY*.006;
 
-      avatarZoom=
+      avatarZoom =
         THREE.MathUtils.clamp(
           avatarZoom,
           3.7,
           7
         );
+
     },
-    {passive:false}
+    {
+      passive:false
+    }
   );
 
   resizeAvatarRenderer();
 
   animateAvatar();
+
 }
 
 
@@ -1357,6 +1854,7 @@ function material(color){
     roughness:.68,
     metalness:.08
   });
+
 }
 
 
@@ -1364,18 +1862,17 @@ function roundedBox(
   width,
   height,
   depth,
-  color,
-  radius=.15
+  color
 ){
 
-  const geo=
+  const geo =
     new THREE.BoxGeometry(
       width,
       height,
       depth
     );
 
-  const mesh=
+  const mesh =
     new THREE.Mesh(
       geo,
       material(color)
@@ -1385,6 +1882,7 @@ function roundedBox(
   mesh.receiveShadow=true;
 
   return mesh;
+
 }
 
 
@@ -1393,7 +1891,7 @@ function sphere(
   color
 ){
 
-  const mesh=
+  const mesh =
     new THREE.Mesh(
       new THREE.SphereGeometry(
         1,
@@ -1412,6 +1910,7 @@ function sphere(
   mesh.castShadow=true;
 
   return mesh;
+
 }
 
 
@@ -1421,7 +1920,7 @@ function capsule(
   color
 ){
 
-  const mesh=
+  const mesh =
     new THREE.Mesh(
       new THREE.CapsuleGeometry(
         radius,
@@ -1435,52 +1934,65 @@ function capsule(
   mesh.castShadow=true;
 
   return mesh;
+
 }
 
 
 function clearGroup(group){
 
-  while(group.children.length){
+  while(
+    group.children.length
+  ){
 
-    const child=
+    const child =
       group.children.pop();
 
-    child.traverse(obj=>{
+    child.traverse(
+      obj=>{
 
-      if(obj.geometry)
-        obj.geometry.dispose();
+        if(obj.geometry)
+          obj.geometry.dispose();
 
-      if(obj.material)
-        obj.material.dispose();
+        if(obj.material)
+          obj.material.dispose();
 
-    });
+      }
+    );
+
   }
+
 }
 
 
 function createHumanAvatar(){
 
-  clearGroup(avatarRoot);
+  clearGroup(
+    avatarRoot
+  );
 
-  const skin=avatarData.skin;
+  const skin =
+    avatarData.skin;
 
-  const root=
+  const root =
     new THREE.Group();
 
   root.position.y=0;
 
-  avatarRoot.add(root);
+  avatarRoot.add(
+    root
+  );
+
 
   /* LEGS */
 
-  const legHeight=
+  const legHeight =
     avatarData.body==="Tall"
       ? 1.18
       : avatarData.body==="Short"
       ? .95
       : 1.05;
 
-  const legWidth=
+  const legWidth =
     avatarData.body==="Slim"
       ? .27
       : .32;
@@ -1494,7 +2006,7 @@ function createHumanAvatar(){
       ? "#274a2d"
       : "#17261b";
 
-  const leftLeg=
+  const leftLeg =
     capsule(
       legWidth,
       legHeight,
@@ -1507,9 +2019,11 @@ function createHumanAvatar(){
     0
   );
 
-  root.add(leftLeg);
+  root.add(
+    leftLeg
+  );
 
-  const rightLeg=
+  const rightLeg =
     capsule(
       legWidth,
       legHeight,
@@ -1522,7 +2036,10 @@ function createHumanAvatar(){
     0
   );
 
-  root.add(rightLeg);
+  root.add(
+    rightLeg
+  );
+
 
   /* SHOES */
 
@@ -1533,13 +2050,12 @@ function createHumanAvatar(){
       ? "#eeeeee"
       : "#202b27";
 
-  const leftShoe=
+  const leftShoe =
     roundedBox(
       .46,
       .23,
       .78,
-      shoeColor,
-      .12
+      shoeColor
     );
 
   leftShoe.position.set(
@@ -1548,15 +2064,16 @@ function createHumanAvatar(){
     .13
   );
 
-  root.add(leftShoe);
+  root.add(
+    leftShoe
+  );
 
-  const rightShoe=
+  const rightShoe =
     roundedBox(
       .46,
       .23,
       .78,
-      shoeColor,
-      .12
+      shoeColor
     );
 
   rightShoe.position.set(
@@ -1565,7 +2082,10 @@ function createHumanAvatar(){
     .13
   );
 
-  root.add(rightShoe);
+  root.add(
+    rightShoe
+  );
+
 
   /* TORSO */
 
@@ -1578,7 +2098,7 @@ function createHumanAvatar(){
       ? "#eeeeee"
       : "#10291a";
 
-  const torso=
+  const torso =
     roundedBox(
       avatarData.body==="Slim"
         ? .92
@@ -1587,30 +2107,37 @@ function createHumanAvatar(){
         : 1.04,
       1.18,
       .55,
-      topColor,
-      .18
+      topColor
     );
 
-  torso.position.y=.38;
+  torso.position.y =
+    .38;
 
-  root.add(torso);
+  root.add(
+    torso
+  );
+
 
   /* NECK */
 
-  const neck=
+  const neck =
     capsule(
       .17,
       .18,
       skin
     );
 
-  neck.position.y=1.02;
+  neck.position.y =
+    1.02;
 
-  root.add(neck);
+  root.add(
+    neck
+  );
+
 
   /* HEAD */
 
-  const head=
+  const head =
     sphere(
       {
         x:.56,
@@ -1620,22 +2147,26 @@ function createHumanAvatar(){
       skin
     );
 
-  head.position.y=1.55;
+  head.position.y =
+    1.55;
 
-  root.add(head);
+  root.add(
+    head
+  );
+
 
   /* EARS */
 
   function foxEar(x){
 
-    const geo=
+    const geo =
       new THREE.ConeGeometry(
         .22,
         .58,
         4
       );
 
-    const ear=
+    const ear =
       new THREE.Mesh(
         geo,
         material(skin)
@@ -1647,12 +2178,17 @@ function createHumanAvatar(){
       0
     );
 
-    ear.rotation.z=
-      x<0 ? -.22 : .22;
+    ear.rotation.z =
+      x<0
+        ? -.22
+        : .22;
 
     ear.castShadow=true;
 
-    root.add(ear);
+    root.add(
+      ear
+    );
+
   }
 
   if(
@@ -1664,6 +2200,7 @@ function createHumanAvatar(){
     foxEar(.32);
 
   }
+
 
   /* HAIR */
 
@@ -1678,9 +2215,11 @@ function createHumanAvatar(){
       ? "#8e2d1d"
       : "#18231c";
 
-  if(avatarData.hair!=="None"){
+  if(
+    avatarData.hair!=="None"
+  ){
 
-    const hair=
+    const hair =
       sphere(
         {
           x:.58,
@@ -1696,15 +2235,18 @@ function createHumanAvatar(){
       -.01
     );
 
-    root.add(hair);
+    root.add(
+      hair
+    );
 
   }
+
 
   /* EYES */
 
   function eye(x){
 
-    const e=
+    const e =
       sphere(
         {
           x:.075,
@@ -1720,15 +2262,19 @@ function createHumanAvatar(){
       .51
     );
 
-    root.add(e);
+    root.add(
+      e
+    );
+
   }
 
   eye(-.2);
   eye(.2);
 
+
   /* NOSE */
 
-  const nose=
+  const nose =
     sphere(
       {
         x:.065,
@@ -1744,17 +2290,18 @@ function createHumanAvatar(){
     .53
   );
 
-  root.add(nose);
+  root.add(
+    nose
+  );
+
 
   /* ARMS */
 
-  const armColor=skin;
-
-  const leftArm=
+  const leftArm =
     capsule(
       .16,
       .73,
-      armColor
+      skin
     );
 
   leftArm.position.set(
@@ -1765,13 +2312,15 @@ function createHumanAvatar(){
 
   leftArm.rotation.z=.05;
 
-  root.add(leftArm);
+  root.add(
+    leftArm
+  );
 
-  const rightArm=
+  const rightArm =
     capsule(
       .16,
       .73,
-      armColor
+      skin
     );
 
   rightArm.position.set(
@@ -1782,7 +2331,10 @@ function createHumanAvatar(){
 
   rightArm.rotation.z=-.05;
 
-  root.add(rightArm);
+  root.add(
+    rightArm
+  );
+
 
   /* HOOD */
 
@@ -1790,7 +2342,7 @@ function createHumanAvatar(){
     avatarData.head==="Hood"
   ){
 
-    const hood=
+    const hood =
       new THREE.Mesh(
         new THREE.TorusGeometry(
           .48,
@@ -1807,12 +2359,15 @@ function createHumanAvatar(){
       -.02
     );
 
-    hood.rotation.x=
+    hood.rotation.x =
       Math.PI/2;
 
-    root.add(hood);
+    root.add(
+      hood
+    );
 
   }
+
 
   /* GLASSES */
 
@@ -1820,14 +2375,14 @@ function createHumanAvatar(){
     avatarData.head==="Glasses"
   ){
 
-    const glassesMaterial=
+    const glassesMaterial =
       new THREE.MeshStandardMaterial({
         color:0x050505,
         metalness:.5,
         roughness:.25
       });
 
-    const left=
+    const left =
       new THREE.Mesh(
         new THREE.TorusGeometry(
           .13,
@@ -1844,16 +2399,20 @@ function createHumanAvatar(){
       .55
     );
 
-    root.add(left);
+    root.add(
+      left
+    );
 
-    const right=
+    const right =
       left.clone();
 
     right.position.x=.2;
 
-    root.add(right);
+    root.add(
+      right
+    );
 
-    const bridge=
+    const bridge =
       roundedBox(
         .2,
         .025,
@@ -1867,8 +2426,12 @@ function createHumanAvatar(){
       .55
     );
 
-    root.add(bridge);
+    root.add(
+      bridge
+    );
+
   }
+
 
   /* TAIL */
 
@@ -1877,7 +2440,7 @@ function createHumanAvatar(){
     avatarData.extra==="Fox Everything"
   ){
 
-    const tail=
+    const tail =
       new THREE.Mesh(
         new THREE.CapsuleGeometry(
           .17,
@@ -1894,25 +2457,28 @@ function createHumanAvatar(){
       -.45
     );
 
-    tail.rotation.z=
-      -0.8;
+    tail.rotation.z =
+      -.8;
 
-    tail.rotation.x=
+    tail.rotation.x =
       -.35;
 
     tail.castShadow=true;
 
-    root.add(tail);
+    root.add(
+      tail
+    );
 
   }
 
-  /* NEON EFFECT */
+
+  /* NEON */
 
   if(
     avatarData.extra==="Neon"
   ){
 
-    const glow=
+    const glow =
       new THREE.PointLight(
         0x39ff14,
         4,
@@ -1921,25 +2487,31 @@ function createHumanAvatar(){
 
     glow.position.y=1;
 
-    root.add(glow);
+    root.add(
+      glow
+    );
 
   }
+
 }
 
 
 function renderAvatar(){
 
-  if(!avatarScene)return;
+  if(!avatarScene)
+    return;
 
   createHumanAvatar();
 
-  avatarRoot.rotation.y=
+  avatarRoot.rotation.y =
     avatarRotation;
 
   document.getElementById(
     "avatarNameDisplay"
-  ).textContent=
-    avatarData.name || "Foxie Player";
+  ).textContent =
+    avatarData.name ||
+    "Foxie Player";
+
 }
 
 
@@ -1951,10 +2523,10 @@ function animateAvatar(){
 
   if(avatarRoot){
 
-    avatarRoot.rotation.y=
+    avatarRoot.rotation.y =
       avatarRotation;
 
-    avatarCamera.position.z=
+    avatarCamera.position.z =
       avatarZoom;
 
     avatarCamera.lookAt(
@@ -1963,10 +2535,10 @@ function animateAvatar(){
       0
     );
 
-    const t=
+    const t =
       performance.now()*.001;
 
-    avatarRoot.position.y=
+    avatarRoot.position.y =
       Math.sin(t*1.5)*.025;
 
   }
@@ -1979,20 +2551,22 @@ function animateAvatar(){
     );
 
   }
+
 }
 
 
 function resizeAvatarRenderer(){
 
-  if(!avatarRenderer)return;
+  if(!avatarRenderer)
+    return;
 
-  const parent=
+  const parent =
     avatarCanvas.parentElement;
 
-  const width=
+  const width =
     parent.clientWidth;
 
-  const height=
+  const height =
     parent.clientHeight;
 
   avatarRenderer.setSize(
@@ -2001,10 +2575,11 @@ function resizeAvatarRenderer(){
     false
   );
 
-  avatarCamera.aspect=
+  avatarCamera.aspect =
     width/height;
 
   avatarCamera.updateProjectionMatrix();
+
 }
 
 
@@ -2078,38 +2653,53 @@ const extras=[
 
 function makeOptions(){
 
-  const skinBox=
+  const skinBox =
     document.getElementById(
       "skinOptions"
     );
 
-  skins.forEach(color=>{
+  skins.forEach(
+    color=>{
 
-    const b=
-      document.createElement("button");
+      const b =
+        document.createElement(
+          "button"
+        );
 
-    b.className="swatch";
+      b.className =
+        "swatch";
 
-    b.style.background=color;
+      b.style.background =
+        color;
 
-    if(
-      avatarData.skin===color
-    )
-      b.classList.add("selected");
+      if(
+        avatarData.skin===color
+      ){
 
-    b.onclick=()=>{
+        b.classList.add(
+          "selected"
+        );
 
-      avatarData.skin=color;
+      }
 
-      saveLocal();
+      b.onclick=()=>{
 
-      renderOptions();
-      renderAvatar();
-    };
+        avatarData.skin =
+          color;
 
-    skinBox.appendChild(b);
-  });
+        saveLocal();
 
+        renderOptions();
+        renderAvatar();
+
+      };
+
+      skinBox.appendChild(
+        b
+      );
+
+    }
+  );
 
   makeTextOptions(
     "bodyOptions",
@@ -2152,6 +2742,7 @@ function makeOptions(){
     extras,
     "extra"
   );
+
 }
 
 
@@ -2161,36 +2752,54 @@ function makeTextOptions(
   key
 ){
 
-  const box=
-    document.getElementById(id);
+  const box =
+    document.getElementById(
+      id
+    );
 
-  values.forEach(value=>{
+  values.forEach(
+    value=>{
 
-    const b=
-      document.createElement("button");
+      const b =
+        document.createElement(
+          "button"
+        );
 
-    b.className="option";
+      b.className =
+        "option";
 
-    b.textContent=value;
+      b.textContent =
+        value;
 
-    if(
-      avatarData[key]===value
-    )
-      b.classList.add("selected");
+      if(
+        avatarData[key]===value
+      ){
 
-    b.onclick=()=>{
+        b.classList.add(
+          "selected"
+        );
 
-      avatarData[key]=value;
+      }
 
-      saveLocal();
+      b.onclick=()=>{
 
-      renderOptions();
-      renderAvatar();
+        avatarData[key] =
+          value;
 
-    };
+        saveLocal();
 
-    box.appendChild(b);
-  });
+        renderOptions();
+        renderAvatar();
+
+      };
+
+      box.appendChild(
+        b
+      );
+
+    }
+  );
+
 }
 
 
@@ -2198,78 +2807,134 @@ function renderOptions(){
 
   document.querySelectorAll(
     ".option,.swatch"
-  ).forEach(b=>{
-    b.classList.remove(
-      "selected"
-    );
-  });
+  ).forEach(
+    b=>{
+      b.classList.remove(
+        "selected"
+      );
+    }
+  );
 
   document.querySelectorAll(
     "#bodyOptions .option"
-  ).forEach(b=>{
-    if(b.textContent===avatarData.body)
-      b.classList.add("selected");
-  });
+  ).forEach(
+    b=>{
+      if(
+        b.textContent===
+        avatarData.body
+      )
+        b.classList.add(
+          "selected"
+        );
+    }
+  );
 
   document.querySelectorAll(
     "#hairOptions .option"
-  ).forEach(b=>{
-    if(b.textContent===avatarData.hair)
-      b.classList.add("selected");
-  });
+  ).forEach(
+    b=>{
+      if(
+        b.textContent===
+        avatarData.hair
+      )
+        b.classList.add(
+          "selected"
+        );
+    }
+  );
 
   document.querySelectorAll(
     "#topOptions .option"
-  ).forEach(b=>{
-    if(b.textContent===avatarData.top)
-      b.classList.add("selected");
-  });
+  ).forEach(
+    b=>{
+      if(
+        b.textContent===
+        avatarData.top
+      )
+        b.classList.add(
+          "selected"
+        );
+    }
+  );
 
   document.querySelectorAll(
     "#pantsOptions .option"
-  ).forEach(b=>{
-    if(b.textContent===avatarData.pants)
-      b.classList.add("selected");
-  });
+  ).forEach(
+    b=>{
+      if(
+        b.textContent===
+        avatarData.pants
+      )
+        b.classList.add(
+          "selected"
+        );
+    }
+  );
 
   document.querySelectorAll(
     "#shoeOptions .option"
-  ).forEach(b=>{
-    if(b.textContent===avatarData.shoes)
-      b.classList.add("selected");
-  });
+  ).forEach(
+    b=>{
+      if(
+        b.textContent===
+        avatarData.shoes
+      )
+        b.classList.add(
+          "selected"
+        );
+    }
+  );
 
   document.querySelectorAll(
     "#headOptions .option"
-  ).forEach(b=>{
-    if(b.textContent===avatarData.head)
-      b.classList.add("selected");
-  });
+  ).forEach(
+    b=>{
+      if(
+        b.textContent===
+        avatarData.head
+      )
+        b.classList.add(
+          "selected"
+        );
+    }
+  );
 
   document.querySelectorAll(
     "#extraOptions .option"
-  ).forEach(b=>{
-    if(b.textContent===avatarData.extra)
-      b.classList.add("selected");
-  });
+  ).forEach(
+    b=>{
+      if(
+        b.textContent===
+        avatarData.extra
+      )
+        b.classList.add(
+          "selected"
+        );
+    }
+  );
 
   document.querySelectorAll(
     ".swatch"
-  ).forEach(b=>{
+  ).forEach(
+    b=>{
 
-    if(
-      b.style.background===
-      avatarData.skin
-    )
-      b.classList.add("selected");
+      if(
+        b.style.background===
+        avatarData.skin
+      )
+        b.classList.add(
+          "selected"
+        );
 
-  });
+    }
+  );
+
 }
 
 
 window.saveAvatar=function(){
 
-  avatarData.name=
+  avatarData.name =
     document.getElementById(
       "avatarName"
     ).value ||
@@ -2279,12 +2944,13 @@ window.saveAvatar=function(){
 
   document.getElementById(
     "avatarNameDisplay"
-  ).textContent=
+  ).textContent =
     avatarData.name;
 
   alert(
     "🦊 Your 3D Foxie avatar has been saved!"
   );
+
 };
 
 
@@ -2296,43 +2962,60 @@ window.resetAvatar=function(){
 
   document.getElementById(
     "avatarName"
-  ).value=
+  ).value =
     avatarData.name;
 
   saveLocal();
 
   renderOptions();
   renderAvatar();
+
 };
 
 
 window.randomAvatar=function(){
 
   function pick(arr){
+
     return arr[
       Math.floor(
         Math.random()*arr.length
       )
     ];
+
   }
 
-  avatarData.skin=pick(skins);
-  avatarData.body=pick(bodies);
-  avatarData.hair=pick(hairs);
-  avatarData.top=pick(tops);
-  avatarData.pants=pick(pants);
-  avatarData.shoes=pick(shoes);
-  avatarData.head=pick(heads);
-  avatarData.extra=pick(extras);
+  avatarData.skin =
+    pick(skins);
+
+  avatarData.body =
+    pick(bodies);
+
+  avatarData.hair =
+    pick(hairs);
+
+  avatarData.top =
+    pick(tops);
+
+  avatarData.pants =
+    pick(pants);
+
+  avatarData.shoes =
+    pick(shoes);
+
+  avatarData.head =
+    pick(heads);
+
+  avatarData.extra =
+    pick(extras);
 
   saveLocal();
 
   renderOptions();
   renderAvatar();
+
 };
 
-
-/* NAME */
 
 document.getElementById(
   "avatarName"
@@ -2340,27 +3023,26 @@ document.getElementById(
   "input",
   e=>{
 
-    avatarData.name=
+    avatarData.name =
       e.target.value ||
       "Foxie Player";
 
     document.getElementById(
       "avatarNameDisplay"
-    ).textContent=
+    ).textContent =
       avatarData.name;
 
     saveLocal();
+
   }
 );
 
-
-/* START AVATAR */
 
 makeOptions();
 
 document.getElementById(
   "avatarName"
-).value=
+).value =
   avatarData.name;
 
 createAvatarScene();
@@ -2389,7 +3071,7 @@ let playerX=0;
 let playerZ=0;
 let xp=0;
 
-const worldCanvas=
+const worldCanvas =
   document.getElementById(
     "worldCanvas"
   );
@@ -2397,15 +3079,15 @@ const worldCanvas=
 
 function createWorld(){
 
-  worldScene=
+  worldScene =
     new THREE.Scene();
 
-  worldScene.background=
+  worldScene.background =
     new THREE.Color(
       0x06100a
     );
 
-  worldCamera=
+  worldCamera =
     new THREE.PerspectiveCamera(
       55,
       1,
@@ -2413,7 +3095,7 @@ function createWorld(){
       500
     );
 
-  worldRenderer=
+  worldRenderer =
     new THREE.WebGLRenderer({
       canvas:worldCanvas,
       antialias:true
@@ -2428,16 +3110,18 @@ function createWorld(){
 
   worldRenderer.shadowMap.enabled=true;
 
-  const skyLight=
+  const skyLight =
     new THREE.HemisphereLight(
       0x9cffb0,
       0x050705,
       1.8
     );
 
-  worldScene.add(skyLight);
+  worldScene.add(
+    skyLight
+  );
 
-  const sun=
+  const sun =
     new THREE.DirectionalLight(
       0xffffff,
       2.5
@@ -2451,11 +3135,14 @@ function createWorld(){
 
   sun.castShadow=true;
 
-  worldScene.add(sun);
+  worldScene.add(
+    sun
+  );
+
 
   /* GROUND */
 
-  const ground=
+  const ground =
     new THREE.Mesh(
       new THREE.PlaneGeometry(
         200,
@@ -2467,15 +3154,17 @@ function createWorld(){
       })
     );
 
-  ground.rotation.x=
+  ground.rotation.x =
     -Math.PI/2;
 
   ground.receiveShadow=true;
 
-  worldScene.add(ground);
+  worldScene.add(
+    ground
+  );
 
 
-  /* GRID / ROAD */
+  /* ROADS */
 
   for(
     let x=-80;
@@ -2483,7 +3172,7 @@ function createWorld(){
     x+=10
   ){
 
-    const road=
+    const road =
       new THREE.Mesh(
         new THREE.BoxGeometry(
           3,
@@ -2495,9 +3184,12 @@ function createWorld(){
         })
       );
 
-    road.position.x=x;
+    road.position.x =
+      x;
 
-    worldScene.add(road);
+    worldScene.add(
+      road
+    );
 
   }
 
@@ -2508,7 +3200,7 @@ function createWorld(){
     z+=10
   ){
 
-    const road=
+    const road =
       new THREE.Mesh(
         new THREE.BoxGeometry(
           200,
@@ -2520,9 +3212,12 @@ function createWorld(){
         })
       );
 
-    road.position.z=z;
+    road.position.z =
+      z;
 
-    worldScene.add(road);
+    worldScene.add(
+      road
+    );
 
   }
 
@@ -2535,12 +3230,12 @@ function createWorld(){
     i++
   ){
 
-    const x=
+    const x =
       Math.round(
         (Math.random()*150-75)/10
       )*10;
 
-    const z=
+    const z =
       Math.round(
         (Math.random()*150-75)/10
       )*10;
@@ -2551,11 +3246,11 @@ function createWorld(){
     )
       continue;
 
-    const height=
+    const height =
       4+
       Math.random()*13;
 
-    const building=
+    const building =
       new THREE.Mesh(
         new THREE.BoxGeometry(
           6,
@@ -2582,14 +3277,16 @@ function createWorld(){
     building.castShadow=true;
     building.receiveShadow=true;
 
-    worldScene.add(building);
+    worldScene.add(
+      building
+    );
 
   }
 
 
   /* PLAYER */
 
-  worldPlayer=
+  worldPlayer =
     new THREE.Group();
 
   worldScene.add(
@@ -2601,6 +3298,7 @@ function createWorld(){
   resizeWorldRenderer();
 
   animateWorld();
+
 }
 
 
@@ -2610,10 +3308,10 @@ function createWorldPlayer(){
     worldPlayer
   );
 
-  const skin=
+  const skin =
     avatarData.skin;
 
-  const body=
+  const body =
     new THREE.Mesh(
       new THREE.CapsuleGeometry(
         .45,
@@ -2628,13 +3326,16 @@ function createWorldPlayer(){
       )
     );
 
-  body.position.y=1.1;
+  body.position.y =
+    1.1;
 
   body.castShadow=true;
 
-  worldPlayer.add(body);
+  worldPlayer.add(
+    body
+  );
 
-  const head=
+  const head =
     sphere(
       {
         x:.48,
@@ -2644,9 +3345,12 @@ function createWorldPlayer(){
       skin
     );
 
-  head.position.y=2.05;
+  head.position.y =
+    2.05;
 
-  worldPlayer.add(head);
+  worldPlayer.add(
+    head
+  );
 
   if(
     avatarData.extra==="Fox Ears" ||
@@ -2657,7 +3361,7 @@ function createWorldPlayer(){
       const x of [-.28,.28]
     ){
 
-      const ear=
+      const ear =
         new THREE.Mesh(
           new THREE.ConeGeometry(
             .18,
@@ -2675,7 +3379,9 @@ function createWorldPlayer(){
         0
       );
 
-      worldPlayer.add(ear);
+      worldPlayer.add(
+        ear
+      );
 
     }
 
@@ -2686,6 +3392,7 @@ function createWorldPlayer(){
     0,
     playerZ
   );
+
 }
 
 
@@ -2703,36 +3410,48 @@ function animateWorld(){
 
     const speed=.12;
 
-    if(keys["w"]||keys["ArrowUp"])
-      playerZ-=speed;
+    if(
+      keys["w"] ||
+      keys["ArrowUp"]
+    )
+      playerZ -= speed;
 
-    if(keys["s"]||keys["ArrowDown"])
-      playerZ+=speed;
+    if(
+      keys["s"] ||
+      keys["ArrowDown"]
+    )
+      playerZ += speed;
 
-    if(keys["a"]||keys["ArrowLeft"])
-      playerX-=speed;
+    if(
+      keys["a"] ||
+      keys["ArrowLeft"]
+    )
+      playerX -= speed;
 
-    if(keys["d"]||keys["ArrowRight"])
-      playerX+=speed;
+    if(
+      keys["d"] ||
+      keys["ArrowRight"]
+    )
+      playerX += speed;
 
-    playerX=
+    playerX =
       THREE.MathUtils.clamp(
         playerX,
         -95,
         95
       );
 
-    playerZ=
+    playerZ =
       THREE.MathUtils.clamp(
         playerZ,
         -95,
         95
       );
 
-    worldPlayer.position.x=
+    worldPlayer.position.x =
       playerX;
 
-    worldPlayer.position.z=
+    worldPlayer.position.z =
       playerZ;
 
     worldCamera.position.set(
@@ -2757,20 +3476,22 @@ function animateWorld(){
     );
 
   }
+
 }
 
 
 function resizeWorldRenderer(){
 
-  if(!worldRenderer)return;
+  if(!worldRenderer)
+    return;
 
-  const box=
+  const box =
     worldCanvas.parentElement;
 
-  const width=
+  const width =
     box.clientWidth;
 
-  const height=
+  const height =
     box.clientHeight;
 
   worldRenderer.setSize(
@@ -2779,10 +3500,11 @@ function resizeWorldRenderer(){
     false
   );
 
-  worldCamera.aspect=
+  worldCamera.aspect =
     width/height;
 
   worldCamera.updateProjectionMatrix();
+
 }
 
 
@@ -2814,22 +3536,19 @@ createWorld();
 
 function updateWeather(){
 
-  const hour=
-    new Date().getHours();
-
-  const weather=
+  const weather =
     Math.random()>.82
       ? "Rain"
       : "Clear";
 
   document.getElementById(
     "weatherText"
-  ).textContent=
+  ).textContent =
     weather;
 
   document.getElementById(
     "xpText"
-  ).textContent=
+  ).textContent =
     xp;
 
 }
@@ -2848,64 +3567,80 @@ updateWeather();
 
 window.sendChat=async function(){
 
-  const input=
+  const input =
     document.getElementById(
       "chatInput"
     );
 
-  const messages=
+  const messages =
     document.getElementById(
       "chatMessages"
     );
 
-  const text=
+  const text =
     input.value.trim();
 
-  if(!text)return;
+  if(!text)
+    return;
 
-  messages.innerHTML+=
+
+  messages.innerHTML +=
     `<div style="margin-top:8px">
       <b style="color:#39ff14">You:</b>
       ${escapeHtml(text)}
     </div>`;
 
+
   input.value="";
 
-  messages.innerHTML+=
-    `<div id="typing" style="color:#718b76;margin-top:8px">
+
+  messages.innerHTML +=
+    `<div
+      id="typing"
+      style="color:#718b76;margin-top:8px"
+    >
       Foxie is thinking...
     </div>`;
 
-  messages.scrollTop=
+
+  messages.scrollTop =
     messages.scrollHeight;
+
 
   try{
 
-    const response=
+    const response =
       await fetch(
-        "https://foxie-backend.onrender.com/api/chat",
+        "https://foxie-ai-backend.onrender.com/chat",
         {
           method:"POST",
+
           headers:{
             "Content-Type":
               "application/json"
           },
+
           body:JSON.stringify({
             message:text
           })
         }
       );
 
-    const data=
+
+    const data =
       await response.json();
+
 
     document.getElementById(
       "typing"
     )?.remove();
 
-    messages.innerHTML+=
+
+    messages.innerHTML +=
       `<div style="margin-top:8px">
-        <b style="color:#39ff14">Foxie:</b>
+        <b style="color:#39ff14">
+          Foxie:
+        </b>
         ${escapeHtml(
           data.reply ||
           data.message ||
@@ -2913,32 +3648,54 @@ window.sendChat=async function(){
         )}
       </div>`;
 
+
   }catch(error){
 
     document.getElementById(
       "typing"
     )?.remove();
 
-    messages.innerHTML+=
-      `<div style="color:#ff7190;margin-top:8px">
+
+    messages.innerHTML +=
+      `<div
+        style="color:#ff7190;margin-top:8px"
+      >
         Foxie AI is temporarily unavailable.
       </div>`;
 
   }
 
-  messages.scrollTop=
+
+  messages.scrollTop =
     messages.scrollHeight;
+
 };
 
 
 function escapeHtml(text){
 
   return text
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
 }
 
 
@@ -2947,9 +3704,11 @@ document.getElementById(
 ).addEventListener(
   "keydown",
   e=>{
+
     if(e.key==="Enter"){
       sendChat();
     }
+
   }
 );
 

@@ -2,30 +2,42 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Foxie 🦊</title>
 
 <style>
 :root{
   --green:#39ff14;
   --bg:#020604;
+  --panel:#07120b;
+  --panel2:#0a1a0f;
   --text:#eaffea;
   --muted:#8ba98f;
   --danger:#ff496c;
-  --panel:#07120b;
+  --gold:#ffd700;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
   background:var(--bg);
   color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
-  height:100vh;
   overflow:hidden;
+  height:100vh;
 }
 
-button,input,textarea{font:inherit}
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
 
 #matrix{
   position:fixed;
@@ -33,7 +45,7 @@ button,input,textarea{font:inherit}
   width:100%;
   height:100%;
   z-index:0;
-  opacity:.16;
+  opacity:.13;
   pointer-events:none;
 }
 
@@ -44,14 +56,14 @@ button,input,textarea{font:inherit}
   z-index:1;
 }
 
-/* ================= SIDEBAR ================= */
+/* SIDEBAR */
 
 .sidebar{
-  width:270px;
+  width:280px;
   flex-shrink:0;
   background:rgba(3,10,6,.97);
   border-right:1px solid rgba(57,255,20,.18);
-  padding:18px 12px;
+  padding:16px;
   display:flex;
   flex-direction:column;
   overflow-y:auto;
@@ -63,59 +75,41 @@ button,input,textarea{font:inherit}
   font-weight:900;
   color:var(--green);
   letter-spacing:1px;
-  padding:0 8px;
+  margin-bottom:4px;
   text-shadow:0 0 18px rgba(57,255,20,.45);
 }
 
 .tag{
   color:var(--muted);
   font-size:11px;
-  padding:5px 8px 16px;
+  margin-bottom:15px;
+}
+
+.navSection{
+  color:#507458;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:1px;
+  margin:13px 8px 5px;
+  text-transform:uppercase;
 }
 
 .nav{
   display:flex;
   flex-direction:column;
-  gap:3px;
-}
-
-.navSection{
-  margin-top:13px;
-  padding:7px 10px 4px;
-  color:#4f7657;
-  font-size:10px;
-  font-weight:bold;
-  letter-spacing:1.5px;
-  cursor:pointer;
-  user-select:none;
-}
-
-.navSection span{
-  float:right;
-  color:#67806b;
-}
-
-.navGroup{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-}
-
-.navGroup.collapsed{
-  display:none;
+  gap:5px;
 }
 
 .nav button{
-  width:100%;
   border:1px solid transparent;
   background:transparent;
   color:#b8d5bd;
   text-align:left;
-  padding:9px 11px;
+  padding:10px 11px;
   border-radius:9px;
-  transition:.18s;
-  cursor:pointer;
+  transition:.2s;
   font-size:13px;
+  width:100%;
 }
 
 .nav button:hover,
@@ -126,17 +120,35 @@ button,input,textarea{font:inherit}
   transform:translateX(3px);
 }
 
+.navGroup{
+  display:none;
+  margin-left:10px;
+  padding-left:8px;
+  border-left:1px solid rgba(57,255,20,.12);
+}
+
+.navGroup.open{
+  display:block;
+}
+
+.navGroup button{
+  font-size:12px;
+  padding:8px;
+}
+
 .sidebarBottom{
-  margin-top:18px;
-  padding:10px 8px;
+  margin-top:auto;
+  padding-top:15px;
   color:#67806b;
   font-size:10px;
   line-height:1.6;
 }
 
-.creatorName{color:var(--green)}
+.creatorName{
+  color:var(--green);
+}
 
-/* ================= MAIN ================= */
+/* MAIN */
 
 .main{
   flex:1;
@@ -151,7 +163,7 @@ button,input,textarea{font:inherit}
   height:62px;
   flex-shrink:0;
   border-bottom:1px solid rgba(57,255,20,.12);
-  background:rgba(2,8,4,.86);
+  background:rgba(2,8,4,.88);
   backdrop-filter:blur(12px);
   display:flex;
   align-items:center;
@@ -174,7 +186,9 @@ button,input,textarea{font:inherit}
   display:flex;
   align-items:center;
   gap:10px;
-  font-size:13px;
+  font-size:12px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
 
 .userInfo button{
@@ -183,11 +197,7 @@ button,input,textarea{font:inherit}
   color:var(--green);
   padding:6px 10px;
   border-radius:6px;
-  cursor:pointer;
-  font-size:11px;
 }
-
-/* ================= PAGES ================= */
 
 .pages{
   flex:1;
@@ -204,18 +214,18 @@ button,input,textarea{font:inherit}
   display:block;
 }
 
-/* ================= UI ================= */
+/* UI */
 
 .card{
-  background:linear-gradient(
-    145deg,
-    rgba(8,25,14,.94),
-    rgba(4,13,8,.94)
-  );
+  background:linear-gradient(145deg,rgba(8,25,14,.95),rgba(4,13,8,.95));
   border:1px solid rgba(57,255,20,.14);
   border-radius:16px;
   padding:18px;
   box-shadow:0 12px 45px rgba(0,0,0,.25);
+}
+
+.card:hover{
+  border-color:rgba(57,255,20,.3);
 }
 
 .bigHero{
@@ -223,17 +233,31 @@ button,input,textarea{font:inherit}
   border:1px solid rgba(57,255,20,.2);
   border-radius:20px;
   background:
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(57,255,20,.12),
-      transparent 30%
-    ),
+    radial-gradient(circle at 80% 20%,rgba(57,255,20,.12),transparent 30%),
     linear-gradient(145deg,#08170d,#030a05);
   margin-bottom:18px;
 }
 
 .bigHero h1{
-  font-size:30px;
+  margin-bottom:8px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+
+.smallGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .btn{
@@ -258,18 +282,6 @@ button,input,textarea{font:inherit}
   background:#09140d;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:15px;
-}
-
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
 .muted{
   color:#91a895;
 }
@@ -279,22 +291,28 @@ button,input,textarea{font:inherit}
   margin-bottom:8px;
 }
 
-.clickable{
-  cursor:pointer;
-  transition:.2s;
+.sectionTitle{
+  margin:22px 0 12px;
+  color:var(--green);
 }
 
-.clickable:hover{
-  transform:translateY(-3px);
-  border-color:rgba(57,255,20,.4);
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(57,255,20,.08);
+  border:1px solid rgba(57,255,20,.18);
+  color:var(--green);
+  font-size:11px;
+  margin:3px;
 }
 
-/* ================= LOGIN ================= */
+/* LOGIN */
 
 #loginOverlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.94);
+  background:rgba(0,0,0,.92);
   z-index:1000;
   display:flex;
   align-items:center;
@@ -314,6 +332,7 @@ button,input,textarea{font:inherit}
 .loginBox h1{
   color:var(--green);
   margin-bottom:8px;
+  font-size:32px;
 }
 
 .loginBox input{
@@ -331,97 +350,45 @@ button,input,textarea{font:inherit}
   border-color:var(--green);
 }
 
-/* ================= CHAT ================= */
+/* CUSTOMIZE */
 
-.chatLayout{
-  height:calc(100vh - 128px);
-  display:grid;
-  grid-template-columns:220px 1fr;
-  gap:15px;
+#customizePanel{
+  position:fixed;
+  top:80px;
+  right:20px;
+  width:280px;
+  background:rgba(7,18,11,.98);
+  border:1px solid rgba(57,255,20,.25);
+  border-radius:16px;
+  padding:20px;
+  z-index:50;
+  display:none;
 }
 
-.chatList{
-  overflow:auto;
-}
-
-.chatItem{
-  padding:12px;
-  border-radius:10px;
-  cursor:pointer;
-  margin-bottom:5px;
-  color:#b8d5bd;
-}
-
-.chatItem:hover,
-.chatItem.active{
-  background:rgba(57,255,20,.08);
+#customizePanel h3{
   color:var(--green);
+  margin-bottom:15px;
 }
 
-.chatBox{
+.colorRow{
   display:flex;
-  flex-direction:column;
-  min-height:0;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  font-size:13px;
 }
 
-.chatMessages{
-  flex:1;
-  overflow:auto;
-  padding:15px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+.colorRow input[type=color]{
+  width:42px;
+  height:32px;
+  border:none;
+  background:none;
 }
 
-.message{
-  max-width:80%;
-  padding:12px 15px;
-  border-radius:14px;
-  line-height:1.5;
-  white-space:pre-wrap;
-}
-
-.message.foxie{
-  align-self:flex-start;
-  background:#0a1a0f;
-  border:1px solid #1a3324;
-}
-
-.message.user{
-  align-self:flex-end;
-  background:rgba(57,255,20,.1);
-  border:1px solid rgba(57,255,20,.2);
-}
-
-.chatInput{
-  display:flex;
-  gap:8px;
-  padding:12px;
-  border-top:1px solid rgba(57,255,20,.12);
-}
-
-.chatInput textarea{
-  flex:1;
-  resize:none;
-  height:48px;
-  background:#030a05;
-  border:1px solid #25422d;
-  border-radius:10px;
-  color:white;
-  padding:12px;
-  outline:none;
-}
-
-.typing{
-  color:#6c8b72;
-  font-size:12px;
-  padding:0 15px 8px;
-}
-
-/* ================= GAMES ================= */
+/* GAMES */
 
 .gameArea{
-  max-width:520px;
+  max-width:600px;
   margin:0 auto;
 }
 
@@ -474,58 +441,140 @@ button,input,textarea{font:inherit}
   cursor:pointer;
 }
 
-.c4-red{background:#ff496c!important}
-.c4-yellow{background:#ffd700!important}
-
-/* ================= CUSTOMIZE ================= */
-
-#customizePanel{
-  position:fixed;
-  top:80px;
-  right:20px;
-  width:280px;
-  background:rgba(7,18,11,.98);
-  border:1px solid rgba(57,255,20,.25);
-  border-radius:16px;
-  padding:20px;
-  z-index:50;
-  display:none;
+.c4-red{
+  background:#ff496c!important;
 }
 
-.colorRow{
+.c4-yellow{
+  background:#ffd700!important;
+}
+
+/* CHAT */
+
+.chatBox{
+  height:60vh;
+  min-height:400px;
+  display:flex;
+  flex-direction:column;
+}
+
+.chatMessages{
+  flex:1;
+  overflow:auto;
+  padding:10px;
+  background:#020805;
+  border-radius:12px;
+  border:1px solid #17311e;
+}
+
+.chatMsg{
+  max-width:80%;
+  padding:11px 14px;
+  margin:8px 0;
+  border-radius:12px;
+  line-height:1.45;
+  font-size:14px;
+  white-space:pre-wrap;
+}
+
+.chatMsg.user{
+  margin-left:auto;
+  background:rgba(57,255,20,.12);
+  border:1px solid rgba(57,255,20,.18);
+}
+
+.chatMsg.foxie{
+  background:#09150d;
+  border:1px solid #183620;
+}
+
+.chatInputRow{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.chatInput{
+  flex:1;
+  background:#030a05;
+  color:white;
+  border:1px solid #25422d;
+  border-radius:10px;
+  padding:13px;
+  outline:none;
+}
+
+/* ADVENTURE */
+
+.adventureHero{
+  min-height:300px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:12px;
-  font-size:13px;
+  gap:20px;
+  overflow:hidden;
 }
 
-.colorRow input{
-  width:42px;
-  height:32px;
+.foxieOrb{
+  font-size:120px;
+  filter:drop-shadow(0 0 30px rgba(57,255,20,.35));
+  animation:floatFox 3s ease-in-out infinite;
 }
 
-/* ================= TOAST ================= */
+@keyframes floatFox{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+}
 
-#toast{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#07120b;
-  border:1px solid rgba(57,255,20,.3);
-  color:var(--green);
-  padding:13px 17px;
+.featureCard{
+  min-height:145px;
+  cursor:pointer;
+}
+
+.featureCard h3{
+  margin-bottom:7px;
+}
+
+.progress{
+  height:8px;
+  background:#102117;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  width:45%;
+  background:var(--green);
+}
+
+/* SEARCH */
+
+.searchBox{
+  width:100%;
+  background:#030a05;
+  color:white;
+  border:1px solid #25422d;
+  padding:14px;
   border-radius:10px;
-  display:none;
-  z-index:999;
+  outline:none;
+  margin-bottom:15px;
 }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
 
-@media(max-width:900px){
+@media(max-width:1000px){
   .sidebar{
-    width:76px;
-    padding:12px 8px;
+    width:230px;
+  }
+}
+
+@media(max-width:750px){
+  .sidebar{
+    width:70px;
+    padding:9px;
   }
 
   .logo{
@@ -544,20 +593,24 @@ button,input,textarea{font:inherit}
     text-align:center;
   }
 
-  .nav button:first-letter{
-    font-size:20px;
+  .nav button::first-letter{
+    font-size:19px;
   }
 
-  .chatLayout{
-    grid-template-columns:1fr;
+  .navGroup{
+    display:none!important;
   }
 
-  .chatList{
-    display:none;
+  .topbar{
+    padding:0 10px;
   }
 
   .status{
     display:none;
+  }
+
+  .page{
+    padding:12px;
   }
 }
 </style>
@@ -570,39 +623,37 @@ button,input,textarea{font:inherit}
 <!-- LOGIN -->
 <div id="loginOverlay">
   <div class="loginBox">
-    <div style="font-size:48px">🦊</div>
+    <div style="font-size:48px;margin-bottom:10px">🦊</div>
 
     <h1>Welcome to Foxie</h1>
 
-    <p style="color:#8ba98f;margin-bottom:20px">
+    <p style="color:#8ba98f;margin-bottom:25px">
       Your world. Your people. Your games.
     </p>
 
     <input
-      id="usernameInput"
       type="text"
-      maxlength="20"
+      id="usernameInput"
       placeholder="Choose a username"
+      maxlength="20"
     >
 
     <input
-      id="passwordInput"
       type="password"
+      id="passwordInput"
       placeholder="Password (optional)"
     >
 
     <div class="row" style="justify-content:center;margin-top:15px">
-      <button class="btn" onclick="createAccount()">
-        Create Account
-      </button>
-
-      <button class="btn secondary" onclick="continueAsGuest()">
-        Guest
-      </button>
+      <button class="btn" onclick="createAccount()">Create Account</button>
+      <button class="btn secondary" onclick="continueAsGuest()">Guest</button>
     </div>
+
+    <p style="color:#67806b;font-size:12px;margin-top:20px">
+      Foxie Adventure is expanding.
+    </p>
   </div>
 </div>
-
 
 <!-- APP -->
 <div id="app">
@@ -617,7 +668,6 @@ button,input,textarea{font:inherit}
 
   <nav class="nav">
 
-    <!-- MAIN -->
     <button class="active" data-page="home">
       🏠 Home
     </button>
@@ -626,189 +676,89 @@ button,input,textarea{font:inherit}
       💬 Chat with Foxie
     </button>
 
+    <!-- ADVENTURE -->
+    <div class="navSection">Foxie Adventure</div>
 
-    <!-- PLAY -->
-    <div class="navSection" onclick="toggleGroup('playGroup')">
-      🎮 PLAY <span>▼</span>
+    <button onclick="toggleGroup('adventureGroup')">
+      🦊 Foxie Adventure ▼
+    </button>
+
+    <div id="adventureGroup" class="navGroup">
+
+      <button data-page="adventure">🌎 Explore</button>
+      <button data-page="foxies">🦊 Foxies</button>
+      <button data-page="foxdex">📖 FoxieDex</button>
+      <button data-page="map">🗺️ World Map</button>
+      <button data-page="items">🎒 Items</button>
+      <button data-page="eggs">🥚 Eggs</button>
+      <button data-page="training">⚡ Training</button>
+      <button data-page="evolution">✨ Evolution</button>
+      <button data-page="battle">⚔️ Battles</button>
+      <button data-page="gyms">🏟️ Gyms</button>
+      <button data-page="raids">👹 Raids</button>
+      <button data-page="trade">🤝 Trading</button>
+      <button data-page="quests">🎯 Quests</button>
+      <button data-page="rewards">🎁 Rewards</button>
+      <button data-page="achievements">🏅 Achievements</button>
+      <button data-page="events">🎉 Events</button>
+      <button data-page="shop">🏪 Shop</button>
+      <button data-page="trainer">👤 Trainer</button>
+
     </div>
 
-    <div class="navGroup" id="playGroup">
+    <!-- GAMES -->
+    <div class="navSection">Games</div>
 
-      <button data-page="games">🎮 Games</button>
-      <button data-page="tournaments">🏆 Tournaments</button>
-      <button data-page="challenges">⚔️ Challenges</button>
-      <button data-page="missions">🎯 Missions</button>
-      <button data-page="arcade">🕹️ Arcade</button>
+    <button onclick="toggleGroup('gamesGroup')">
+      🎮 Games ▼
+    </button>
+
+    <div id="gamesGroup" class="navGroup">
+
+      <button data-page="games">🎮 Game Hub</button>
+      <button data-page="chess">♟️ Chess</button>
       <button data-page="racing">🏎️ Racing</button>
-      <button data-page="driving">🚗 Driving</button>
-      <button data-page="sports">⚽ Sports</button>
-      <button data-page="puzzles">🧩 Puzzles</button>
+      <button data-page="arcade">🕹️ Arcade</button>
+      <button data-page="puzzle">🧩 Puzzles</button>
+      <button data-page="sports">🏀 Sports</button>
+      <button data-page="tournaments">🏆 Tournaments</button>
 
     </div>
-
-
-    <!-- FOXIES -->
-    <div class="navSection" onclick="toggleGroup('foxieGroup')">
-      🦊 FOXIES <span>▼</span>
-    </div>
-
-    <div class="navGroup" id="foxieGroup">
-
-      <button data-page="foxies">🦊 Collection</button>
-      <button data-page="hatch">🥚 Hatch</button>
-      <button data-page="battles">⚔️ Foxie Battles</button>
-      <button data-page="shiny">✨ Shiny Foxies</button>
-      <button data-page="dex">📖 Foxie Dex</button>
-      <button data-page="inventory">🎒 Inventory</button>
-      <button data-page="findfoxies">🗺️ Find Foxies</button>
-      <button data-page="bosses">👑 Bosses</button>
-
-    </div>
-
-
-    <!-- WORLD -->
-    <div class="navSection" onclick="toggleGroup('worldGroup')">
-      🌎 WORLD <span>▼</span>
-    </div>
-
-    <div class="navGroup" id="worldGroup">
-
-      <button data-page="world">🌎 Foxie World</button>
-      <button data-page="city">🏙️ Foxie City</button>
-      <button data-page="house">🏠 My House</button>
-      <button data-page="garage">🚗 My Garage</button>
-      <button data-page="maps">🗺️ World Map</button>
-      <button data-page="explore">🌲 Explore</button>
-      <button data-page="islands">🏝️ Islands</button>
-      <button data-page="underwater">🌊 Underwater</button>
-      <button data-page="space">🚀 Space</button>
-      <button data-page="secretworlds">🔮 Secret Worlds</button>
-
-    </div>
-
 
     <!-- SOCIAL -->
-    <div class="navSection" onclick="toggleGroup('socialGroup')">
-      👥 SOCIAL <span>▼</span>
-    </div>
+    <div class="navSection">Connect</div>
 
-    <div class="navGroup" id="socialGroup">
-
-      <button data-page="profile">👤 Profile</button>
-      <button data-page="social">📢 Social Feed</button>
-      <button data-page="friends">👥 Friends</button>
-      <button data-page="messages">💌 Messages</button>
-      <button data-page="following">❤️ Following</button>
-      <button data-page="groups">👨‍👩‍👧 Groups</button>
-      <button data-page="voice">🎙️ Voice Rooms</button>
-      <button data-page="notifications">🔔 Notifications</button>
-
-    </div>
-
+    <button data-page="social">🎬 Social</button>
+    <button data-page="friends">👥 Friends</button>
+    <button data-page="messages">💬 Messages</button>
+    <button data-page="notifications">🔔 Notifications</button>
 
     <!-- CREATE -->
-    <div class="navSection" onclick="toggleGroup('createGroup')">
-      ✨ CREATE <span>▼</span>
-    </div>
+    <div class="navSection">Create</div>
 
-    <div class="navGroup" id="createGroup">
-
-      <button data-page="avatar">🧍 Avatar</button>
-      <button data-page="avatarstudio">🎨 Avatar Studio</button>
-      <button data-page="build">🏗️ Build</button>
-      <button data-page="worldbuilder">🌎 World Builder</button>
-      <button data-page="gamecreator">🎮 Game Creator</button>
-      <button data-page="videocreator">🎬 Video Creator</button>
-      <button data-page="musicstudio">🎵 Music Studio</button>
-      <button data-page="creatorhq">👑 Creator HQ</button>
-      <button data-page="creator">🛠️ Creator Mode</button>
-
-    </div>
-
-
-    <!-- PROGRESS -->
-    <div class="navSection" onclick="toggleGroup('progressGroup')">
-      🏆 PROGRESS <span>▼</span>
-    </div>
-
-    <div class="navGroup" id="progressGroup">
-
-      <button data-page="leaderboard">🏆 Leaderboard</button>
-      <button data-page="achievements">🥇 Achievements</button>
-      <button data-page="badges">🎖️ Badges</button>
-      <button data-page="levels">⭐ Levels</button>
-      <button data-page="streaks">🔥 Streaks</button>
-      <button data-page="statistics">📊 Statistics</button>
-      <button data-page="history">📜 History</button>
-
-    </div>
-
-
-    <!-- REWARDS -->
-    <div class="navSection" onclick="toggleGroup('rewardGroup')">
-      🎁 REWARDS <span>▼</span>
-    </div>
-
-    <div class="navGroup" id="rewardGroup">
-
-      <button data-page="daily">🎁 Daily Reward</button>
-      <button data-page="dailymissions">📅 Daily Missions</button>
-      <button data-page="weekly">🎯 Weekly Missions</button>
-      <button data-page="events">🎉 Events</button>
-      <button data-page="eventpass">🎟️ Event Pass</button>
-      <button data-page="coins">💰 Foxie Coins</button>
-      <button data-page="shop">🛍️ Shop</button>
-      <button data-page="trading">🔄 Trading</button>
-
-    </div>
-
+    <button data-page="avatar">🧍 Avatar</button>
+    <button data-page="music">🎵 Music</button>
+    <button data-page="creator">👑 Creator Mode</button>
 
     <!-- DISCOVER -->
-    <div class="navSection" onclick="toggleGroup('discoverGroup')">
-      📚 DISCOVER <span>▼</span>
-    </div>
+    <div class="navSection">Discover</div>
 
-    <div class="navGroup" id="discoverGroup">
-
-      <button data-page="learn">📚 Learn</button>
-      <button data-page="academy">🎓 Academy</button>
-      <button data-page="search">🔎 Search</button>
-      <button data-page="news">📰 News</button>
-      <button data-page="weather">🌤️ Weather</button>
-      <button data-page="music">🎵 Music</button>
-      <button data-page="tv">📺 Foxie TV</button>
-      <button data-page="radio">📻 Foxie Radio</button>
-
-    </div>
-
-
-    <!-- SYSTEM -->
-    <div class="navSection" onclick="toggleGroup('systemGroup')">
-      ⚙️ SYSTEM <span>▼</span>
-    </div>
-
-    <div class="navGroup" id="systemGroup">
-
-      <button data-page="settings">⚙️ Settings</button>
-      <button data-page="privacy">🔐 Privacy</button>
-      <button data-page="safety">🛡️ Safety</button>
-      <button data-page="appearance">🎨 Appearance</button>
-      <button data-page="help">❓ Help</button>
-      <button data-page="about">ℹ️ About Foxie</button>
-
-    </div>
+    <button data-page="learn">📚 Learn</button>
+    <button data-page="search">🔎 Search</button>
+    <button data-page="weather">🌦️ Weather</button>
+    <button data-page="news">📰 News</button>
+    <button data-page="settings">⚙️ Settings</button>
 
   </nav>
 
   <div class="sidebarBottom">
-    <div>🟢 FOXIE ONLINE</div>
+    <div>FOXIE ONLINE</div>
     <div class="creatorName">
       Created by Jayden Wayne Macdonald
     </div>
   </div>
 
 </aside>
-
 
 <main class="main">
 
@@ -822,10 +772,7 @@ button,input,textarea{font:inherit}
 
     <span id="currentUser">Guest</span>
 
-    <span
-      id="xpDisplay"
-      style="color:var(--green)"
-    >
+    <span id="xpDisplay" style="color:var(--green)">
       XP: 0
     </span>
 
@@ -845,42 +792,24 @@ button,input,textarea{font:inherit}
 
 </header>
 
-
 <!-- CUSTOMIZE -->
 <div id="customizePanel">
 
-  <h3 style="color:var(--green);margin-bottom:15px">
-    🎨 Customize Foxie
-  </h3>
+  <h3>🎨 Customize Foxie</h3>
 
   <div class="colorRow">
     <span>Background</span>
-    <input
-      type="color"
-      id="bgColor"
-      value="#020604"
-      onchange="updateTheme()"
-    >
+    <input type="color" id="bgColor" value="#020604">
   </div>
 
   <div class="colorRow">
     <span>Matrix</span>
-    <input
-      type="color"
-      id="rainColor"
-      value="#39ff14"
-      onchange="updateTheme()"
-    >
+    <input type="color" id="rainColor" value="#39ff14">
   </div>
 
   <div class="colorRow">
     <span>Accent</span>
-    <input
-      type="color"
-      id="accentColor"
-      value="#39ff14"
-      onchange="updateTheme()"
-    >
+    <input type="color" id="accentColor" value="#39ff14">
   </div>
 
   <button
@@ -888,16 +817,14 @@ button,input,textarea{font:inherit}
     style="width:100%;margin-top:15px"
     onclick="resetTheme()"
   >
-    Reset Theme
+    Reset
   </button>
 
 </div>
 
-
 <div class="pages">
 
-
-<!-- ================= HOME ================= -->
+<!-- HOME -->
 
 <section class="page active" id="home">
 
@@ -911,96 +838,60 @@ button,input,textarea{font:inherit}
       FOXIE <span style="color:var(--green)">🦊</span>
     </h1>
 
-    <p style="color:#9eb5a2;margin:12px 0 20px">
-      One place for friends, games, learning, creators and adventures.
+    <p class="muted" style="margin:12px 0 20px">
+      One giant world for games, Foxies, friends, learning and creators.
     </p>
 
     <div class="row">
 
-      <button class="btn" onclick="showPage('chat')">
-        💬 Chat with Foxie
+      <button class="btn" onclick="showPage('adventure')">
+        🦊 Enter Foxie Adventure
       </button>
 
-      <button class="btn" onclick="showPage('games')">
-        🎮 Play Games
+      <button class="btn secondary" onclick="showPage('chess')">
+        ♟️ Open Chess
       </button>
 
-      <button class="btn secondary" onclick="showPage('world')">
-        🌎 Explore World
+      <button class="btn secondary" onclick="showPage('chat')">
+        💬 Talk to Foxie
       </button>
 
     </div>
 
   </div>
-
 
   <div class="grid">
 
-    <div class="card clickable" onclick="showPage('chat')">
-      <div class="featureIcon">💬</div>
-      <h3>Chat with Foxie</h3>
-      <p class="muted">
-        Ask Foxie anything.
-      </p>
-    </div>
-
-    <div class="card clickable" onclick="showPage('games')">
-      <div class="featureIcon">🎮</div>
-      <h3>Games</h3>
-      <p class="muted">
-        Play games and earn XP.
-      </p>
-    </div>
-
-    <div class="card clickable" onclick="showPage('foxies')">
+    <div class="card">
       <div class="featureIcon">🦊</div>
-      <h3>Foxies</h3>
+      <h3>Foxie Adventure</h3>
       <p class="muted">
-        Discover your collection.
-      </p>
-    </div>
-
-    <div class="card clickable" onclick="showPage('events')">
-      <div class="featureIcon">🎉</div>
-      <h3>Events</h3>
-      <p class="muted">
-        Discover what's happening.
-      </p>
-    </div>
-
-  </div>
-
-
-  <div class="grid" style="margin-top:15px">
-
-    <div class="card">
-      <h3>🔥 Your Progress</h3>
-      <p class="muted" style="margin-top:8px">
-        XP: <span id="homeXP">0</span>
-      </p>
-      <p class="muted">
-        Wins: <span id="homeWins">0</span>
+        Explore, catch, train and discover.
       </p>
     </div>
 
     <div class="card">
-      <h3>🌤️ Foxie World</h3>
-      <p class="muted" style="margin-top:8px">
-        ☀️ Sunny
-      </p>
+      <div class="featureIcon">♟️</div>
+      <h3>Deep Games</h3>
       <p class="muted">
-        Dynamic world coming alive...
+        Games with their own worlds of content.
       </p>
     </div>
 
     <div class="card">
-      <h3>🎁 Daily Reward</h3>
-      <p class="muted" style="margin:8px 0">
-        Your reward is waiting.
+      <div class="featureIcon">🤖</div>
+      <h3>Foxie AI</h3>
+      <p class="muted">
+        Ask, learn, analyse and create.
       </p>
-      <button class="btn" onclick="claimDaily()">
-        Claim
-      </button>
+    </div>
+
+    <div class="card">
+      <div class="featureIcon">🌎</div>
+      <h3>Foxie World</h3>
+      <p class="muted">
+        A growing world to explore.
+      </p>
     </div>
 
   </div>
@@ -1008,100 +899,135 @@ button,input,textarea{font:inherit}
 </section>
 
 
-<!-- ================= CHAT ================= -->
+<!-- CHAT -->
 
 <section class="page" id="chat">
 
   <div class="bigHero">
 
-    <h1>
-      💬 Chat with <span style="color:var(--green)">Foxie</span>
-    </h1>
+    <h1>💬 Chat with <span style="color:var(--green)">Foxie</span></h1>
 
     <p class="muted">
-      Your AI assistant, tutor, coder and adventure companion.
+      Ask Foxie anything.
     </p>
 
   </div>
 
+  <div class="card chatBox">
 
-  <div class="chatLayout">
+    <div id="chatMessages" class="chatMessages">
 
-    <div class="card chatList">
-
-      <h3 style="color:var(--green);margin-bottom:12px">
-        Chats
-      </h3>
-
-      <div class="chatItem active">
-        🦊 New Chat
+      <div class="chatMsg foxie">
+        🦊 Hey! I'm Foxie. What are we building today?
       </div>
 
-      <div class="chatItem">
-        💡 Ideas
-      </div>
+    </div>
 
-      <div class="chatItem">
-        💻 Coding
-      </div>
+    <div class="chatInputRow">
 
-      <div class="chatItem">
-        🎮 Games
-      </div>
-
-      <div class="chatItem">
-        📚 Learning
-      </div>
-
-      <button
-        class="btn"
-        style="width:100%;margin-top:10px"
-        onclick="newChat()"
+      <input
+        id="chatInput"
+        class="chatInput"
+        placeholder="Talk to Foxie..."
+        onkeydown="if(event.key==='Enter')sendChat()"
       >
-        + New Chat
+
+      <button class="btn" onclick="sendChat()">
+        Send
       </button>
 
     </div>
 
+  </div>
 
-    <div class="card chatBox">
+</section>
 
-      <div
-        id="chatMessages"
-        class="chatMessages"
-      >
 
-        <div class="message foxie">
-          🦊 Hey! I'm Foxie. What are we building today?
-        </div>
+<!-- ADVENTURE -->
 
+<section class="page" id="adventure">
+
+  <div class="bigHero adventureHero">
+
+    <div>
+
+      <div class="badge">
+        FOXIE ADVENTURE
       </div>
 
-      <div
-        id="typing"
-        class="typing"
-        style="display:none"
-      >
-        Foxie is thinking...
-      </div>
+      <h1 style="font-size:42px">
+        Explore the Foxie World 🦊
+      </h1>
 
-      <div class="chatInput">
+      <p class="muted" style="max-width:600px;margin:15px 0">
+        A massive original creature-collecting adventure with exploration,
+        quests, battles, events, discoveries and an ever-growing world.
+      </p>
 
-        <textarea
-          id="chatInput"
-          placeholder="Message Foxie..."
-          onkeydown="chatKey(event)"
-        ></textarea>
+      <button class="btn" onclick="showPage('map')">
+        🗺️ Explore Map
+      </button>
 
-        <button
-          class="btn"
-          onclick="sendFoxieMessage()"
-        >
-          Send
-        </button>
+    </div>
 
-      </div>
+    <div class="foxieOrb">
+      🦊
+    </div>
 
+  </div>
+
+  <h2 class="sectionTitle">
+    Adventure
+  </h2>
+
+  <div class="grid">
+
+    <div class="card featureCard" onclick="showPage('foxies')">
+      <div class="featureIcon">🦊</div>
+      <h3>Catch Foxies</h3>
+      <p class="muted">
+        Discover original Foxie creatures across the world.
+      </p>
+    </div>
+
+    <div class="card featureCard" onclick="showPage('foxdex')">
+      <div class="featureIcon">📖</div>
+      <h3>FoxieDex</h3>
+      <p class="muted">
+        Build your collection and discover species.
+      </p>
+    </div>
+
+    <div class="card featureCard" onclick="showPage('quests')">
+      <div class="featureIcon">🎯</div>
+      <h3>Quests</h3>
+      <p class="muted">
+        Complete adventures and earn rewards.
+      </p>
+    </div>
+
+    <div class="card featureCard" onclick="showPage('raids')">
+      <div class="featureIcon">👹</div>
+      <h3>World Raids</h3>
+      <p class="muted">
+        Team up against powerful bosses.
+      </p>
+    </div>
+
+    <div class="card featureCard" onclick="showPage('events')">
+      <div class="featureIcon">🎉</div>
+      <h3>Events</h3>
+      <p class="muted">
+        Seasonal and limited-time adventures.
+      </p>
+    </div>
+
+    <div class="card featureCard" onclick="showPage('rewards')">
+      <div class="featureIcon">🎁</div>
+      <h3>Rewards</h3>
+      <p class="muted">
+        XP, items, cosmetics and achievements.
+      </p>
     </div>
 
   </div>
@@ -1109,394 +1035,693 @@ button,input,textarea{font:inherit}
 </section>
 
 
-<!-- ================= GAMES ================= -->
+<!-- FOXIES -->
 
-<section class="page" id="games">
-
-  <div class="bigHero">
-    <h1>🎮 Foxie Games</h1>
-    <p class="muted">
-      Play, win XP and climb the leaderboard.
-    </p>
-  </div>
-
-  <div id="gameSelect">
-
-    <div class="grid">
-
-      <div
-        class="card clickable"
-        onclick="startGame('tictactoe')"
-      >
-        <h3>❌ Tic Tac Toe</h3>
-        <p class="muted">Beat the computer.</p>
-        <button class="btn" style="margin-top:12px">
-          Play
-        </button>
-      </div>
-
-      <div
-        class="card clickable"
-        onclick="startGame('connect4')"
-      >
-        <h3>🔴 Connect 4</h3>
-        <p class="muted">Get four in a row.</p>
-        <button class="btn" style="margin-top:12px">
-          Play
-        </button>
-      </div>
-
-      <div class="card">
-        <h3>♟️ Chess</h3>
-        <p class="muted">Coming soon.</p>
-        <button class="btn secondary" style="margin-top:12px">
-          Soon
-        </button>
-      </div>
-
-      <div class="card">
-        <h3>🐍 Snake</h3>
-        <p class="muted">Coming soon.</p>
-        <button class="btn secondary" style="margin-top:12px">
-          Soon
-        </button>
-      </div>
-
-      <div class="card">
-        <h3>🏎️ Racing</h3>
-        <p class="muted">Foxie racing world.</p>
-        <button class="btn secondary" style="margin-top:12px">
-          Coming Soon
-        </button>
-      </div>
-
-      <div class="card">
-        <h3>🕹️ Arcade</h3>
-        <p class="muted">Loads of mini games.</p>
-        <button class="btn secondary" style="margin-top:12px">
-          Coming Soon
-        </button>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div id="tictactoeGame" style="display:none">
-
-    <div class="gameArea">
-
-      <div class="row" style="justify-content:space-between">
-        <button class="btn secondary" onclick="backToGames()">
-          ← Back
-        </button>
-
-        <button class="btn" onclick="resetTicTacToe()">
-          New Game
-        </button>
-      </div>
-
-      <div
-        class="statusText"
-        id="tttStatus"
-      >
-        Your turn (X)
-      </div>
-
-      <div
-        class="board"
-        id="tttBoard"
-        style="grid-template-columns:repeat(3,80px)"
-      ></div>
-
-    </div>
-
-  </div>
-
-
-  <div id="connect4Game" style="display:none">
-
-    <div class="gameArea">
-
-      <div class="row" style="justify-content:space-between">
-
-        <button
-          class="btn secondary"
-          onclick="backToGames()"
-        >
-          ← Back
-        </button>
-
-        <button
-          class="btn"
-          onclick="resetConnect4()"
-        >
-          New Game
-        </button>
-
-      </div>
-
-      <div
-        class="statusText"
-        id="c4Status"
-      >
-        Your turn (Red)
-      </div>
-
-      <div
-        class="c4-board"
-        id="c4Board"
-      ></div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= LEADERBOARD ================= -->
-
-<section class="page" id="leaderboard">
+<section class="page" id="foxies">
 
   <div class="bigHero">
-    <h1>🏆 Leaderboard</h1>
+
+    <h1>🦊 Foxies</h1>
+
     <p class="muted">
-      Foxie players and their progress.
+      Your creature collection.
     </p>
-  </div>
 
-  <div class="card">
-    <div id="leaderboardList"></div>
-  </div>
-
-</section>
-
-
-<!-- ================= LEARN ================= -->
-
-<section class="page" id="learn">
-
-  <div class="bigHero">
-    <h1>📚 Learn Anything</h1>
-    <p class="muted">
-      Learn with Foxie step by step.
-    </p>
   </div>
 
   <div class="grid">
 
-    <div class="card clickable" onclick="startLesson('coding')">
-      <h3>💻 Coding</h3>
-      <p class="muted">HTML, CSS, JavaScript and more.</p>
+    <div class="card">
+      <h3>🌿 Leafox</h3>
+      <p class="muted">Nature Foxie</p>
+      <span class="badge">Common</span>
     </div>
 
-    <div class="card clickable" onclick="startLesson('chess')">
-      <h3>♟️ Chess</h3>
-      <p class="muted">Learn tactics and strategy.</p>
+    <div class="card">
+      <h3>🔥 Emberfox</h3>
+      <p class="muted">Fire Foxie</p>
+      <span class="badge">Rare</span>
     </div>
 
-    <div class="card clickable" onclick="startLesson('languages')">
-      <h3>🌍 Languages</h3>
-      <p class="muted">Learn new languages.</p>
+    <div class="card">
+      <h3>🌊 Aquafur</h3>
+      <p class="muted">Water Foxie</p>
+      <span class="badge">Rare</span>
     </div>
 
-    <div class="card clickable" onclick="startLesson('custom')">
-      <h3>🔎 Anything</h3>
-      <p class="muted">Ask Foxie to teach you.</p>
+    <div class="card">
+      <h3>⚡ Voltfox</h3>
+      <p class="muted">Electric Foxie</p>
+      <span class="badge">Epic</span>
     </div>
 
-  </div>
-
-  <div class="card" style="margin-top:15px">
-    <h3>Foxie Lesson</h3>
-    <div
-      id="lessonArea"
-      class="muted"
-      style="padding-top:12px"
-    >
-      Choose something to learn.
-    </div>
   </div>
 
 </section>
 
 
-<!-- ================= ALL OTHER PAGES ================= -->
+<!-- FOXDEX -->
 
-<script>
-const pageData = {
+<section class="page" id="foxdex">
 
-tournaments:["🏆 Tournaments","Compete in Foxie tournaments, brackets and special events."],
-challenges:["⚔️ Challenges","Complete challenges and earn XP."],
-missions:["🎯 Missions","Your current Foxie missions."],
-arcade:["🕹️ Arcade","A collection of quick Foxie mini-games."],
-racing:["🏎️ Racing","Race through Foxie tracks."],
-driving:["🚗 Driving","Explore original Foxie driving experiences."],
-sports:["⚽ Sports","Play Foxie sports games."],
-puzzles:["🧩 Puzzles","Test your brain with Foxie puzzles."],
+  <div class="bigHero">
 
-foxies:["🦊 Foxie Collection","Your collected Foxies will appear here."],
-hatch:["🥚 Hatch","Hatch eggs and discover new Foxies."],
-battles:["⚔️ Foxie Battles","Battle with your Foxies."],
-shiny:["✨ Shiny Foxies","Discover special Foxie variants."],
-dex:["📖 Foxie Dex","Your complete Foxie discovery book."],
-inventory:["🎒 Inventory","Everything you've collected."],
-findfoxies:["🗺️ Find Foxies","Search the world for Foxies."],
-bosses:["👑 Bosses","Powerful Foxie bosses and encounters."],
+    <h1>📖 FoxieDex</h1>
 
-world:["🌎 Foxie World","Explore the growing Foxie universe."],
-city:["🏙️ Foxie City","Visit shops, buildings, games and events."],
-house:["🏠 My House","Your personal Foxie home."],
-garage:["🚗 My Garage","Your vehicles and upgrades."],
-maps:["🗺️ World Map","Explore the Foxie map."],
-explore:["🌲 Explore","Discover hidden locations."],
-islands:["🏝️ Islands","Explore mysterious islands."],
-underwater:["🌊 Underwater","Dive beneath the Foxie world."],
-space:["🚀 Space","Explore the Foxie space zones."],
-secretworlds:["🔮 Secret Worlds","Hidden dimensions are waiting."],
+    <p class="muted">
+      Discover everything you've encountered.
+    </p>
 
-profile:["👤 Profile","Your Foxie player profile."],
-social:["📢 Social Feed","See what's happening around Foxie."],
-friends:["👥 Friends","Your Foxie friends."],
-messages:["💌 Messages","Your private messages."],
-following:["❤️ Following","Players and creators you follow."],
-groups:["👨‍👩‍👧 Groups","Communities and groups."],
-voice:["🎙️ Voice Rooms","Join Foxie voice rooms."],
-notifications:["🔔 Notifications","Your latest Foxie notifications."],
+  </div>
 
-avatar:["🧍 Avatar","Your Foxie character."],
-avatarstudio:["🎨 Avatar Studio","Customize your character."],
-build:["🏗️ Build","Build your own creations."],
-worldbuilder:["🌎 World Builder","Create your own Foxie world."],
-gamecreator:["🎮 Game Creator","Design original games."],
-videocreator:["🎬 Video Creator","Create Foxie videos and clips."],
-musicstudio:["🎵 Music Studio","Create music and sounds."],
-creatorhq:["👑 Creator HQ","Your creator dashboard."],
-creator:["🛠️ Creator Mode","Advanced creator tools."],
+  <div class="card">
 
-achievements:["🥇 Achievements","Unlock achievements."],
-badges:["🎖️ Badges","Your earned badges."],
-levels:["⭐ Levels","Track your Foxie level."],
-streaks:["🔥 Streaks","Keep your Foxie streak alive."],
-statistics:["📊 Statistics","Your Foxie statistics."],
-history:["📜 History","Your recent Foxie activity."],
+    <h3>Collection Progress</h3>
 
-daily:["🎁 Daily Reward","Claim your daily Foxie reward."],
-dailymissions:["📅 Daily Missions","Complete today's missions."],
-weekly:["🎯 Weekly Missions","Complete weekly goals."],
-events:["🎉 Events","Special Foxie events."],
-eventpass:["🎟️ Event Pass","Limited event progression."],
-coins:["💰 Foxie Coins","Your Foxie currency."],
-shop:["🛍️ Shop","Browse Foxie items and cosmetics."],
-trading:["🔄 Trading","Trade with other players."],
-
-academy:["🎓 Academy","Foxie learning and courses."],
-search:["🔎 Search","Search the Foxie platform."],
-news:["📰 News","Foxie news and announcements."],
-weather:["🌤️ Weather","Current Foxie world weather."],
-music:["🎵 Music","Foxie music and playlists."],
-tv:["📺 Foxie TV","Foxie videos and broadcasts."],
-radio:["📻 Foxie Radio","Foxie radio and audio."],
-
-settings:["⚙️ Settings","Manage your Foxie settings."],
-privacy:["🔐 Privacy","Privacy controls."],
-safety:["🛡️ Safety","Safety and moderation tools."],
-appearance:["🎨 Appearance","Customize the Foxie look."],
-help:["❓ Help","Foxie help centre."],
-about:["ℹ️ About Foxie","About Foxie and its creators."]
-};
-
-Object.keys(pageData).forEach(function(id){
-
-  const data=pageData[id];
-
-  const section=document.createElement("section");
-
-  section.className="page";
-
-  section.id=id;
-
-  section.innerHTML=`
-    <div class="bigHero">
-      <h1>${data[0]}</h1>
-      <p class="muted">${data[1]}</p>
+    <div class="progress">
+      <span></span>
     </div>
 
-    <div class="grid">
+    <p class="muted" style="margin-top:10px">
+      4 / ??? discovered
+    </p>
 
-      <div class="card">
-        <div class="featureIcon">🦊</div>
-        <h3>Foxie is building this</h3>
-        <p class="muted">
-          This area is ready for the next Foxie feature.
-        </p>
-      </div>
+  </div>
 
-      <div class="card">
-        <div class="featureIcon">⚡</div>
-        <h3>Coming to Foxie</h3>
-        <p class="muted">
-          More functionality will be connected here as the platform grows.
-        </p>
-      </div>
+</section>
 
-      <div class="card">
-        <div class="featureIcon">🚀</div>
-        <h3>Future Feature</h3>
-        <p class="muted">
-          This section is part of the Foxie platform.
-        </p>
-      </div>
 
+<!-- MAP -->
+
+<section class="page" id="map">
+
+  <div class="bigHero">
+
+    <h1>🗺️ Foxie World Map</h1>
+
+    <p class="muted">
+      The world will grow into cities, forests, islands, mountains,
+      caves and secret locations.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      🌲 <b>Whisper Forest</b>
+      <p class="muted">Hidden forest region.</p>
     </div>
-  `;
 
-  document.querySelector(".pages").appendChild(section);
+    <div class="card">
+      🏙️ <b>Foxie City</b>
+      <p class="muted">The central city.</p>
+    </div>
 
-});
-</script>
+    <div class="card">
+      🏔️ <b>Frostpeak</b>
+      <p class="muted">Frozen mountain region.</p>
+    </div>
 
+    <div class="card">
+      🏝️ <b>Sunset Isles</b>
+      <p class="muted">Island adventure zone.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- GENERIC ADVENTURE PAGES -->
+
+<section class="page" id="items">
+  <div class="bigHero">
+    <h1>🎒 Items</h1>
+    <p class="muted">Inventory, equipment, consumables and discoveries.</p>
+  </div>
+  <div class="grid">
+    <div class="card">🎯 Capture Items</div>
+    <div class="card">⚡ Power Items</div>
+    <div class="card">🧪 Potions</div>
+    <div class="card">💎 Rare Items</div>
+  </div>
+</section>
+
+<section class="page" id="eggs">
+  <div class="bigHero">
+    <h1>🥚 Foxie Eggs</h1>
+    <p class="muted">Discover eggs and hatch new Foxies.</p>
+  </div>
+  <div class="card">
+    <h3>Egg Incubator</h3>
+    <p class="muted">No egg selected yet.</p>
+  </div>
+</section>
+
+<section class="page" id="training">
+  <div class="bigHero">
+    <h1>⚡ Training</h1>
+    <p class="muted">Train your Foxies and improve their abilities.</p>
+  </div>
+  <div class="grid">
+    <div class="card">💪 Strength Training</div>
+    <div class="card">⚡ Speed Training</div>
+    <div class="card">🛡️ Defence Training</div>
+    <div class="card">🧠 Skill Training</div>
+  </div>
+</section>
+
+<section class="page" id="evolution">
+  <div class="bigHero">
+    <h1>✨ Evolution</h1>
+    <p class="muted">Discover original Foxie evolution paths.</p>
+  </div>
+</section>
+
+<section class="page" id="battle">
+  <div class="bigHero">
+    <h1>⚔️ Foxie Battles</h1>
+    <p class="muted">Battle other trainers and AI opponents.</p>
+  </div>
+  <div class="grid">
+    <div class="card">🤖 AI Battle</div>
+    <div class="card">👥 Friend Battle</div>
+    <div class="card">🏆 Ranked Battle</div>
+    <div class="card">⚡ Quick Battle</div>
+  </div>
+</section>
+
+<section class="page" id="gyms">
+  <div class="bigHero">
+    <h1>🏟️ Foxie Gyms</h1>
+    <p class="muted">Gyms will become major competitive locations.</p>
+  </div>
+</section>
+
+<section class="page" id="raids">
+  <div class="bigHero">
+    <h1>👹 World Raids</h1>
+    <p class="muted">Powerful bosses and team-based challenges.</p>
+  </div>
+</section>
+
+<section class="page" id="trade">
+  <div class="bigHero">
+    <h1>🤝 Trading</h1>
+    <p class="muted">Trade Foxies and items with other players.</p>
+  </div>
+</section>
+
+<section class="page" id="quests">
+  <div class="bigHero">
+    <h1>🎯 Quests</h1>
+    <p class="muted">Daily, weekly, seasonal and world quests.</p>
+  </div>
+</section>
+
+<section class="page" id="rewards">
+  <div class="bigHero">
+    <h1>🎁 Rewards</h1>
+    <p class="muted">Claim XP, items, cosmetics and event rewards.</p>
+  </div>
+</section>
+
+<section class="page" id="achievements">
+  <div class="bigHero">
+    <h1>🏅 Achievements</h1>
+    <p class="muted">Track your Foxie accomplishments.</p>
+  </div>
+</section>
+
+<section class="page" id="events">
+  <div class="bigHero">
+    <h1>🎉 Events</h1>
+    <p class="muted">
+      Seasonal events, special discoveries and limited adventures.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="shop">
+  <div class="bigHero">
+    <h1>🏪 Foxie Shop</h1>
+    <p class="muted">
+      Cosmetics, accessories, items and world collectibles.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="trainer">
+  <div class="bigHero">
+    <h1>👤 Trainer Profile</h1>
+    <p class="muted">
+      Your level, XP, achievements and adventure statistics.
+    </p>
+  </div>
+</section>
+
+
+<!-- GAMES HUB -->
+
+<section class="page" id="games">
+
+  <div class="bigHero">
+
+    <h1>🎮 Foxie Games</h1>
+
+    <p class="muted">
+      Every game can grow into its own huge ecosystem.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="card featureCard" onclick="showPage('chess')">
+      <div class="featureIcon">♟️</div>
+      <h3>Chess</h3>
+      <p class="muted">
+        Openings, analysis, training, puzzles and tournaments.
+      </p>
+    </div>
+
+    <div class="card featureCard" onclick="showPage('racing')">
+      <div class="featureIcon">🏎️</div>
+      <h3>Racing</h3>
+      <p class="muted">Cars, tracks, tuning and competitions.</p>
+    </div>
+
+    <div class="card featureCard">
+      <div class="featureIcon">🐍</div>
+      <h3>Snake</h3>
+      <p class="muted">Classic, multiplayer, challenges and more.</p>
+    </div>
+
+    <div class="card featureCard">
+      <div class="featureIcon">🔴</div>
+      <h3>Connect 4</h3>
+      <p class="muted">Play against Foxie.</p>
+    </div>
+
+    <div class="card featureCard">
+      <div class="featureIcon">❌</div>
+      <h3>Tic Tac Toe</h3>
+      <p class="muted">Classic Foxie game.</p>
+    </div>
+
+    <div class="card featureCard">
+      <div class="featureIcon">🧩</div>
+      <h3>Puzzles</h3>
+      <p class="muted">A growing collection of challenges.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CHESS -->
+
+<section class="page" id="chess">
+
+  <div class="bigHero">
+
+    <div class="badge">FOXIE CHESS</div>
+
+    <h1>♟️ Chess Universe</h1>
+
+    <p class="muted">
+      A massive Chess hub for playing, learning, analysing and training.
+    </p>
+
+  </div>
+
+  <h2 class="sectionTitle">🎮 Play</h2>
+
+  <div class="smallGrid">
+
+    <div class="card"><h3>⚔️ Play Online</h3><p class="muted">Live games.</p></div>
+    <div class="card"><h3>🤖 Foxie Bot</h3><p class="muted">Play AI opponents.</p></div>
+    <div class="card"><h3>👥 Friend Game</h3><p class="muted">Challenge friends.</p></div>
+    <div class="card"><h3>🏆 Ranked</h3><p class="muted">Competitive games.</p></div>
+    <div class="card"><h3>⚡ Blitz</h3><p class="muted">Fast chess.</p></div>
+    <div class="card"><h3>🐢 Rapid</h3><p class="muted">Longer games.</p></div>
+
+  </div>
+
+  <h2 class="sectionTitle">📖 Openings</h2>
+
+  <div class="smallGrid">
+
+    <div class="card"><h3>📚 Opening Explorer</h3><p class="muted">Explore opening trees.</p></div>
+    <div class="card"><h3>🧠 Opening Advice</h3><p class="muted">Get explanations.</p></div>
+    <div class="card"><h3>🔥 Opening Trainer</h3><p class="muted">Practice openings.</p></div>
+    <div class="card"><h3>🪤 Opening Traps</h3><p class="muted">Study tactical traps.</p></div>
+    <div class="card"><h3>⭐ Repertoire Builder</h3><p class="muted">Build your repertoire.</p></div>
+    <div class="card"><h3>📊 Opening Statistics</h3><p class="muted">Study statistics.</p></div>
+
+  </div>
+
+  <h2 class="sectionTitle">🧠 Training</h2>
+
+  <div class="smallGrid">
+
+    <div class="card"><h3>🧩 Puzzles</h3><p class="muted">Solve positions.</p></div>
+    <div class="card"><h3>🔥 Puzzle Rush</h3><p class="muted">Solve quickly.</p></div>
+    <div class="card"><h3>🎯 Tactics</h3><p class="muted">Train tactical patterns.</p></div>
+    <div class="card"><h3>👑 Checkmates</h3><p class="muted">Master mating patterns.</p></div>
+    <div class="card"><h3>♔ Endgames</h3><p class="muted">Train endgames.</p></div>
+    <div class="card"><h3>🧠 Calculation</h3><p class="muted">Improve calculation.</p></div>
+
+  </div>
+
+  <h2 class="sectionTitle">🔬 Analysis</h2>
+
+  <div class="smallGrid">
+
+    <div class="card"><h3>🔎 Analysis Board</h3><p class="muted">Analyse positions.</p></div>
+    <div class="card"><h3>🤖 Engine</h3><p class="muted">Engine evaluation.</p></div>
+    <div class="card"><h3>⚠️ Blunder Finder</h3><p class="muted">Find mistakes.</p></div>
+    <div class="card"><h3>💡 Best Move</h3><p class="muted">Explore candidate moves.</p></div>
+    <div class="card"><h3>📈 Game Review</h3><p class="muted">Review completed games.</p></div>
+    <div class="card"><h3>🔄 What If?</h3><p class="muted">Explore alternatives.</p></div>
+
+  </div>
+
+  <h2 class="sectionTitle">🎓 Learn</h2>
+
+  <div class="smallGrid">
+
+    <div class="card"><h3>🟢 Beginner</h3><p class="muted">Learn fundamentals.</p></div>
+    <div class="card"><h3>🔵 Intermediate</h3><p class="muted">Develop your game.</p></div>
+    <div class="card"><h3>🟣 Advanced</h3><p class="muted">Advanced concepts.</p></div>
+    <div class="card"><h3>🏰 Strategy</h3><p class="muted">Learn strategic ideas.</p></div>
+    <div class="card"><h3>⚔️ Tactics</h3><p class="muted">Recognise tactics.</p></div>
+    <div class="card"><h3>♔ Endgames</h3><p class="muted">Master endings.</p></div>
+
+  </div>
+
+  <h2 class="sectionTitle">🤖 Foxie Chess Coach</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>💬 Ask Foxie</h3>
+      <p class="muted">
+        Ask about a position, opening or game.
+      </p>
+      <button class="btn" style="margin-top:12px" onclick="showPage('chat')">
+        Ask Foxie
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>📝 Training Plan</h3>
+      <p class="muted">
+        Build a personalised training routine.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🧠 Explain My Mistake</h3>
+      <p class="muted">
+        Understand why a move failed.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- RACING -->
+
+<section class="page" id="racing">
+
+  <div class="bigHero">
+
+    <h1>🏎️ Foxie Racing</h1>
+
+    <p class="muted">
+      Cars, tracks, tuning, championships and multiplayer.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="card">🏁 Quick Race</div>
+    <div class="card">⚡ Time Trial</div>
+    <div class="card">🏆 Championship</div>
+    <div class="card">🚗 Garage</div>
+    <div class="card">🔧 Car Tuning</div>
+    <div class="card">🗺️ Track Collection</div>
+    <div class="card">👥 Multiplayer</div>
+    <div class="card">📈 Leaderboards</div>
+
+  </div>
+
+</section>
+
+
+<section class="page" id="arcade">
+  <div class="bigHero">
+    <h1>🕹️ Arcade</h1>
+    <p class="muted">Fast Foxie mini-games.</p>
+  </div>
+</section>
+
+<section class="page" id="puzzle">
+  <div class="bigHero">
+    <h1>🧩 Puzzle Hub</h1>
+    <p class="muted">Logic, memory, reaction and strategy challenges.</p>
+  </div>
+</section>
+
+<section class="page" id="sports">
+  <div class="bigHero">
+    <h1>🏀 Foxie Sports</h1>
+    <p class="muted">Sports games and competitions.</p>
+  </div>
+</section>
+
+<section class="page" id="tournaments">
+  <div class="bigHero">
+    <h1>🏆 Tournaments</h1>
+    <p class="muted">Hourly, daily, weekly and seasonal competitions.</p>
+  </div>
+</section>
+
+
+<!-- SOCIAL -->
+
+<section class="page" id="social">
+  <div class="bigHero">
+    <h1>🎬 Social</h1>
+    <p class="muted">Posts, communities, creators and friends.</p>
+  </div>
+</section>
+
+<section class="page" id="friends">
+  <div class="bigHero">
+    <h1>👥 Friends</h1>
+    <p class="muted">Your Foxie friends list.</p>
+  </div>
+</section>
+
+<section class="page" id="messages">
+  <div class="bigHero">
+    <h1>💬 Messages</h1>
+    <p class="muted">Private conversations.</p>
+  </div>
+</section>
+
+<section class="page" id="notifications">
+  <div class="bigHero">
+    <h1>🔔 Notifications</h1>
+    <p class="muted">Your Foxie activity.</p>
+  </div>
+</section>
+
+
+<!-- CREATE -->
+
+<section class="page" id="avatar">
+  <div class="bigHero">
+    <h1>🧍 Avatar Studio</h1>
+    <p class="muted">
+      Customize your Foxie character.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="music">
+  <div class="bigHero">
+    <h1>🎵 Foxie Music</h1>
+    <p class="muted">
+      Music, playlists and creator content.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="creator">
+  <div class="bigHero">
+    <h1>👑 Creator Mode</h1>
+    <p class="muted">
+      Secure creator tools and project management.
+    </p>
+  </div>
+</section>
+
+
+<!-- DISCOVER -->
+
+<section class="page" id="learn">
+  <div class="bigHero">
+    <h1>📚 Foxie Academy</h1>
+    <p class="muted">
+      Learn coding, languages, science, maths and more.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="search">
+  <div class="bigHero">
+    <h1>🔎 Foxie Search</h1>
+    <p class="muted">
+      Search your Foxie world.
+    </p>
+  </div>
+
+  <div class="card">
+    <input
+      class="searchBox"
+      placeholder="Search Foxie..."
+      oninput="searchFoxie(this.value)"
+    >
+    <div id="searchResults" class="muted">
+      Start typing to search.
+    </div>
+  </div>
+</section>
+
+<section class="page" id="weather">
+  <div class="bigHero">
+    <h1>🌦️ Foxie Weather</h1>
+    <p class="muted">
+      Dynamic weather will eventually affect Foxie World.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="news">
+  <div class="bigHero">
+    <h1>📰 Foxie News</h1>
+    <p class="muted">
+      Foxie announcements and community news.
+    </p>
+  </div>
+</section>
+
+<section class="page" id="settings">
+  <div class="bigHero">
+    <h1>⚙️ Settings</h1>
+    <p class="muted">
+      Account, privacy, appearance and preferences.
+    </p>
+  </div>
+</section>
+
+
+<!-- TIC TAC TOE -->
+
+<section class="page" id="tictactoe">
+
+  <div class="bigHero">
+    <h1>❌ Tic Tac Toe</h1>
+  </div>
+
+  <div class="gameArea">
+
+    <div class="statusText" id="tttStatus">
+      Your turn (X)
+    </div>
+
+    <div
+      class="board"
+      id="tttBoard"
+      style="grid-template-columns:repeat(3,80px)"
+    ></div>
+
+    <div style="text-align:center">
+      <button class="btn" onclick="resetTicTacToe()">
+        New Game
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CONNECT 4 -->
+
+<section class="page" id="connect4">
+
+  <div class="bigHero">
+    <h1>🔴 Connect 4</h1>
+  </div>
+
+  <div class="gameArea">
+
+    <div class="statusText" id="c4Status">
+      Your turn (Red)
+    </div>
+
+    <div class="c4-board" id="c4Board"></div>
+
+    <div style="text-align:center">
+      <button class="btn" onclick="resetConnect4()">
+        New Game
+      </button>
+    </div>
+
+  </div>
+
+</section>
 
 </div>
 </main>
 </div>
 
 
-<div id="toast"></div>
-
-
 <script>
 
-/* ================= MATRIX ================= */
+/* MATRIX */
 
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
 
 let rainColor="#39ff14";
+let drops=[];
 
 function resizeMatrix(){
+
   canvas.width=window.innerWidth;
   canvas.height=window.innerHeight;
+
+  drops=Array(
+    Math.floor(canvas.width/14)
+  ).fill(1);
+
 }
 
 resizeMatrix();
 
 window.addEventListener("resize",resizeMatrix);
 
-const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
-const fontSize=14;
-
-let drops=[];
-
-function initDrops(){
-  drops=Array(
-    Math.floor(canvas.width/fontSize)
-  ).fill(1);
-}
-
-initDrops();
+const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%";
 
 function drawMatrix(){
 
@@ -1504,34 +1729,32 @@ function drawMatrix(){
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   ctx.fillStyle=rainColor;
-  ctx.font=fontSize+"px monospace";
+  ctx.font="14px monospace";
 
   for(let i=0;i<drops.length;i++){
 
-    const text=
+    const char=
       letters[Math.floor(Math.random()*letters.length)];
 
-    ctx.fillText(
-      text,
-      i*fontSize,
-      drops[i]*fontSize
-    );
+    ctx.fillText(char,i*14,drops[i]*14);
 
     if(
-      drops[i]*fontSize>canvas.height &&
+      drops[i]*14>canvas.height &&
       Math.random()>.975
     ){
       drops[i]=0;
     }
 
     drops[i]++;
+
   }
+
 }
 
 setInterval(drawMatrix,50);
 
 
-/* ================= THEME ================= */
+/* THEME */
 
 function updateTheme(){
 
@@ -1539,26 +1762,20 @@ function updateTheme(){
   const rain=document.getElementById("rainColor").value;
   const accent=document.getElementById("accentColor").value;
 
-  document.documentElement.style.setProperty(
-    "--bg",bg
-  );
-
-  document.documentElement.style.setProperty(
-    "--green",accent
-  );
-
-  document.body.style.background=bg;
+  document.documentElement.style.setProperty("--bg",bg);
+  document.documentElement.style.setProperty("--green",accent);
 
   rainColor=rain;
 
   localStorage.setItem(
     "foxieTheme",
     JSON.stringify({
-      bg:bg,
-      rain:rain,
-      accent:accent
+      bg,
+      rain,
+      accent
     })
   );
+
 }
 
 function resetTheme(){
@@ -1568,6 +1785,7 @@ function resetTheme(){
   document.getElementById("accentColor").value="#39ff14";
 
   updateTheme();
+
 }
 
 function loadTheme(){
@@ -1604,42 +1822,23 @@ function toggleCustomize(){
     panel.style.display==="block"
     ?"none"
     :"block";
+
 }
 
+document
+.getElementById("bgColor")
+.addEventListener("change",updateTheme);
 
-/* ================= SIDEBAR ================= */
+document
+.getElementById("rainColor")
+.addEventListener("change",updateTheme);
 
-function toggleGroup(id){
-
-  const group=document.getElementById(id);
-
-  if(!group)return;
-
-  group.classList.toggle("collapsed");
-}
-
-
-/* ================= TOAST ================= */
-
-function toast(message){
-
-  const t=document.getElementById("toast");
-
-  t.textContent=message;
-
-  t.style.display="block";
-
-  clearTimeout(window.toastTimer);
-
-  window.toastTimer=setTimeout(function(){
-
-    t.style.display="none";
-
-  },2500);
-}
+document
+.getElementById("accentColor")
+.addEventListener("change",updateTheme);
 
 
-/* ================= AUTH ================= */
+/* AUTH */
 
 let currentUser=null;
 
@@ -1649,79 +1848,6 @@ let stats={
   losses:0
 };
 
-function createAccount(){
-
-  const username=
-    document.getElementById("usernameInput")
-    .value.trim();
-
-  if(!username){
-
-    alert("Please enter a username");
-
-    return;
-  }
-
-  currentUser={
-    username:username,
-    isGuest:false
-  };
-
-  localStorage.setItem(
-    "foxieUser",
-    JSON.stringify(currentUser)
-  );
-
-  enterApp();
-}
-
-function continueAsGuest(){
-
-  currentUser={
-    username:"Guest",
-    isGuest:true
-  };
-
-  localStorage.setItem(
-    "foxieUser",
-    JSON.stringify(currentUser)
-  );
-
-  enterApp();
-}
-
-function logout(){
-
-  localStorage.removeItem("foxieUser");
-
-  location.reload();
-}
-
-function enterApp(){
-
-  document.getElementById(
-    "loginOverlay"
-  ).style.display="none";
-
-  document.getElementById(
-    "app"
-  ).style.display="flex";
-
-  document.getElementById(
-    "currentUser"
-  ).textContent=
-    currentUser.username+
-    (currentUser.isGuest?" (Guest)":"");
-
-  loadStats();
-
-  updateLeaderboard();
-
-}
-
-
-/* ================= STATS ================= */
-
 function loadStats(){
 
   const key=
@@ -1730,7 +1856,8 @@ function loadStats(){
 
   const saved=localStorage.getItem(key);
 
-  stats=saved
+  stats=
+    saved
     ?JSON.parse(saved)
     :{
       xp:0,
@@ -1739,6 +1866,7 @@ function loadStats(){
     };
 
   updateXPDisplay();
+
 }
 
 function saveStats(){
@@ -1754,35 +1882,32 @@ function saveStats(){
 
   updateXPDisplay();
 
-  updateLeaderboard();
 }
 
 function updateXPDisplay(){
 
-  document.getElementById(
-    "xpDisplay"
-  ).textContent=
-    "XP: "+
-    stats.xp+
-    " | Wins: "+
-    stats.wins;
+  const el=
+    document.getElementById("xpDisplay");
 
-  const homeXP=
-    document.getElementById("homeXP");
+  if(el){
 
-  const homeWins=
-    document.getElementById("homeWins");
+    el.textContent=
+      "XP: "+
+      stats.xp+
+      " | Wins: "+
+      stats.wins;
 
-  if(homeXP)homeXP.textContent=stats.xp;
-  if(homeWins)homeWins.textContent=stats.wins;
+  }
+
 }
 
-function addWin(points){
+function addWin(points=25){
 
-  stats.xp+=points||25;
+  stats.xp+=points;
   stats.wins++;
 
   saveStats();
+
 }
 
 function addLoss(){
@@ -1790,762 +1915,82 @@ function addLoss(){
   stats.losses++;
 
   saveStats();
+
 }
 
+function createAccount(){
 
-/* ================= NAVIGATION ================= */
-
-function showPage(page){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(function(p){
-      p.classList.remove("active");
-    });
-
-  document
-    .querySelectorAll(".nav button")
-    .forEach(function(b){
-      b.classList.remove("active");
-    });
-
-  const target=
-    document.getElementById(page);
-
-  if(target){
-
-    target.classList.add("active");
-
+  const username=
     document
-      .querySelectorAll(
-        '.nav button[data-page="'+page+'"]'
-      )
-      .forEach(function(btn){
-        btn.classList.add("active");
-      });
+    .getElementById("usernameInput")
+    .value
+    .trim();
+
+  if(!username){
+
+    alert("Please enter a username");
+
+    return;
 
   }
 
-  if(page==="leaderboard"){
-    updateLeaderboard();
-  }
-}
-
-document
-  .querySelectorAll(".nav button")
-  .forEach(function(btn){
-
-    btn.addEventListener(
-      "click",
-      function(){
-
-        showPage(
-          btn.getAttribute("data-page")
-        );
-
-      }
-    );
-
-  });
-
-
-/* ================= CLOCK ================= */
-
-function updateClock(){
-
-  document.getElementById("clock")
-    .textContent=
-    new Date().toLocaleTimeString();
-
-}
-
-setInterval(updateClock,1000);
-
-updateClock();
-
-
-/* ================= FOXIE AI CHAT ================= */
-
-let chatHistory=[];
-
-function chatKey(event){
-
-  if(
-    event.key==="Enter" &&
-    !event.shiftKey
-  ){
-
-    event.preventDefault();
-
-    sendFoxieMessage();
-
-  }
-}
-
-function addChatMessage(text,type){
-
-  const box=
-    document.getElementById(
-      "chatMessages"
-    );
-
-  const msg=
-    document.createElement("div");
-
-  msg.className=
-    "message "+
-    type;
-
-  msg.textContent=text;
-
-  box.appendChild(msg);
-
-  box.scrollTop=box.scrollHeight;
-}
-
-async function sendFoxieMessage(){
-
-  const input=
-    document.getElementById("chatInput");
-
-  const text=input.value.trim();
-
-  if(!text)return;
-
-  addChatMessage(text,"user");
-
-  input.value="";
-
-  document.getElementById(
-    "typing"
-  ).style.display="block";
-
-  try{
-
-    const response=await fetch(
-      "https://foxie-ai-backend.onrender.com/chat",
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-
-        body:JSON.stringify({
-          message:text
-        })
-      }
-    );
-
-    const data=await response.json();
-
-    let reply=
-      data.reply||
-      data.response||
-      data.message||
-      "Foxie couldn't get a response.";
-
-    addChatMessage(
-      reply,
-      "foxie"
-    );
-
-  }catch(error){
-
-    addChatMessage(
-      "🦊 I couldn't connect to my AI server right now. Try again in a moment.",
-      "foxie"
-    );
-
-  }
-
-  document.getElementById(
-    "typing"
-  ).style.display="none";
-}
-
-function newChat(){
-
-  document.getElementById(
-    "chatMessages"
-  ).innerHTML=`
-    <div class="message foxie">
-      🦊 New chat started! What should we do?
-    </div>
-  `;
-
-  chatHistory=[];
-
-}
-
-
-/* ================= LEARN ================= */
-
-function startLesson(topic){
-
-  const lessons={
-
-    coding:
-      "💻 Let's learn coding. Start with HTML, CSS or JavaScript?",
-
-    chess:
-      "♟️ Let's learn chess. We can start with openings, tactics or endgames.",
-
-    languages:
-      "🌍 Which language would you like to learn?",
-
-    custom:
-      "🦊 Tell me what you want to learn and I'll explain it step by step."
-
+  currentUser={
+    username,
+    isGuest:false
   };
 
-  document.getElementById(
-    "lessonArea"
-  ).innerHTML=
-    '<strong style="color:var(--green)">Foxie:</strong> '+
-    (lessons[topic]||lessons.custom);
+  localStorage.setItem(
+    "foxieUser",
+    JSON.stringify(currentUser)
+  );
+
+  enterApp();
 
 }
 
+function continueAsGuest(){
 
-/* ================= DAILY REWARD ================= */
-
-function claimDaily(){
-
-  const today=
-    new Date().toISOString().slice(0,10);
-
-  const last=
-    localStorage.getItem("foxieDaily");
-
-  if(last===today){
-
-    toast("🎁 You already claimed today's reward!");
-
-    return;
-  }
+  currentUser={
+    username:"Guest",
+    isGuest:true
+  };
 
   localStorage.setItem(
-    "foxieDaily",
-    today
+    "foxieUser",
+    JSON.stringify(currentUser)
   );
 
-  stats.xp+=50;
-
-  saveStats();
-
-  toast("🎁 +50 XP Daily Reward!");
-}
-
-
-/* ================= TIC TAC TOE ================= */
-
-let tttBoard=Array(9).fill(null);
-let tttActive=true;
-
-function startGame(game){
-
-  document.getElementById(
-    "gameSelect"
-  ).style.display="none";
-
-  document.getElementById(
-    "tictactoeGame"
-  ).style.display="none";
-
-  document.getElementById(
-    "connect4Game"
-  ).style.display="none";
-
-  if(game==="tictactoe"){
-
-    document.getElementById(
-      "tictactoeGame"
-    ).style.display="block";
-
-    resetTicTacToe();
-
-  }
-
-  if(game==="connect4"){
-
-    document.getElementById(
-      "connect4Game"
-    ).style.display="block";
-
-    resetConnect4();
-
-  }
+  enterApp();
 
 }
 
-function backToGames(){
+function logout(){
 
-  document.getElementById(
-    "tictactoeGame"
-  ).style.display="none";
+  localStorage.removeItem("foxieUser");
 
-  document.getElementById(
-    "connect4Game"
-  ).style.display="none";
-
-  document.getElementById(
-    "gameSelect"
-  ).style.display="block";
-}
-
-function resetTicTacToe(){
-
-  tttBoard=Array(9).fill(null);
-
-  tttActive=true;
-
-  document.getElementById(
-    "tttStatus"
-  ).textContent="Your turn (X)";
-
-  renderTTT();
-}
-
-function renderTTT(){
-
-  const board=
-    document.getElementById(
-      "tttBoard"
-    );
-
-  board.innerHTML="";
-
-  tttBoard.forEach(function(val,i){
-
-    const cell=
-      document.createElement("div");
-
-    cell.className=
-      "cell"+(val?" taken":"");
-
-    cell.textContent=val||"";
-
-    cell.onclick=function(){
-      tttMove(i);
-    };
-
-    board.appendChild(cell);
-
-  });
-}
-
-function tttMove(i){
-
-  if(
-    !tttActive||
-    tttBoard[i]
-  )return;
-
-  tttBoard[i]="X";
-
-  renderTTT();
-
-  if(checkTTT("X")){
-
-    document.getElementById(
-      "tttStatus"
-    ).textContent=
-      "You win! +25 XP";
-
-    tttActive=false;
-
-    addWin(25);
-
-    return;
-  }
-
-  if(tttBoard.every(c=>c)){
-
-    document.getElementById(
-      "tttStatus"
-    ).textContent="Draw!";
-
-    tttActive=false;
-
-    return;
-  }
-
-  document.getElementById(
-    "tttStatus"
-  ).textContent=
-    "Computer thinking...";
-
-  setTimeout(computerTTT,400);
-}
-
-function computerTTT(){
-
-  const empty=[];
-
-  tttBoard.forEach(function(v,i){
-
-    if(!v)empty.push(i);
-
-  });
-
-  if(!empty.length)return;
-
-  const move=
-    empty[
-      Math.floor(
-        Math.random()*empty.length
-      )
-    ];
-
-  tttBoard[move]="O";
-
-  renderTTT();
-
-  if(checkTTT("O")){
-
-    document.getElementById(
-      "tttStatus"
-    ).textContent=
-      "Computer wins!";
-
-    tttActive=false;
-
-    addLoss();
-
-    return;
-  }
-
-  if(tttBoard.every(c=>c)){
-
-    document.getElementById(
-      "tttStatus"
-    ).textContent="Draw!";
-
-    tttActive=false;
-
-    return;
-  }
-
-  document.getElementById(
-    "tttStatus"
-  ).textContent=
-    "Your turn (X)";
-}
-
-function checkTTT(p){
-
-  const wins=[
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6]
-  ];
-
-  return wins.some(
-    line=>
-      tttBoard[line[0]]===p&&
-      tttBoard[line[1]]===p&&
-      tttBoard[line[2]]===p
-  );
-}
-
-
-/* ================= CONNECT 4 ================= */
-
-let c4Board=[];
-let c4Active=true;
-let c4Player="red";
-
-function resetConnect4(){
-
-  c4Board=[];
-
-  for(let r=0;r<6;r++){
-
-    c4Board[r]=[];
-
-    for(let c=0;c<7;c++){
-      c4Board[r][c]=null;
-    }
-
-  }
-
-  c4Active=true;
-  c4Player="red";
-
-  document.getElementById(
-    "c4Status"
-  ).textContent=
-    "Your turn (Red)";
-
-  renderC4();
-}
-
-function renderC4(){
-
-  const board=
-    document.getElementById(
-      "c4Board"
-    );
-
-  board.innerHTML="";
-
-  for(let r=0;r<6;r++){
-
-    for(let c=0;c<7;c++){
-
-      const cell=
-        document.createElement("div");
-
-      cell.className="c4-cell";
-
-      if(c4Board[r][c]==="red")
-        cell.classList.add("c4-red");
-
-      if(c4Board[r][c]==="yellow")
-        cell.classList.add("c4-yellow");
-
-      cell.onclick=function(){
-        c4Click(c);
-      };
-
-      board.appendChild(cell);
-
-    }
-
-  }
-}
-
-function c4Click(col){
-
-  if(
-    !c4Active||
-    c4Player!=="red"
-  )return;
-
-  const row=
-    dropC4(col,"red");
-
-  if(row===-1)return;
-
-  renderC4();
-
-  if(checkC4("red")){
-
-    document.getElementById(
-      "c4Status"
-    ).textContent=
-      "You win! +30 XP";
-
-    c4Active=false;
-
-    addWin(30);
-
-    return;
-  }
-
-  c4Player="yellow";
-
-  document.getElementById(
-    "c4Status"
-  ).textContent=
-    "Computer thinking...";
-
-  setTimeout(computerC4,450);
-}
-
-function dropC4(col,color){
-
-  for(let r=5;r>=0;r--){
-
-    if(!c4Board[r][col]){
-
-      c4Board[r][col]=color;
-
-      return r;
-
-    }
-
-  }
-
-  return -1;
-}
-
-function computerC4(){
-
-  const cols=[];
-
-  for(let c=0;c<7;c++){
-
-    if(!c4Board[0][c])
-      cols.push(c);
-
-  }
-
-  if(!cols.length)return;
-
-  const col=
-    cols[
-      Math.floor(
-        Math.random()*cols.length
-      )
-    ];
-
-  dropC4(col,"yellow");
-
-  renderC4();
-
-  if(checkC4("yellow")){
-
-    document.getElementById(
-      "c4Status"
-    ).textContent=
-      "Computer wins!";
-
-    c4Active=false;
-
-    addLoss();
-
-    return;
-  }
-
-  c4Player="red";
-
-  document.getElementById(
-    "c4Status"
-  ).textContent=
-    "Your turn (Red)";
-}
-
-function checkC4(color){
-
-  for(let r=0;r<6;r++){
-
-    for(let c=0;c<7;c++){
-
-      if(c4Board[r][c]!==color)
-        continue;
-
-      if(
-        c<=3&&
-        c4Board[r][c+1]===color&&
-        c4Board[r][c+2]===color&&
-        c4Board[r][c+3]===color
-      )return true;
-
-      if(
-        r<=2&&
-        c4Board[r+1][c]===color&&
-        c4Board[r+2][c]===color&&
-        c4Board[r+3][c]===color
-      )return true;
-
-      if(
-        r<=2&&
-        c<=3&&
-        c4Board[r+1][c+1]===color&&
-        c4Board[r+2][c+2]===color&&
-        c4Board[r+3][c+3]===color
-      )return true;
-
-      if(
-        r<=2&&
-        c>=3&&
-        c4Board[r+1][c-1]===color&&
-        c4Board[r+2][c-2]===color&&
-        c4Board[r+3][c-3]===color
-      )return true;
-
-    }
-
-  }
-
-  return false;
-}
-
-
-/* ================= LEADERBOARD ================= */
-
-function updateLeaderboard(){
-
-  const list=
-    document.getElementById(
-      "leaderboardList"
-    );
-
-  if(!list)return;
-
-  const entries=[
-
-    {
-      name:currentUser
-        ?currentUser.username
-        :"You",
-      xp:stats.xp,
-      wins:stats.wins
-    },
-
-    {
-      name:"ShadowFox",
-      xp:340,
-      wins:18
-    },
-
-    {
-      name:"NeonPaw",
-      xp:290,
-      wins:14
-    },
-
-    {
-      name:"PixelTail",
-      xp:210,
-      wins:11
-    },
-
-    {
-      name:"CyberKitsune",
-      xp:180,
-      wins:9
-    }
-
-  ];
-
-  entries.sort(
-    (a,b)=>b.xp-a.xp
-  );
-
-  list.innerHTML="";
-
-  entries.forEach(function(e,i){
-
-    const row=
-      document.createElement("div");
-
-    row.style.cssText=
-      "display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #1a3324";
-
-    row.innerHTML=`
-      <span>#${i+1} ${e.name}</span>
-      <span style="color:var(--green)">
-        ${e.xp} XP • ${e.wins} wins
-      </span>
-    `;
-
-    list.appendChild(row);
-
-  });
+  location.reload();
 
 }
 
+function enterApp(){
 
-/* ================= LOAD USER ================= */
+  document
+    .getElementById("loginOverlay")
+    .style.display="none";
+
+  document
+    .getElementById("app")
+    .style.display="flex";
+
+  document
+    .getElementById("currentUser")
+    .textContent=
+      currentUser.username+
+      (currentUser.isGuest?" (Guest)":"");
+
+  loadStats();
+
+}
 
 const savedUser=
   localStorage.getItem("foxieUser");
@@ -2566,6 +2011,682 @@ if(savedUser){
   }
 
 }
+
+
+/* NAVIGATION */
+
+function showPage(page){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p=>{
+      p.classList.remove("active");
+    });
+
+  document
+    .querySelectorAll(".nav button[data-page]")
+    .forEach(b=>{
+      b.classList.remove("active");
+    });
+
+  const target=
+    document.getElementById(page);
+
+  if(target){
+
+    target.classList.add("active");
+
+  }
+
+  const button=
+    document.querySelector(
+      '.nav button[data-page="'+page+'"]'
+    );
+
+  if(button){
+
+    button.classList.add("active");
+
+  }
+
+  if(page==="tictactoe"){
+    resetTicTacToe();
+  }
+
+  if(page==="connect4"){
+    resetConnect4();
+  }
+
+}
+
+document
+  .querySelectorAll(".nav button[data-page]")
+  .forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+
+      showPage(
+        btn.getAttribute("data-page")
+      );
+
+    });
+
+  });
+
+function toggleGroup(id){
+
+  const group=
+    document.getElementById(id);
+
+  if(group){
+
+    group.classList.toggle("open");
+
+  }
+
+}
+
+
+/* CLOCK */
+
+function updateClock(){
+
+  document
+    .getElementById("clock")
+    .textContent=
+      new Date().toLocaleTimeString();
+
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+
+/* CHAT WITH FOXIE */
+
+function addChatMessage(text,type){
+
+  const box=
+    document.getElementById("chatMessages");
+
+  const msg=
+    document.createElement("div");
+
+  msg.className=
+    "chatMsg "+
+    type;
+
+  msg.textContent=text;
+
+  box.appendChild(msg);
+
+  box.scrollTop=box.scrollHeight;
+
+}
+
+async function sendChat(){
+
+  const input=
+    document.getElementById("chatInput");
+
+  const text=input.value.trim();
+
+  if(!text)return;
+
+  addChatMessage(text,"user");
+
+  input.value="";
+
+  addChatMessage(
+    "🦊 Foxie is thinking...",
+    "foxie"
+  );
+
+  const box=
+    document.getElementById("chatMessages");
+
+  const loading=
+    box.lastElementChild;
+
+  try{
+
+    const response=
+      await fetch(
+        "https://foxie-ai-backend.onrender.com/chat",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            message:text
+          })
+        }
+      );
+
+    const data=
+      await response.json();
+
+    loading.remove();
+
+    addChatMessage(
+      data.reply||
+      data.response||
+      "🦊 I couldn't get a response.",
+      "foxie"
+    );
+
+  }catch(error){
+
+    loading.remove();
+
+    addChatMessage(
+      "🦊 I couldn't connect to my AI server right now.",
+      "foxie"
+    );
+
+  }
+
+}
+
+
+/* SEARCH */
+
+function searchFoxie(value){
+
+  const result=
+    document.getElementById("searchResults");
+
+  if(!value.trim()){
+
+    result.textContent=
+      "Start typing to search.";
+
+    return;
+
+  }
+
+  const pages=[
+    ["Foxie Adventure","adventure"],
+    ["Foxies","foxies"],
+    ["FoxieDex","foxdex"],
+    ["Chess","chess"],
+    ["Racing","racing"],
+    ["Games","games"],
+    ["Chat with Foxie","chat"],
+    ["Rewards","rewards"],
+    ["Achievements","achievements"],
+    ["Shop","shop"],
+    ["Learn","learn"]
+  ];
+
+  const matches=
+    pages.filter(
+      p=>
+        p[0]
+        .toLowerCase()
+        .includes(value.toLowerCase())
+    );
+
+  if(!matches.length){
+
+    result.textContent=
+      "No Foxie pages found.";
+
+    return;
+
+  }
+
+  result.innerHTML=
+    matches
+      .map(
+        p=>
+          '<button class="btn" style="margin:4px" onclick="showPage(\''+
+          p[1]+
+          '\')">'+
+          p[0]+
+          '</button>'
+      )
+      .join("");
+
+}
+
+
+/* TIC TAC TOE */
+
+let tttBoard=Array(9).fill(null);
+let tttActive=true;
+
+function resetTicTacToe(){
+
+  tttBoard=Array(9).fill(null);
+
+  tttActive=true;
+
+  const status=
+    document.getElementById("tttStatus");
+
+  if(status){
+    status.textContent=
+      "Your turn (X)";
+  }
+
+  renderTTT();
+
+}
+
+function renderTTT(){
+
+  const board=
+    document.getElementById("tttBoard");
+
+  if(!board)return;
+
+  board.innerHTML="";
+
+  tttBoard.forEach((value,index)=>{
+
+    const cell=
+      document.createElement("div");
+
+    cell.className=
+      "cell"+
+      (value?" taken":"");
+
+    cell.textContent=
+      value||"";
+
+    cell.onclick=()=>{
+      tttMove(index);
+    };
+
+    board.appendChild(cell);
+
+  });
+
+}
+
+function tttMove(i){
+
+  if(!tttActive||tttBoard[i])return;
+
+  tttBoard[i]="X";
+
+  renderTTT();
+
+  if(checkTTT("X")){
+
+    document
+      .getElementById("tttStatus")
+      .textContent=
+        "You win! +25 XP";
+
+    tttActive=false;
+
+    addWin(25);
+
+    return;
+
+  }
+
+  if(tttBoard.every(Boolean)){
+
+    document
+      .getElementById("tttStatus")
+      .textContent=
+        "Draw!";
+
+    tttActive=false;
+
+    return;
+
+  }
+
+  document
+    .getElementById("tttStatus")
+    .textContent=
+      "Computer thinking...";
+
+  setTimeout(computerTTT,400);
+
+}
+
+function computerTTT(){
+
+  const empty=[];
+
+  tttBoard.forEach((v,i)=>{
+
+    if(!v)empty.push(i);
+
+  });
+
+  if(!empty.length)return;
+
+  const move=
+    empty[
+      Math.floor(
+        Math.random()*empty.length
+      )
+    ];
+
+  tttBoard[move]="O";
+
+  renderTTT();
+
+  if(checkTTT("O")){
+
+    document
+      .getElementById("tttStatus")
+      .textContent=
+        "Computer wins!";
+
+    tttActive=false;
+
+    addLoss();
+
+    return;
+
+  }
+
+  if(tttBoard.every(Boolean)){
+
+    document
+      .getElementById("tttStatus")
+      .textContent=
+        "Draw!";
+
+    tttActive=false;
+
+    return;
+
+  }
+
+  document
+    .getElementById("tttStatus")
+    .textContent=
+      "Your turn (X)";
+
+}
+
+function checkTTT(player){
+
+  const wins=[
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
+  ];
+
+  return wins.some(
+    line=>
+      line.every(
+        i=>tttBoard[i]===player
+      )
+  );
+
+}
+
+
+/* CONNECT 4 */
+
+let c4Board=[];
+let c4Active=true;
+let c4Player="red";
+
+function resetConnect4(){
+
+  c4Board=[];
+
+  for(let r=0;r<6;r++){
+
+    c4Board[r]=[];
+
+    for(let c=0;c<7;c++){
+
+      c4Board[r][c]=null;
+
+    }
+
+  }
+
+  c4Active=true;
+  c4Player="red";
+
+  const status=
+    document.getElementById("c4Status");
+
+  if(status){
+
+    status.textContent=
+      "Your turn (Red)";
+
+  }
+
+  renderC4();
+
+}
+
+function renderC4(){
+
+  const board=
+    document.getElementById("c4Board");
+
+  if(!board)return;
+
+  board.innerHTML="";
+
+  for(let r=0;r<6;r++){
+
+    for(let c=0;c<7;c++){
+
+      const cell=
+        document.createElement("div");
+
+      cell.className="c4-cell";
+
+      if(c4Board[r][c]==="red"){
+        cell.classList.add("c4-red");
+      }
+
+      if(c4Board[r][c]==="yellow"){
+        cell.classList.add("c4-yellow");
+      }
+
+      cell.onclick=()=>{
+        c4Click(c);
+      };
+
+      board.appendChild(cell);
+
+    }
+
+  }
+
+}
+
+function dropC4(col,color){
+
+  for(let r=5;r>=0;r--){
+
+    if(!c4Board[r][col]){
+
+      c4Board[r][col]=color;
+
+      return r;
+
+    }
+
+  }
+
+  return -1;
+
+}
+
+function c4Click(col){
+
+  if(!c4Active||c4Player!=="red")return;
+
+  const row=
+    dropC4(col,"red");
+
+  if(row===-1)return;
+
+  renderC4();
+
+  if(checkC4("red")){
+
+    document
+      .getElementById("c4Status")
+      .textContent=
+        "You win! +30 XP";
+
+    c4Active=false;
+
+    addWin(30);
+
+    return;
+
+  }
+
+  if(c4Board[0].every(Boolean)){
+
+    document
+      .getElementById("c4Status")
+      .textContent=
+        "Draw!";
+
+    c4Active=false;
+
+    return;
+
+  }
+
+  c4Player="yellow";
+
+  document
+    .getElementById("c4Status")
+    .textContent=
+      "Computer thinking...";
+
+  setTimeout(computerC4,450);
+
+}
+
+function computerC4(){
+
+  const cols=[];
+
+  for(let c=0;c<7;c++){
+
+    if(!c4Board[0][c]){
+      cols.push(c);
+    }
+
+  }
+
+  if(!cols.length)return;
+
+  const col=
+    cols[
+      Math.floor(
+        Math.random()*cols.length
+      )
+    ];
+
+  dropC4(col,"yellow");
+
+  renderC4();
+
+  if(checkC4("yellow")){
+
+    document
+      .getElementById("c4Status")
+      .textContent=
+        "Computer wins!";
+
+    c4Active=false;
+
+    addLoss();
+
+    return;
+
+  }
+
+  if(c4Board[0].every(Boolean)){
+
+    document
+      .getElementById("c4Status")
+      .textContent=
+        "Draw!";
+
+    c4Active=false;
+
+    return;
+
+  }
+
+  c4Player="red";
+
+  document
+    .getElementById("c4Status")
+    .textContent=
+      "Your turn (Red)";
+
+}
+
+function checkC4(color){
+
+  for(let r=0;r<6;r++){
+
+    for(let c=0;c<7;c++){
+
+      if(c4Board[r][c]!==color)continue;
+
+      if(
+        c<=3 &&
+        c4Board[r][c+1]===color &&
+        c4Board[r][c+2]===color &&
+        c4Board[r][c+3]===color
+      )return true;
+
+      if(
+        r<=2 &&
+        c4Board[r+1][c]===color &&
+        c4Board[r+2][c]===color &&
+        c4Board[r+3][c]===color
+      )return true;
+
+      if(
+        r<=2 &&
+        c<=3 &&
+        c4Board[r+1][c+1]===color &&
+        c4Board[r+2][c+2]===color &&
+        c4Board[r+3][c+3]===color
+      )return true;
+
+      if(
+        r<=2 &&
+        c>=3 &&
+        c4Board[r+1][c-1]===color &&
+        c4Board[r+2][c-2]===color &&
+        c4Board[r+3][c-3]===color
+      )return true;
+
+    }
+
+  }
+
+  return false;
+
+}
+
+
+/* INIT */
 
 loadTheme();
 

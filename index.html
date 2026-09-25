@@ -3,28 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Foxie 🦊</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chess.js@1.4.0/dist/chess.min.js"></script>
+<title>Foxie 🦊 Chess</title>
 
 <style>
 :root{
   --green:#39ff14;
-  --green2:#1bbd12;
-  --bg:#020604;
-  --panel:#07120b;
-  --panel2:#0a180e;
-  --border:#173b21;
-  --text:#ecfff0;
-  --muted:#83a58c;
+  --green2:#18c90a;
+  --bg:#030603;
+  --panel:#081008;
+  --panel2:#0d170d;
+  --border:#173117;
+  --text:#eaffea;
+  --muted:#88a388;
 
-  --light:#e8c99b;
-  --dark:#769656;
-  --light2:#f0d9b5;
-  --dark2:#b58863;
-
-  --danger:#ff4d5e;
-  --gold:#ffd84d;
+  --light:#f0d9b5;
+  --dark:#b58863;
+  --selected:#f6f669;
+  --last:#cdd26a;
+  --check:#ef5350;
 }
 
 *{
@@ -34,177 +30,130 @@
 html,body{
   margin:0;
   width:100%;
-  min-height:100%;
-  font-family:Inter,Arial,Helvetica,sans-serif;
-  background:#020604;
-  color:var(--text);
-}
-
-body{
-  overflow-x:hidden;
-}
-
-/* MATRIX */
-
-#matrix{
-  position:fixed;
-  inset:0;
-  z-index:-5;
-  opacity:.12;
-  pointer-events:none;
-}
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
+  height:100%;
   background:
-    radial-gradient(circle at 50% 20%,rgba(57,255,20,.08),transparent 35%),
-    linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.7));
-  z-index:-4;
-  pointer-events:none;
+    radial-gradient(circle at 50% 20%,#102010 0%,#030603 55%);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
 }
 
-/* APP */
+button,
+select,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
 
 .app{
-  min-height:100vh;
-  display:flex;
+  display:grid;
+  grid-template-columns:240px 1fr;
+  width:100%;
+  height:100vh;
 }
 
 /* SIDEBAR */
 
 .sidebar{
-  width:250px;
-  min-height:100vh;
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  background:rgba(3,10,6,.96);
-  border-right:1px solid #15341d;
+  background:rgba(3,8,3,.96);
+  border-right:1px solid var(--border);
   padding:18px 12px;
-  z-index:20;
-  overflow-y:auto;
+  overflow:auto;
+  z-index:10;
 }
 
-.brand{
+.logo{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:10px 12px 20px;
-}
-
-.brandIcon{
-  font-size:32px;
-  filter:drop-shadow(0 0 10px rgba(57,255,20,.5));
-}
-
-.brandName{
-  font-size:23px;
+  font-size:25px;
   font-weight:900;
-  letter-spacing:.5px;
   color:var(--green);
+  margin-bottom:22px;
 }
 
-.brandSub{
-  font-size:10px;
-  color:#71917a;
-  margin-top:2px;
+.logo span{
+  filter:drop-shadow(0 0 8px rgba(57,255,20,.35));
 }
 
-.navSection{
-  margin-top:12px;
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
 }
 
-.navTitle{
-  font-size:10px;
-  color:#496951;
-  text-transform:uppercase;
-  letter-spacing:1.5px;
-  padding:10px 13px 6px;
-}
-
-.navBtn{
+.nav button{
   width:100%;
   border:0;
   background:transparent;
-  color:#b8d6bf;
-  padding:11px 13px;
-  border-radius:10px;
+  color:#b8cbb8;
   text-align:left;
-  font-size:14px;
-  cursor:pointer;
-  transition:.18s;
-  display:flex;
-  align-items:center;
-  gap:11px;
+  padding:12px 13px;
+  border-radius:10px;
+  transition:.15s;
 }
 
-.navBtn:hover{
-  background:#0b2111;
-  color:white;
+.nav button:hover{
+  background:#102010;
+  color:#fff;
 }
 
-.navBtn.active{
-  background:linear-gradient(90deg,#123e18,#0b2410);
+.nav button.active{
+  background:#123112;
   color:var(--green);
   box-shadow:inset 3px 0 var(--green);
 }
 
-.navIcon{
-  width:22px;
-  text-align:center;
+.creator{
+  margin-top:25px;
+  border:1px solid #1b471b;
+  background:#071107;
+  color:#a9bda9;
+  border-radius:10px;
+  padding:12px;
+  font-size:12px;
 }
 
 /* MAIN */
 
 .main{
-  margin-left:250px;
-  width:calc(100% - 250px);
-  min-height:100vh;
+  position:relative;
+  min-width:0;
+  height:100vh;
+  overflow:auto;
 }
 
 .topbar{
+  position:sticky;
+  top:0;
+  z-index:5;
   height:64px;
-  border-bottom:1px solid #15341d;
-  background:rgba(2,8,4,.82);
-  backdrop-filter:blur(15px);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 24px;
-  position:sticky;
-  top:0;
-  z-index:15;
-}
-
-.topTitle{
-  font-size:14px;
-  color:#91af98;
-}
-
-.topRight{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.creator{
-  color:#80a68a;
-  font-size:12px;
+  padding:0 22px;
+  background:rgba(3,8,3,.86);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
 }
 
 .clock{
   color:var(--green);
-  font-weight:800;
+  font-weight:bold;
   font-variant-numeric:tabular-nums;
 }
 
-/* PAGE */
+.created{
+  color:#718471;
+  font-size:12px;
+}
 
 .page{
   display:none;
+  min-height:calc(100vh - 64px);
   padding:24px;
 }
 
@@ -212,247 +161,119 @@ body:before{
   display:block;
 }
 
-.pageHeader{
-  margin-bottom:20px;
+.hero{
+  max-width:1000px;
+  margin:auto;
 }
 
-.pageHeader h1{
-  margin:0;
-  font-size:28px;
+.hero h1{
+  color:var(--green);
+  font-size:42px;
+  margin:10px 0;
 }
 
-.pageHeader p{
+.hero p{
   color:var(--muted);
-  margin:6px 0 0;
-}
-
-/* CARDS */
-
-.card{
-  background:linear-gradient(180deg,#08150c,#061009);
-  border:1px solid #173a20;
-  border-radius:16px;
-  padding:18px;
-  box-shadow:0 12px 35px rgba(0,0,0,.25);
-}
-
-.btn{
-  border:1px solid #285c32;
-  background:#0c2311;
-  color:#dffff0;
-  border-radius:9px;
-  padding:9px 13px;
-  cursor:pointer;
-  font-weight:700;
-}
-
-.btn:hover{
-  border-color:var(--green);
-  background:#103217;
-}
-
-.btn.primary{
-  background:var(--green);
-  color:#031004;
-  border-color:var(--green);
-}
-
-.btn.danger{
-  background:#361017;
-  border-color:#70232e;
-  color:#ffb8c0;
-}
-
-.btn.gold{
-  background:#4b3a0a;
-  border-color:#8e731b;
-  color:#ffe98b;
 }
 
 /* CHESS */
 
-.chessPage{
+.chess-page{
   padding:18px;
 }
 
-.chessShell{
-  max-width:1500px;
+.chess-layout{
+  width:min(1500px,100%);
   margin:auto;
-}
-
-.chessTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:15px;
-  flex-wrap:wrap;
-}
-
-.chessTitle{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.chessTitle h1{
-  margin:0;
-  font-size:25px;
-}
-
-.chessTitle small{
-  display:block;
-  color:#78927e;
-  margin-top:3px;
-}
-
-.chessActions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-/* TABS */
-
-.chessTabs{
-  display:flex;
-  gap:5px;
-  background:#061009;
-  border:1px solid #173820;
-  padding:5px;
-  border-radius:12px;
-  margin-bottom:18px;
-  overflow-x:auto;
-}
-
-.chessTab{
-  background:transparent;
-  border:0;
-  color:#79947f;
-  padding:9px 13px;
-  border-radius:8px;
-  cursor:pointer;
-  white-space:nowrap;
-  font-weight:700;
-}
-
-.chessTab:hover{
-  color:white;
-}
-
-.chessTab.active{
-  background:#12341a;
-  color:var(--green);
-}
-
-/* GAME LAYOUT */
-
-.gameLayout{
   display:grid;
-  grid-template-columns:minmax(500px,780px) minmax(300px,390px);
+  grid-template-columns:minmax(0,1fr) 350px;
   gap:18px;
   align-items:start;
 }
 
-/* BOARD COLUMN */
-
-.boardColumn{
+.game-area{
   min-width:0;
 }
 
-.playerCard{
+.player-card{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:12px;
-  margin-bottom:8px;
+  align-items:center;
+  margin-bottom:9px;
 }
 
-.playerInfo{
+.player{
   display:flex;
   align-items:center;
   gap:10px;
 }
 
 .avatar{
-  width:38px;
-  height:38px;
-  border-radius:10px;
-  background:#102719;
-  border:1px solid #265b31;
+  width:40px;
+  height:40px;
   display:grid;
   place-items:center;
-  font-size:21px;
+  border-radius:50%;
+  background:#102010;
+  border:1px solid #275227;
+  font-size:24px;
 }
 
-.playerName{
-  font-weight:800;
+.player-name{
+  font-weight:bold;
 }
 
-.playerRating{
-  color:#75907c;
+.rating{
+  color:#809180;
   font-size:12px;
-  margin-top:2px;
 }
 
-.clockBox{
-  min-width:110px;
-  padding:9px 14px;
-  border-radius:8px;
-  background:#071009;
-  border:1px solid #1d3922;
+.clockbox{
+  min-width:120px;
   text-align:center;
-  font-size:25px;
+  background:#101810;
+  border:1px solid #263526;
+  border-radius:9px;
+  padding:9px 14px;
+  font-size:28px;
   font-weight:900;
   font-variant-numeric:tabular-nums;
-  letter-spacing:1px;
-  box-shadow:inset 0 -3px 0 rgba(0,0,0,.2);
+  box-shadow:inset 0 0 12px #000;
 }
 
-.clockBox.active{
-  background:#14351b;
-  border-color:#398348;
-  color:white;
-  box-shadow:0 0 16px rgba(57,255,20,.13);
-}
-
-.clockBox.low{
-  background:#3b1017;
-  border-color:#8d2837;
-  color:#ff8895;
-}
-
-/* BOARD FRAME */
-
-.boardFrame{
-  width:100%;
-  position:relative;
-  padding:0;
-}
-
-.boardWrap{
-  width:100%;
-  max-width:780px;
-  aspect-ratio:1;
-  position:relative;
-  margin:auto;
-  border-radius:5px;
-  overflow:hidden;
+.clockbox.active{
+  border-color:var(--green);
   box-shadow:
-    0 25px 55px rgba(0,0,0,.5),
-    0 0 0 1px rgba(255,255,255,.06);
+    0 0 15px rgba(57,255,20,.16),
+    inset 0 0 12px #000;
 }
 
-/* CHESS BOARD */
+.clockbox.low{
+  color:#ff6464;
+  border-color:#7b2929;
+}
+
+/* BOARD */
+
+.board-shell{
+  width:min(82vh,calc(100vw - 650px),900px);
+  min-width:420px;
+  max-width:900px;
+  margin:auto;
+  position:relative;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));
+}
 
 .board{
   width:100%;
-  height:100%;
+  aspect-ratio:1;
   display:grid;
   grid-template-columns:repeat(8,1fr);
   grid-template-rows:repeat(8,1fr);
+  border:4px solid #171b17;
+  border-radius:3px;
+  overflow:hidden;
   user-select:none;
-  touch-action:none;
 }
 
 .square{
@@ -460,8 +281,10 @@ body:before{
   display:flex;
   align-items:center;
   justify-content:center;
+  font-size:clamp(35px,6vw,76px);
+  line-height:1;
   cursor:pointer;
-  overflow:hidden;
+  transition:filter .08s;
 }
 
 .square.light{
@@ -472,653 +295,343 @@ body:before{
   background:var(--dark);
 }
 
-.square.lastMove{
-  box-shadow:inset 0 0 0 999px rgba(255,221,64,.25);
+.square:hover{
+  filter:brightness(1.08);
+}
+
+.square.last{
+  background:var(--last)!important;
 }
 
 .square.selected{
-  box-shadow:inset 0 0 0 999px rgba(255,234,86,.34);
+  box-shadow:inset 0 0 0 5px rgba(246,246,105,.9);
 }
 
 .square.check{
-  box-shadow:
-    inset 0 0 0 999px rgba(255,35,54,.42),
-    inset 0 0 30px rgba(255,35,54,.85);
-}
-
-.square.captureTarget:after{
-  content:"";
-  position:absolute;
-  width:72%;
-  height:72%;
-  border-radius:50%;
-  border:6px solid rgba(70,20,15,.48);
-  pointer-events:none;
-}
-
-.moveDot{
-  position:absolute;
-  width:25%;
-  height:25%;
-  border-radius:50%;
-  background:rgba(30,40,25,.45);
-  z-index:3;
-  pointer-events:none;
+  background:
+    radial-gradient(circle,rgba(255,60,60,.9) 0%,rgba(255,60,60,.4) 35%,transparent 70%) !important;
 }
 
 .piece{
   position:relative;
-  z-index:4;
-  font-family:"Arial Unicode MS","DejaVu Sans",serif;
-  font-size:clamp(35px,6.2vw,76px);
-  line-height:1;
-  cursor:grab;
-  filter:drop-shadow(0 3px 2px rgba(0,0,0,.48));
-  transition:transform .12s ease;
+  z-index:3;
+  transform:translateY(-1px);
+  transition:transform .12s;
+  text-shadow:
+    0 3px 3px rgba(0,0,0,.65),
+    0 0 2px rgba(0,0,0,.5);
 }
 
-.piece:hover{
+.square:hover .piece{
   transform:translateY(-2px) scale(1.03);
 }
 
-.piece.white{
-  color:#fffaf0;
+.white-piece{
+  color:#fff;
   text-shadow:
-    -1px -1px 0 #6d604f,
-    1px -1px 0 #6d604f,
-    -1px 1px 0 #6d604f,
-    1px 1px 0 #6d604f,
-    0 3px 3px rgba(0,0,0,.55);
+    0 2px 2px #222,
+    0 0 2px #111;
 }
 
-.piece.black{
-  color:#242820;
+.black-piece{
+  color:#171717;
   text-shadow:
-    0 1px 1px rgba(255,255,255,.15),
-    0 3px 4px rgba(0,0,0,.6);
+    0 2px 2px rgba(255,255,255,.2),
+    0 0 2px #000;
 }
 
-/* COORDINATES */
+.move-dot{
+  position:absolute;
+  width:20%;
+  height:20%;
+  border-radius:50%;
+  background:rgba(20,30,20,.42);
+  z-index:2;
+}
+
+.capture-ring{
+  position:absolute;
+  inset:9%;
+  border:6px solid rgba(40,50,40,.55);
+  border-radius:50%;
+  z-index:2;
+}
 
 .coord{
   position:absolute;
-  z-index:5;
   font-size:11px;
-  font-weight:900;
-  opacity:.82;
-  pointer-events:none;
+  font-weight:bold;
+  z-index:4;
+  opacity:.8;
 }
 
 .coord.file{
-  bottom:3px;
+  bottom:2px;
   right:4px;
 }
 
 .coord.rank{
-  top:3px;
+  top:2px;
   left:4px;
 }
 
 .light .coord{
-  color:#769656;
+  color:#b58863;
 }
 
 .dark .coord{
-  color:#e8c99b;
+  color:#f0d9b5;
 }
 
-.coordsInside .coord{
-  display:block;
-}
+/* BOARD FOOT */
 
-.coordsNone .coord{
-  display:none;
-}
-
-/* BOARD THEMES */
-
-.theme-green{
-  --light:#e7d6ae;
-  --dark:#719653;
-}
-
-.theme-classic{
-  --light:#f0d9b5;
-  --dark:#b58863;
-}
-
-.theme-blue{
-  --light:#d9e8ed;
-  --dark:#4f7c8b;
-}
-
-.theme-purple{
-  --light:#eadcf0;
-  --dark:#82669b;
-}
-
-.theme-neon{
-  --light:#c9ffc4;
-  --dark:#237a31;
-}
-
-.theme-dark{
-  --light:#aab2a4;
-  --dark:#4c554d;
-}
-
-/* BOARD FOOTER */
-
-.boardFooter{
+.board-controls{
   display:flex;
   justify-content:center;
   gap:8px;
-  margin-top:10px;
+  margin-top:12px;
   flex-wrap:wrap;
+}
+
+.control{
+  background:#0c140c;
+  border:1px solid #233523;
+  color:#d8e5d8;
+  border-radius:8px;
+  padding:9px 13px;
+}
+
+.control:hover{
+  border-color:var(--green);
+  color:var(--green);
 }
 
 /* RIGHT PANEL */
 
-.sidePanel{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.gamePanel{
-  background:linear-gradient(180deg,#09150c,#061009);
-  border:1px solid #173820;
+.side-panel{
+  background:rgba(7,14,7,.94);
+  border:1px solid var(--border);
   border-radius:14px;
+  min-height:620px;
   overflow:hidden;
-  min-height:540px;
+}
+
+.tabs{
   display:flex;
-  flex-direction:column;
-}
-
-.panelHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:13px 15px;
-  border-bottom:1px solid #173820;
-}
-
-.panelHeader h3{
-  margin:0;
-  font-size:14px;
-}
-
-.panelHeader span{
-  color:#66816d;
-  font-size:11px;
-}
-
-.moveList{
-  padding:8px;
+  border-bottom:1px solid var(--border);
   overflow:auto;
+}
+
+.tab{
   flex:1;
-  max-height:510px;
+  min-width:85px;
+  border:0;
+  background:transparent;
+  color:#718071;
+  padding:13px 8px;
 }
 
-.moveRow{
-  display:grid;
-  grid-template-columns:42px 1fr 1fr;
-  padding:7px 8px;
-  border-radius:7px;
-  font-size:14px;
-}
-
-.moveRow:nth-child(even){
-  background:#09170d;
-}
-
-.moveNum{
-  color:#55705d;
-}
-
-.moveCell{
-  color:#d9e8dc;
-  font-weight:700;
-}
-
-.moveCell.current{
-  background:#194421;
+.tab.active{
   color:var(--green);
-  border-radius:5px;
-  padding:3px 5px;
-  margin:-3px -5px;
+  box-shadow:inset 0 -2px var(--green);
 }
 
-.captured{
-  padding:8px 14px;
-  color:#829b88;
-  min-height:28px;
-  border-top:1px solid #132e1a;
-  font-size:12px;
+.panel-content{
+  padding:15px;
 }
 
-.gameButtons{
+.moves{
+  min-height:280px;
+  max-height:420px;
+  overflow:auto;
+  padding:5px;
+}
+
+.move-row{
   display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:6px;
-  padding:10px;
-  border-top:1px solid #173820;
+  grid-template-columns:38px 1fr 1fr;
+  gap:5px;
+  padding:5px 7px;
+  border-radius:6px;
 }
 
-.gameButtons button{
-  min-height:38px;
+.move-row:nth-child(even){
+  background:#0d160d;
 }
 
-/* STATS */
+.move-number{
+  color:#657265;
+}
 
-.quickStats{
+.move{
+  color:#e4ece4;
+  font-family:Georgia,serif;
+}
+
+.section-title{
+  color:var(--green);
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.divider{
+  height:1px;
+  background:var(--border);
+  margin:15px 0;
+}
+
+.stat-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  padding:10px;
-  border-top:1px solid #173820;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
 }
 
 .stat{
-  text-align:center;
-  background:#08150b;
-  border:1px solid #14301a;
+  padding:12px;
+  background:#0b130b;
+  border:1px solid #182818;
   border-radius:8px;
-  padding:8px 4px;
 }
 
-.stat strong{
+.stat b{
   display:block;
-  font-size:17px;
-}
-
-.stat span{
-  color:#637c69;
-  font-size:10px;
+  font-size:20px;
+  color:var(--green);
 }
 
 /* SETTINGS */
 
-.settingsOverlay{
+.modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.68);
+  background:rgba(0,0,0,.72);
   backdrop-filter:blur(8px);
-  z-index:100;
   display:none;
   align-items:center;
   justify-content:center;
-  padding:18px;
+  z-index:100;
+  padding:20px;
 }
 
-.settingsOverlay.open{
+.modal.show{
   display:flex;
 }
 
-.settingsModal{
-  width:min(600px,100%);
+.settings{
+  width:min(850px,100%);
   max-height:90vh;
   overflow:auto;
-  background:#08130b;
-  border:1px solid #285a31;
-  border-radius:18px;
-  box-shadow:0 30px 100px rgba(0,0,0,.65);
+  background:#071007;
+  border:1px solid #244724;
+  border-radius:16px;
+  box-shadow:0 20px 70px #000;
 }
 
-.settingsHead{
+.settings-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:18px;
-  border-bottom:1px solid #183a20;
+  border-bottom:1px solid var(--border);
 }
 
-.settingsHead h2{
+.settings-head h2{
   margin:0;
+  color:var(--green);
 }
 
-.closeBtn{
-  border:0;
-  background:#102116;
-  color:white;
-  width:34px;
-  height:34px;
-  border-radius:9px;
-  cursor:pointer;
-  font-size:18px;
+.close{
+  background:#101810;
+  color:#fff;
+  border:1px solid #293929;
+  border-radius:8px;
+  padding:8px 12px;
 }
 
-.settingsBody{
+.settings-body{
   padding:18px;
+}
+
+.settings-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
 }
 
 .setting{
-  padding:14px 0;
-  border-bottom:1px solid #123019;
+  background:#0b140b;
+  border:1px solid #192919;
+  border-radius:11px;
+  padding:14px;
 }
 
-.setting:last-child{
-  border-bottom:0;
-}
-
-.settingLabel{
-  font-weight:800;
+.setting label{
+  display:block;
+  color:#a9b9a9;
   margin-bottom:8px;
+  font-size:13px;
 }
 
-.settingDesc{
-  color:#718d78;
-  font-size:12px;
-  margin-bottom:9px;
-}
-
-.setting select{
+.setting select,
+.setting input{
   width:100%;
-  padding:10px;
-  background:#061009;
-  border:1px solid #204628;
-  border-radius:8px;
-  color:white;
+  background:#050905;
+  color:#fff;
+  border:1px solid #294129;
+  border-radius:7px;
+  padding:9px;
 }
 
-.toggle{
+.color-row{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.color{
+  width:35px;
+  height:35px;
+  border-radius:7px;
+  border:2px solid transparent;
+  cursor:pointer;
+}
+
+.color.active{
+  border-color:#fff;
+  box-shadow:0 0 0 2px var(--green);
 }
 
 .switch{
-  width:48px;
-  height:26px;
-  background:#1a2a1d;
-  border-radius:20px;
-  padding:3px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.switch span{
-  display:block;
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  background:#728378;
-  transition:.2s;
-}
-
-.switch.on{
-  background:#174d20;
-}
-
-.switch.on span{
-  transform:translateX(22px);
-  background:var(--green);
-}
-
-/* RESULT */
-
-.resultOverlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.48);
-  backdrop-filter:blur(3px);
-  z-index:30;
-  display:none;
+  display:flex!important;
+  justify-content:space-between;
   align-items:center;
-  justify-content:center;
+  gap:10px;
 }
 
-.resultOverlay.show{
-  display:flex;
-}
-
-.resultCard{
-  background:rgba(4,14,7,.96);
-  border:1px solid #397746;
-  border-radius:17px;
-  padding:26px 32px;
-  text-align:center;
-  box-shadow:0 20px 80px rgba(0,0,0,.7);
-}
-
-.resultIcon{
-  font-size:46px;
-}
-
-.resultCard h2{
-  margin:10px 0 4px;
-}
-
-.resultCard p{
-  color:#87a38c;
-  margin:0 0 16px;
-}
-
-/* CONFETTI */
-
-.confetti{
-  position:fixed;
-  width:8px;
-  height:14px;
-  z-index:200;
-  pointer-events:none;
-  animation:fall 2.2s linear forwards;
-}
-
-@keyframes fall{
-  from{
-    transform:translateY(-20px) rotate(0);
-    opacity:1;
-  }
-  to{
-    transform:translateY(100vh) rotate(720deg);
-    opacity:0;
-  }
+.switch input{
+  width:auto;
 }
 
 /* OTHER PAGES */
 
-.placeholderGrid{
+.card-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:14px;
+  max-width:1100px;
+  margin:20px auto;
 }
 
-.placeholder{
-  min-height:150px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  color:#76927d;
-}
-
-.placeholder .big{
-  font-size:42px;
-  margin-bottom:8px;
-}
-
-.chatBox{
-  max-width:900px;
-  margin:auto;
-}
-
-.chatMessages{
-  height:450px;
-  overflow:auto;
-  background:#040a06;
-  border:1px solid #173820;
+.card{
+  background:#081008;
+  border:1px solid #193119;
   border-radius:12px;
-  padding:14px;
+  padding:20px;
 }
 
-.msg{
-  margin:8px 0;
-  max-width:80%;
-  padding:10px 13px;
-  border-radius:11px;
-  line-height:1.45;
-}
-
-.msg.user{
-  margin-left:auto;
-  background:#153a1a;
-}
-
-.msg.ai{
-  background:#0a180e;
-  border:1px solid #173820;
-}
-
-.chatInput{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
-}
-
-.chatInput input{
-  flex:1;
-  background:#061009;
-  border:1px solid #204628;
-  color:white;
-  padding:12px;
-  border-radius:9px;
-}
-
-/* MOBILE */
-
-@media(max-width:1100px){
-  .gameLayout{
-    grid-template-columns:1fr;
-  }
-
-  .boardWrap{
-    max-width:760px;
-  }
-
-  .sidePanel{
-    max-width:760px;
-    margin:auto;
-    width:100%;
-  }
-
-  .gamePanel{
-    min-height:400px;
-  }
-}
-
-@media(max-width:800px){
-  .sidebar{
-    width:72px;
-    padding:12px 7px;
-  }
-
-  .brand{
-    justify-content:center;
-    padding-bottom:12px;
-  }
-
-  .brandName,
-  .brandSub,
-  .navTitle,
-  .navBtn span{
-    display:none;
-  }
-
-  .navBtn{
-    justify-content:center;
-    padding:12px 4px;
-  }
-
-  .main{
-    margin-left:72px;
-    width:calc(100% - 72px);
-  }
-
-  .topbar{
-    padding:0 12px;
-  }
-
-  .creator{
-    display:none;
-  }
-
-  .page{
-    padding:12px;
-  }
-
-  .chessPage{
-    padding:8px;
-  }
-
-  .gameLayout{
-    gap:10px;
-  }
-
-  .clockBox{
-    min-width:90px;
-    font-size:21px;
-  }
-
-  .piece{
-    font-size:clamp(28px,9vw,58px);
-  }
-}
-
-@media(max-width:550px){
-  .chessTitle h1{
-    font-size:20px;
-  }
-
-  .chessTitle small{
-    display:none;
-  }
-
-  .chessActions{
-    width:100%;
-  }
-
-  .chessActions .btn{
-    flex:1;
-  }
-
-  .playerCard{
-    gap:5px;
-  }
-
-  .playerInfo{
-    gap:6px;
-  }
-
-  .avatar{
-    width:32px;
-    height:32px;
-    font-size:17px;
-  }
-
-  .playerName{
-    font-size:12px;
-  }
-
-  .playerRating{
-    font-size:10px;
-  }
-
-  .clockBox{
-    min-width:80px;
-    padding:7px 9px;
-    font-size:18px;
-  }
-
-  .boardWrap{
-    border-radius:2px;
-  }
-
-  .gameButtons{
-    grid-template-columns:repeat(3,1fr);
-  }
+.card h3{
+  color:var(--green);
+  margin-top:0;
 }
 
 /* LOGIN */
@@ -1126,1421 +639,1780 @@ body:before{
 .login{
   position:fixed;
   inset:0;
-  z-index:500;
-  background:#010402;
+  z-index:200;
+  background:
+    radial-gradient(circle at center,#102610 0%,#020402 65%);
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
 }
 
 .login.hidden{
   display:none;
 }
 
-.loginBox{
-  width:min(430px,100%);
-  background:#061009;
-  border:1px solid #1e4c28;
-  border-radius:18px;
-  padding:30px;
+.login-box{
+  width:min(420px,90%);
+  background:#071007;
+  border:1px solid #295329;
+  border-radius:16px;
+  padding:28px;
+  box-shadow:0 20px 80px #000;
   text-align:center;
-  box-shadow:0 30px 100px rgba(0,0,0,.7);
 }
 
-.loginFox{
-  font-size:65px;
-}
-
-.loginBox h1{
+.login-box h1{
   color:var(--green);
-  margin:8px 0;
 }
 
-.loginBox p{
-  color:#75917c;
-}
-
-.loginBox input{
+.login-box input{
   width:100%;
+  background:#030603;
+  border:1px solid #284428;
+  color:#fff;
   padding:13px;
+  border-radius:8px;
   margin:8px 0;
-  background:#020805;
-  border:1px solid #1b4123;
-  color:white;
-  border-radius:9px;
 }
 
-.loginBox button{
+.primary{
   width:100%;
+  border:0;
+  background:var(--green);
+  color:#001000;
+  font-weight:900;
+  padding:13px;
+  border-radius:8px;
   margin-top:8px;
 }
 
-/* TOAST */
-
-.toast{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  z-index:600;
-  background:#09170c;
-  border:1px solid #285b31;
-  color:white;
-  padding:12px 15px;
-  border-radius:10px;
-  box-shadow:0 15px 40px rgba(0,0,0,.4);
-  transform:translateY(100px);
-  opacity:0;
-  transition:.25s;
+.primary:hover{
+  filter:brightness(1.12);
 }
 
-.toast.show{
-  transform:translateY(0);
-  opacity:1;
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+  .app{
+    grid-template-columns:80px 1fr;
+  }
+
+  .sidebar{
+    padding:14px 8px;
+  }
+
+  .logo{
+    justify-content:center;
+    font-size:0;
+  }
+
+  .logo span{
+    font-size:28px;
+  }
+
+  .nav button{
+    text-align:center;
+    font-size:0;
+    padding:14px 5px;
+  }
+
+  .nav button::first-letter{
+    font-size:20px;
+  }
+
+  .creator{
+    display:none;
+  }
+
+  .chess-layout{
+    grid-template-columns:1fr;
+  }
+
+  .side-panel{
+    min-height:300px;
+  }
+
+  .board-shell{
+    width:min(90vw,760px);
+    min-width:0;
+  }
+}
+
+@media(max-width:650px){
+  .app{
+    display:block;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
+  .topbar{
+    height:55px;
+  }
+
+  .page{
+    padding:12px;
+  }
+
+  .chess-page{
+    padding:8px;
+  }
+
+  .board-shell{
+    width:100%;
+  }
+
+  .square{
+    font-size:11vw;
+  }
+
+  .clockbox{
+    min-width:95px;
+    font-size:22px;
+  }
+
+  .settings-grid{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="matrix"></canvas>
-
 <!-- LOGIN -->
-
 <div class="login" id="login">
-  <div class="loginBox">
-    <div class="loginFox">🦊</div>
-    <h1>FOXIE</h1>
-    <p>Your AI • Games • World • Social platform</p>
-
-    <input id="loginName" placeholder="Choose your display name">
-
-    <button class="btn primary" onclick="enterFoxie()">
-      Enter Foxie
-    </button>
+  <div class="login-box">
+    <div style="font-size:60px">🦊</div>
+    <h1>Welcome to Foxie</h1>
+    <p style="color:#829482">Your Foxie world starts here.</p>
+    <input id="displayName" placeholder="Choose your display name">
+    <button class="primary" id="enterBtn">Enter Foxie</button>
   </div>
 </div>
 
 <div class="app">
 
-<!-- SIDEBAR -->
-
-<aside class="sidebar">
-
-  <div class="brand">
-    <div class="brandIcon">🦊</div>
-    <div>
-      <div class="brandName">FOXIE</div>
-      <div class="brandSub">AI • GAMES • WORLD</div>
-    </div>
-  </div>
-
-  <div class="navSection">
-
-    <div class="navTitle">Main</div>
-
-    <button class="navBtn active" data-page="home">
-      <span class="navIcon">🏠</span>
-      <span>Home</span>
-    </button>
-
-    <button class="navBtn" data-page="chat">
-      <span class="navIcon">💬</span>
-      <span>Chat with Foxie</span>
-    </button>
-
-    <button class="navBtn" data-page="games">
-      <span class="navIcon">🎮</span>
-      <span>Games</span>
-    </button>
-
-    <button class="navBtn" data-page="chess">
-      <span class="navIcon">♟️</span>
-      <span>Chess</span>
-    </button>
-
-    <button class="navBtn" data-page="world">
-      <span class="navIcon">🌎</span>
-      <span>Foxie World</span>
-    </button>
-
-    <button class="navBtn" data-page="avatar">
-      <span class="navIcon">🧑</span>
-      <span>Avatar</span>
-    </button>
-
-    <div class="navTitle">Social</div>
-
-    <button class="navBtn" data-page="social">
-      <span class="navIcon">👥</span>
-      <span>Social</span>
-    </button>
-
-    <button class="navBtn" data-page="messages">
-      <span class="navIcon">✉️</span>
-      <span>Messages</span>
-    </button>
-
-    <button class="navBtn" data-page="leaderboard">
-      <span class="navIcon">🏆</span>
-      <span>Leaderboard</span>
-    </button>
-
-    <div class="navTitle">Learn</div>
-
-    <button class="navBtn" data-page="academy">
-      <span class="navIcon">🎓</span>
-      <span>Foxie Academy</span>
-    </button>
-
-    <button class="navBtn" data-page="maps">
-      <span class="navIcon">🗺️</span>
-      <span>Maps</span>
-    </button>
-
-    <button class="navBtn" data-page="events">
-      <span class="navIcon">🎉</span>
-      <span>Events</span>
-    </button>
-
-    <div class="navTitle">Creator</div>
-
-    <button class="navBtn" data-page="creator">
-      <span class="navIcon">⚙️</span>
-      <span>Creator Mode</span>
-    </button>
-
-  </div>
-
-</aside>
-
-<!-- MAIN -->
-
-<main class="main">
-
-  <header class="topbar">
-
-    <div class="topTitle" id="topTitle">
-      Welcome to Foxie
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <span>🦊</span>
+      <span>FOXIE</span>
     </div>
 
-    <div class="topRight">
-      <div class="creator">
-        Created by Jayden Wayne Macdonald
-      </div>
-
-      <div class="clock" id="globalClock">
-        --:--:--
-      </div>
+    <div class="nav">
+      <button class="active" data-page="home">🏠 Home</button>
+      <button data-page="chat">💬 Chat</button>
+      <button data-page="games">🎮 Games</button>
+      <button data-page="chess">♟️ Chess</button>
+      <button data-page="world">🌎 Foxie World</button>
+      <button data-page="avatar">🧑 Avatar</button>
+      <button data-page="social">👥 Social</button>
+      <button data-page="messages">✉️ Messages</button>
+      <button data-page="leaderboard">🏆 Leaderboard</button>
+      <button data-page="academy">🎓 Academy</button>
+      <button data-page="maps">🗺️ Maps</button>
+      <button data-page="events">🎉 Events</button>
+      <button data-page="creator">🛠️ Creator Mode</button>
     </div>
 
-  </header>
-
-  <!-- HOME -->
-
-  <section class="page active" id="page-home">
-
-    <div class="pageHeader">
-      <h1>Welcome to Foxie 🦊</h1>
-      <p>Your AI, gaming and virtual world platform.</p>
+    <div class="creator">
+      Created by<br>
+      <b>Jayden Wayne Macdonald</b>
     </div>
+  </aside>
 
-    <div class="placeholderGrid">
+  <main class="main">
 
-      <div class="card placeholder">
-        <div class="big">🦊</div>
-        <strong>Foxie AI</strong>
-        <p>Chat with your AI assistant.</p>
+    <header class="topbar">
+      <div id="welcome">Foxie 🦊</div>
+      <div class="created">
+        Created by Jayden Wayne Macdonald ·
+        <span class="clock" id="clock">--:--:--</span>
       </div>
-
-      <div class="card placeholder">
-        <div class="big">♟️</div>
-        <strong>Foxie Chess</strong>
-        <p>Play chess with friends or Foxie.</p>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🎮</div>
-        <strong>Games</strong>
-        <p>Play games inside Foxie.</p>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🌎</div>
-        <strong>Foxie World</strong>
-        <p>Explore the Foxie universe.</p>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- CHAT -->
-
-  <section class="page" id="page-chat">
-
-    <div class="pageHeader">
-      <h1>Chat with Foxie 🦊</h1>
-      <p>Ask Foxie anything.</p>
-    </div>
-
-    <div class="chatBox">
-
-      <div class="chatMessages" id="chatMessages">
-        <div class="msg ai">
-          Hey! I'm Foxie 🦊 What are we building today?
-        </div>
-      </div>
-
-      <div class="chatInput">
-        <input
-          id="chatInput"
-          placeholder="Message Foxie..."
-          onkeydown="if(event.key==='Enter')sendChat()"
-        >
-        <button class="btn primary" onclick="sendChat()">
-          Send
-        </button>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- GAMES -->
-
-  <section class="page" id="page-games">
-
-    <div class="pageHeader">
-      <h1>Games 🎮</h1>
-      <p>Foxie's gaming hub.</p>
-    </div>
-
-    <div class="placeholderGrid">
-
-      <div class="card placeholder">
-        <div class="big">♟️</div>
-        <strong>Chess</strong>
-        <p>Full chess experience.</p>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🐍</div>
-        <strong>Snake</strong>
-        <p>Classic arcade action.</p>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🏎️</div>
-        <strong>Foxie Racing</strong>
-        <p>Drive around Foxie City.</p>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🦊</div>
-        <strong>Foxie World</strong>
-        <p>Explore and collect Foxies.</p>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- CHESS -->
-
-  <section class="page chessPage" id="page-chess">
-
-    <div class="chessShell">
-
-      <div class="chessTop">
-
-        <div class="chessTitle">
-          <div style="font-size:36px">♟️</div>
-
-          <div>
-            <h1>Foxie Chess</h1>
-            <small>Play • Train • Analyse • Improve</small>
-          </div>
-        </div>
-
-        <div class="chessActions">
-
-          <button class="btn" onclick="newGame()">
-            ＋ New Game
-          </button>
-
-          <button class="btn" onclick="flipBoard()">
-            ⇄ Flip
-          </button>
-
-          <button class="btn" onclick="openSettings()">
-            ⚙ Settings
-          </button>
-
-        </div>
-
-      </div>
-
-      <div class="chessTabs">
-
-        <button class="chessTab active">
-          Play
-        </button>
-
-        <button class="chessTab">
-          Openings
-        </button>
-
-        <button class="chessTab">
-          Training
-        </button>
-
-        <button class="chessTab">
-          Analysis
-        </button>
-
-        <button class="chessTab">
-          Foxie Coach
-        </button>
-
-        <button class="chessTab">
-          Stats
-        </button>
-
-      </div>
-
-      <div class="gameLayout">
-
-        <!-- BOARD -->
-
-        <div class="boardColumn">
-
-          <!-- BLACK PLAYER -->
-
-          <div class="playerCard">
-
-            <div class="playerInfo">
-
-              <div class="avatar">
-                🦊
-              </div>
-
-              <div>
-                <div class="playerName">
-                  Foxie Bot
-                </div>
-
-                <div class="playerRating">
-                  1200 • Level 3
-                </div>
-              </div>
-
-            </div>
-
-            <div
-              class="clockBox"
-              id="blackClock"
-            >
-              10:00
-            </div>
-
-          </div>
-
-          <div class="boardFrame">
-
-            <div
-              class="boardWrap theme-green"
-              id="boardWrap"
-            >
-
-              <div
-                class="board coordsInside"
-                id="chessBoard"
-              ></div>
-
-              <div
-                class="resultOverlay"
-                id="resultOverlay"
-              >
-
-                <div class="resultCard">
-
-                  <div
-                    class="resultIcon"
-                    id="resultIcon"
-                  >
-                    🦊
-                  </div>
-
-                  <h2 id="resultTitle">
-                    Game Over
-                  </h2>
-
-                  <p id="resultText">
-                    Well played!
-                  </p>
-
-                  <button
-                    class="btn primary"
-                    onclick="newGame()"
-                  >
-                    Play Again
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- WHITE PLAYER -->
-
-          <div class="playerCard" style="margin-top:8px">
-
-            <div class="playerInfo">
-
-              <div class="avatar">
-                👤
-              </div>
-
-              <div>
-                <div class="playerName" id="playerDisplay">
-                  Player
-                </div>
-
-                <div class="playerRating">
-                  <span id="ratingDisplay">1000</span> • Foxie Player
-                </div>
-              </div>
-
-            </div>
-
-            <div
-              class="clockBox active"
-              id="whiteClock"
-            >
-              10:00
-            </div>
-
-          </div>
-
-          <div class="boardFooter">
-
-            <button
-              class="btn"
-              onclick="undoMove()"
-            >
-              ↶ Undo
-            </button>
-
-            <button
-              class="btn danger"
-              onclick="resignGame()"
-            >
-              ⚑ Resign
-            </button>
-
-            <button
-              class="btn"
-              onclick="newGame()"
-            >
-              ⟳ Restart
-            </button>
-
-          </div>
-
-        </div>
-
-        <!-- RIGHT PANEL -->
-
-        <div class="sidePanel">
-
-          <div class="gamePanel">
-
-            <div class="panelHeader">
-
-              <h3>Game</h3>
-
-              <span id="gameStatus">
-                Your move
-              </span>
-
-            </div>
-
-            <div
-              class="moveList"
-              id="moveList"
-            >
-            </div>
-
-            <div
-              class="captured"
-              id="capturedPieces"
-            >
-              Captured: —
-            </div>
-
-            <div class="gameButtons">
-
-              <button
-                class="btn"
-                onclick="undoMove()"
-              >
-                ↶ Undo
-              </button>
-
-              <button
-                class="btn"
-                onclick="flipBoard()"
-              >
-                ⇄ Flip
-              </button>
-
-              <button
-                class="btn"
-                onclick="openSettings()"
-              >
-                ⚙
-              </button>
-
-            </div>
-
-            <div class="quickStats">
-
-              <div class="stat">
-                <strong id="winsStat">0</strong>
-                <span>Wins</span>
-              </div>
-
-              <div class="stat">
-                <strong id="drawsStat">0</strong>
-                <span>Draws</span>
-              </div>
-
-              <div class="stat">
-                <strong id="lossesStat">0</strong>
-                <span>Losses</span>
-              </div>
-
-            </div>
-
+    </header>
+
+    <!-- HOME -->
+    <section class="page active" id="page-home">
+      <div class="hero">
+        <h1>Welcome to Foxie 🦊</h1>
+        <p>Your games, AI, world, friends and adventures.</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>♟️ Chess</h3>
+            <p>Play, train, analyse and customize your board.</p>
+            <button class="control" data-go="chess">Play Chess</button>
           </div>
 
           <div class="card">
+            <h3>🎮 Games</h3>
+            <p>Explore the Foxie game universe.</p>
+          </div>
 
-            <h3 style="margin-top:0">
-              Foxie Chess
-            </h3>
+          <div class="card">
+            <h3>🤖 Foxie AI</h3>
+            <p>Chat with your Foxie assistant.</p>
+          </div>
 
-            <p style="color:#79917e;font-size:13px;line-height:1.6">
-              Play a full game against Foxie.
-              Use the board settings to change
-              themes, coordinates, sounds,
-              animations and legal move hints.
-            </p>
+          <div class="card">
+            <h3>🌎 Foxie World</h3>
+            <p>Explore cities, forests, caves and secret areas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <div
-              style="
-                display:grid;
-                grid-template-columns:1fr 1fr;
-                gap:7px;
-              "
-            >
+    <!-- CHAT -->
+    <section class="page" id="page-chat">
+      <div class="hero">
+        <h1>Chat with Foxie 🦊</h1>
+        <div class="card">
+          <div id="chatMessages" style="min-height:300px"></div>
+          <input id="chatInput" placeholder="Ask Foxie something..." style="width:80%;padding:12px;background:#030603;color:white;border:1px solid #294129;border-radius:8px">
+          <button class="control" id="chatSend">Send</button>
+        </div>
+      </div>
+    </section>
 
-              <button class="btn">
-                ⚡ Blitz
-              </button>
+    <!-- CHESS -->
+    <section class="page chess-page" id="page-chess">
 
-              <button class="btn">
-                🕐 Rapid
-              </button>
+      <div class="chess-layout">
 
-              <button class="btn">
-                🧠 Training
-              </button>
+        <div class="game-area">
 
-              <button class="btn">
-                🏆 Ranked
-              </button>
-
+          <!-- BLACK PLAYER -->
+          <div class="player-card">
+            <div class="player">
+              <div class="avatar">🦊</div>
+              <div>
+                <div class="player-name">Foxie Bot</div>
+                <div class="rating">1200</div>
+              </div>
             </div>
 
+            <div class="clockbox" id="blackClock">10:00</div>
+          </div>
+
+          <!-- BOARD -->
+          <div class="board-shell">
+            <div class="board" id="board"></div>
+          </div>
+
+          <!-- WHITE PLAYER -->
+          <div class="player-card" style="margin-top:9px">
+            <div class="player">
+              <div class="avatar">🙂</div>
+              <div>
+                <div class="player-name" id="whiteName">Player</div>
+                <div class="rating" id="ratingText">Rating 1200</div>
+              </div>
+            </div>
+
+            <div class="clockbox active" id="whiteClock">10:00</div>
+          </div>
+
+          <!-- CONTROLS -->
+          <div class="board-controls">
+            <button class="control" id="newGameBtn">＋ New Game</button>
+            <button class="control" id="undoBtn">↶ Undo</button>
+            <button class="control" id="flipBtn">↕ Flip</button>
+            <button class="control" id="settingsBtn">⚙ Settings</button>
+            <button class="control" id="resignBtn">🏳 Resign</button>
           </div>
 
         </div>
 
+        <!-- SIDE PANEL -->
+        <aside class="side-panel">
+
+          <div class="tabs">
+            <button class="tab active" data-tab="moves">Moves</button>
+            <button class="tab" data-tab="openings">Openings</button>
+            <button class="tab" data-tab="coach">Coach</button>
+            <button class="tab" data-tab="stats">Stats</button>
+          </div>
+
+          <div class="panel-content">
+
+            <div class="tab-content" id="tab-moves">
+              <div class="section-title">Game</div>
+              <div class="moves" id="moves"></div>
+
+              <div class="divider"></div>
+
+              <button class="control" id="analysisBtn" style="width:100%">
+                🔎 Analyse Position
+              </button>
+            </div>
+
+            <div class="tab-content" id="tab-openings" style="display:none">
+              <div class="section-title">Opening Explorer</div>
+
+              <div class="card">
+                <b>Italian Game</b>
+                <p>1.e4 e5 2.Nf3 Nc6 3.Bc4</p>
+              </div>
+
+              <div class="card">
+                <b>Sicilian Defence</b>
+                <p>1.e4 c5</p>
+              </div>
+
+              <div class="card">
+                <b>Queen's Gambit</b>
+                <p>1.d4 d5 2.c4</p>
+              </div>
+            </div>
+
+            <div class="tab-content" id="tab-coach" style="display:none">
+              <div class="section-title">🦊 Foxie Coach</div>
+              <div class="card">
+                Make a move and Foxie can explain what happened.
+              </div>
+            </div>
+
+            <div class="tab-content" id="tab-stats" style="display:none">
+              <div class="section-title">Your Chess Stats</div>
+
+              <div class="stat-grid">
+                <div class="stat">
+                  <b id="wins">0</b>
+                  Wins
+                </div>
+
+                <div class="stat">
+                  <b id="losses">0</b>
+                  Losses
+                </div>
+
+                <div class="stat">
+                  <b id="draws">0</b>
+                  Draws
+                </div>
+
+                <div class="stat">
+                  <b id="streak">0</b>
+                  Streak
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </aside>
+
       </div>
+    </section>
 
-    </div>
+    <!-- OTHER PAGES -->
 
-  </section>
-
-  <!-- WORLD -->
-
-  <section class="page" id="page-world">
-
-    <div class="pageHeader">
-      <h1>Foxie World 🌎</h1>
-      <p>Explore cities, islands, forests and secret places.</p>
-    </div>
-
-    <div class="placeholderGrid">
-
-      <div class="card placeholder">
-        <div class="big">🏙️</div>
-        <strong>Foxie City</strong>
+    <section class="page" id="page-games">
+      <div class="hero">
+        <h1>🎮 Foxie Games</h1>
+        <div class="card-grid">
+          <div class="card"><h3>♟️ Chess</h3><p>Classic chess.</p></div>
+          <div class="card"><h3>🐍 Snake</h3><p>Classic arcade Snake.</p></div>
+          <div class="card"><h3>🔴 Connect 4</h3><p>Four in a row.</p></div>
+          <div class="card"><h3>🏎️ Foxie Racing</h3><p>Drive through Foxie City.</p></div>
+          <div class="card"><h3>🌎 Foxie World</h3><p>Explore the world.</p></div>
+        </div>
       </div>
+    </section>
 
-      <div class="card placeholder">
-        <div class="big">🌲</div>
-        <strong>Forest</strong>
+    <section class="page" id="page-world">
+      <div class="hero">
+        <h1>🌎 Foxie World</h1>
+        <div class="card-grid">
+          <div class="card"><h3>🏙️ Foxie City</h3><p>Explore the city.</p></div>
+          <div class="card"><h3>🌲 Forest</h3><p>Find hidden areas.</p></div>
+          <div class="card"><h3>🏔️ Mountains</h3><p>Explore the peaks.</p></div>
+          <div class="card"><h3>🌊 Ocean</h3><p>Discover underwater areas.</p></div>
+        </div>
       </div>
+    </section>
 
-      <div class="card placeholder">
-        <div class="big">🏝️</div>
-        <strong>Islands</strong>
+    <section class="page" id="page-avatar">
+      <div class="hero">
+        <h1>🧑 Avatar</h1>
+        <div class="card">
+          Customize your Foxie character, clothes, accessories and animations.
+        </div>
       </div>
+    </section>
 
-      <div class="card placeholder">
-        <div class="big">🚀</div>
-        <strong>Space</strong>
+    <section class="page" id="page-social">
+      <div class="hero">
+        <h1>👥 Social</h1>
+        <div class="card">Friends, profiles, posts and groups.</div>
       </div>
+    </section>
 
-    </div>
-
-  </section>
-
-  <!-- AVATAR -->
-
-  <section class="page" id="page-avatar">
-
-    <div class="pageHeader">
-      <h1>Avatar 🧑</h1>
-      <p>Customize your Foxie character.</p>
-    </div>
-
-    <div class="card">
-      <div style="font-size:100px;text-align:center">🦊</div>
-      <h2 style="text-align:center">Foxie Avatar</h2>
-      <p style="text-align:center;color:#718b77">
-        More avatar customization coming here.
-      </p>
-    </div>
-
-  </section>
-
-  <!-- SOCIAL -->
-
-  <section class="page" id="page-social">
-
-    <div class="pageHeader">
-      <h1>Social 👥</h1>
-      <p>Friends, posts, groups and Foxie community.</p>
-    </div>
-
-    <div class="placeholderGrid">
-
-      <div class="card placeholder">
-        <div class="big">👥</div>
-        <strong>Friends</strong>
+    <section class="page" id="page-messages">
+      <div class="hero">
+        <h1>✉️ Messages</h1>
+        <div class="card">Your Foxie messages will appear here.</div>
       </div>
+    </section>
 
-      <div class="card placeholder">
-        <div class="big">📝</div>
-        <strong>Posts</strong>
+    <section class="page" id="page-leaderboard">
+      <div class="hero">
+        <h1>🏆 Leaderboard</h1>
+        <div class="card">Foxie rankings and tournaments.</div>
       </div>
+    </section>
 
-      <div class="card placeholder">
-        <div class="big">💬</div>
-        <strong>Groups</strong>
+    <section class="page" id="page-academy">
+      <div class="hero">
+        <h1>🎓 Foxie Academy</h1>
+        <div class="card">Learn chess, coding, maths, science and more.</div>
       </div>
+    </section>
 
-    </div>
-
-  </section>
-
-  <!-- MESSAGES -->
-
-  <section class="page" id="page-messages">
-
-    <div class="pageHeader">
-      <h1>Messages ✉️</h1>
-      <p>Your Foxie conversations.</p>
-    </div>
-
-    <div class="card">
-      No messages yet.
-    </div>
-
-  </section>
-
-  <!-- LEADERBOARD -->
-
-  <section class="page" id="page-leaderboard">
-
-    <div class="pageHeader">
-      <h1>Leaderboard 🏆</h1>
-      <p>Top Foxie players.</p>
-    </div>
-
-    <div class="card">
-
-      <div style="
-        display:grid;
-        grid-template-columns:50px 1fr 100px;
-        padding:12px;
-        border-bottom:1px solid #173820;
-      ">
-        <strong>#</strong>
-        <strong>Player</strong>
-        <strong>Rating</strong>
+    <section class="page" id="page-maps">
+      <div class="hero">
+        <h1>🗺️ Maps</h1>
+        <div class="card">Explore Foxie locations and events.</div>
       </div>
+    </section>
 
-      <div style="
-        display:grid;
-        grid-template-columns:50px 1fr 100px;
-        padding:14px 12px;
-      ">
-        <span>1</span>
-        <span>Foxie</span>
-        <span>1200</span>
+    <section class="page" id="page-events">
+      <div class="hero">
+        <h1>🎉 Events</h1>
+        <div class="card">Daily, weekly and seasonal Foxie events.</div>
       </div>
+    </section>
 
-    </div>
-
-  </section>
-
-  <!-- ACADEMY -->
-
-  <section class="page" id="page-academy">
-
-    <div class="pageHeader">
-      <h1>Foxie Academy 🎓</h1>
-      <p>Learn, practise and improve.</p>
-    </div>
-
-    <div class="placeholderGrid">
-
-      <div class="card placeholder">
-        <div class="big">💻</div>
-        <strong>Coding</strong>
+    <section class="page" id="page-creator">
+      <div class="hero">
+        <h1>🛠️ Creator Mode</h1>
+        <div class="card">
+          Secure creator authentication and Foxie management tools.
+        </div>
       </div>
+    </section>
 
-      <div class="card placeholder">
-        <div class="big">🔢</div>
-        <strong>Maths</strong>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🌍</div>
-        <strong>Languages</strong>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">♟️</div>
-        <strong>Chess Academy</strong>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- MAPS -->
-
-  <section class="page" id="page-maps">
-
-    <div class="pageHeader">
-      <h1>Foxie Maps 🗺️</h1>
-      <p>Find places, games, events and quests.</p>
-    </div>
-
-    <div
-      class="card"
-      style="
-        min-height:450px;
-        display:grid;
-        place-items:center;
-        background:
-          radial-gradient(circle,#12361b 1px,transparent 1px);
-        background-size:25px 25px;
-      "
-    >
-      <div style="text-align:center">
-        <div style="font-size:70px">🗺️</div>
-        <h2>Foxie World Map</h2>
-        <p style="color:#78937f">
-          Interactive map coming here.
-        </p>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- EVENTS -->
-
-  <section class="page" id="page-events">
-
-    <div class="pageHeader">
-      <h1>Events 🎉</h1>
-      <p>Foxie tournaments and special events.</p>
-    </div>
-
-    <div class="placeholderGrid">
-
-      <div class="card placeholder">
-        <div class="big">🏆</div>
-        <strong>Hourly Tournaments</strong>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🎃</div>
-        <strong>Seasonal Events</strong>
-      </div>
-
-      <div class="card placeholder">
-        <div class="big">🦊</div>
-        <strong>Foxie Hunts</strong>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- CREATOR -->
-
-  <section class="page" id="page-creator">
-
-    <div class="pageHeader">
-      <h1>Creator Mode ⚙️</h1>
-      <p>Foxie owner controls.</p>
-    </div>
-
-    <div class="card">
-
-      <h3>Creator Authentication</h3>
-
-      <p style="color:#718b77">
-        Creator Mode requires secure authentication.
-        Your display name alone never grants owner access.
-      </p>
-
-      <input
-        id="creatorCode"
-        type="password"
-        placeholder="Creator code"
-        style="
-          width:100%;
-          padding:12px;
-          background:#020805;
-          border:1px solid #204628;
-          color:white;
-          border-radius:8px;
-        "
-      >
-
-      <button
-        class="btn primary"
-        style="margin-top:8px"
-        onclick="creatorLogin()"
-      >
-        Authenticate
-      </button>
-
-      <div id="creatorStatus"
-        style="
-          margin-top:12px;
-          color:#75917b;
-        "
-      >
-      </div>
-
-    </div>
-
-  </section>
-
-</main>
+  </main>
 </div>
 
 <!-- SETTINGS MODAL -->
 
-<div
-  class="settingsOverlay"
-  id="settingsOverlay"
-  onclick="if(event.target===this)closeSettings()"
->
+<div class="modal" id="settingsModal">
 
-  <div class="settingsModal">
+  <div class="settings">
 
-    <div class="settingsHead">
-
-      <h2>Board Settings ⚙️</h2>
-
-      <button
-        class="closeBtn"
-        onclick="closeSettings()"
-      >
-        ×
-      </button>
-
+    <div class="settings-head">
+      <h2>⚙ Foxie Chess Settings</h2>
+      <button class="close" id="closeSettings">✕</button>
     </div>
 
-    <div class="settingsBody">
+    <div class="settings-body">
 
-      <!-- THEME -->
+      <div class="settings-grid">
 
-      <div class="setting">
+        <div class="setting">
+          <label>Board Theme</label>
 
-        <div class="settingLabel">
-          Board Theme
+          <div class="color-row">
+            <button class="color active" data-theme="classic"
+              style="background:linear-gradient(135deg,#f0d9b5 50%,#b58863 50%)"></button>
+
+            <button class="color" data-theme="green"
+              style="background:linear-gradient(135deg,#eeeed2 50%,#769656 50%)"></button>
+
+            <button class="color" data-theme="blue"
+              style="background:linear-gradient(135deg,#dbe7ef 50%,#4d7898 50%)"></button>
+
+            <button class="color" data-theme="purple"
+              style="background:linear-gradient(135deg,#eadcf7 50%,#8064a2 50%)"></button>
+
+            <button class="color" data-theme="neon"
+              style="background:linear-gradient(135deg,#d7ffd0 50%,#246b27 50%)"></button>
+
+            <button class="color" data-theme="ice"
+              style="background:linear-gradient(135deg,#e8f8ff 50%,#5d91a8 50%)"></button>
+          </div>
         </div>
 
-        <div class="settingDesc">
-          Choose the colours of your Foxie chess board.
+        <div class="setting">
+          <label>Piece Style</label>
+
+          <select id="pieceStyle">
+            <option value="classic">Classic</option>
+            <option value="glass">Glass</option>
+            <option value="neon">Neon</option>
+            <option value="foxie">Foxie</option>
+            <option value="royal">Royal</option>
+          </select>
         </div>
 
-        <select id="boardTheme">
-          <option value="green">Foxie Green</option>
-          <option value="classic">Classic Brown</option>
-          <option value="blue">Ocean Blue</option>
-          <option value="purple">Royal Purple</option>
-          <option value="neon">Neon Foxie</option>
-          <option value="dark">Dark Stone</option>
-        </select>
+        <div class="setting">
+          <label>Background</label>
 
-      </div>
-
-      <!-- COORDINATES -->
-
-      <div class="setting">
-
-        <div class="settingLabel">
-          Coordinates
+          <select id="background">
+            <option value="dark">Foxie Dark</option>
+            <option value="forest">Forest</option>
+            <option value="space">Space</option>
+            <option value="city">Foxie City</option>
+            <option value="midnight">Midnight</option>
+          </select>
         </div>
 
-        <div class="settingDesc">
-          Show a-h and 1-8 around the board.
+        <div class="setting">
+          <label>Piece Animation</label>
+
+          <select id="animation">
+            <option value="natural">Natural</option>
+            <option value="slow">Slow</option>
+            <option value="medium">Medium</option>
+            <option value="fast">Fast</option>
+            <option value="off">Off</option>
+          </select>
         </div>
 
-        <select id="coordinates">
-          <option value="inside">Inside board</option>
-          <option value="none">Hidden</option>
-        </select>
+        <div class="setting">
+          <label>Move Sound</label>
 
-      </div>
-
-      <!-- LEGAL MOVES -->
-
-      <div class="setting">
-
-        <div class="toggle">
-
-          <div>
-            <div class="settingLabel">
-              Show Legal Moves
-            </div>
-
-            <div class="settingDesc">
-              Display dots for legal destinations.
-            </div>
-          </div>
-
-          <div
-            class="switch on"
-            id="legalToggle"
-            onclick="toggleSetting('legal')"
-          >
-            <span></span>
-          </div>
-
+          <select id="sound">
+            <option value="foxie">Foxie</option>
+            <option value="classic">Classic</option>
+            <option value="digital">Digital</option>
+            <option value="arcade">Arcade</option>
+            <option value="off">Off</option>
+          </select>
         </div>
 
-      </div>
+        <div class="setting">
+          <label>Coordinates</label>
 
-      <!-- HIGHLIGHT -->
-
-      <div class="setting">
-
-        <div class="toggle">
-
-          <div>
-            <div class="settingLabel">
-              Highlight Last Move
-            </div>
-
-            <div class="settingDesc">
-              Highlight the previous move.
-            </div>
-          </div>
-
-          <div
-            class="switch on"
-            id="highlightToggle"
-            onclick="toggleSetting('highlight')"
-          >
-            <span></span>
-          </div>
-
+          <select id="coordinates">
+            <option value="outside">Outside</option>
+            <option value="inside">Inside</option>
+            <option value="off">Off</option>
+          </select>
         </div>
 
-      </div>
+        <div class="setting">
+          <label>Board Size</label>
 
-      <!-- SOUNDS -->
+          <select id="boardSize">
+            <option value="normal">Normal</option>
+            <option value="large">Large</option>
+            <option value="small">Small</option>
+          </select>
+        </div>
 
-      <div class="setting">
+        <div class="setting switch">
+          <label>Show Legal Moves</label>
+          <input type="checkbox" id="legalMoves" checked>
+        </div>
 
-        <div class="toggle">
+        <div class="setting switch">
+          <label>Show Last Move</label>
+          <input type="checkbox" id="lastMove" checked>
+        </div>
 
-          <div>
-            <div class="settingLabel">
-              Move Sounds
-            </div>
-
-            <div class="settingDesc">
-              Play a sound when pieces move.
-            </div>
-          </div>
-
-          <div
-            class="switch on"
-            id="soundToggle"
-            onclick="toggleSetting('sound')"
-          >
-            <span></span>
-          </div>
-
+        <div class="setting switch">
+          <label>Show Check Highlight</label>
+          <input type="checkbox" id="checkHighlight" checked>
         </div>
 
       </div>
 
-      <!-- ANIMATION -->
+      <div style="margin-top:18px;display:flex;gap:8px">
+        <button class="primary" id="saveSettings" style="width:auto;padding:12px 25px">
+          Save Theme
+        </button>
 
-      <div class="setting">
-
-        <div class="toggle">
-
-          <div>
-            <div class="settingLabel">
-              Piece Animation
-            </div>
-
-            <div class="settingDesc">
-              Add movement animation to pieces.
-            </div>
-          </div>
-
-          <div
-            class="switch on"
-            id="animationToggle"
-            onclick="toggleSetting('animation')"
-          >
-            <span></span>
-          </div>
-
-        </div>
-
+        <button class="control" id="resetSettings">
+          Reset
+        </button>
       </div>
-
-      <!-- SAVE -->
-
-      <button
-        class="btn primary"
-        style="width:100%;margin-top:10px"
-        onclick="saveSettings()"
-      >
-        Save Settings
-      </button>
 
     </div>
-
   </div>
-
 </div>
 
-<div class="toast" id="toast"></div>
-
-<script>
+<script type="module">
 
 /* =========================================================
-   FOXIE GLOBAL
-========================================================= */
+   FOXIE CHESS
+   ========================================================= */
 
-const BACKEND =
-  "https://foxie-ai-backend.onrender.com";
+import { Chess } from
+  "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
 
-let displayName =
-  localStorage.getItem("foxieDisplayName") || "";
 
-function enterFoxie(){
+/* -----------------------------
+   GLOBAL STATE
+----------------------------- */
 
-  const input =
-    document.getElementById("loginName");
+let chess = new Chess();
 
+let boardFlipped = false;
+let selectedSquare = null;
+let legalTargets = [];
+let gameOver = false;
+
+let whiteTime = 600;
+let blackTime = 600;
+
+let timer = null;
+
+let settings = {
+  theme:"classic",
+  pieceStyle:"classic",
+  background:"dark",
+  animation:"natural",
+  sound:"foxie",
+  coordinates:"outside",
+  boardSize:"normal",
+  legalMoves:true,
+  lastMove:true,
+  checkHighlight:true
+};
+
+let stats = {
+  wins:0,
+  losses:0,
+  draws:0,
+  streak:0
+};
+
+try{
+  const saved = localStorage.getItem("foxieChessSettings");
+  if(saved) settings = {...settings,...JSON.parse(saved)};
+}catch(e){}
+
+try{
+  const savedStats = localStorage.getItem("foxieChessStats");
+  if(savedStats) stats = {...stats,...JSON.parse(savedStats)};
+}catch(e){}
+
+
+/* -----------------------------
+   PIECES
+----------------------------- */
+
+const pieces = {
+
+  classic:{
+    w:{
+      p:"♙",n:"♘",b:"♗",r:"♖",q:"♕",k:"♔"
+    },
+    b:{
+      p:"♟",n:"♞",b:"♝",r:"♜",q:"♛",k:"♚"
+    }
+  },
+
+  royal:{
+    w:{
+      p:"♙",n:"♘",b:"♗",r:"♖",q:"♕",k:"♔"
+    },
+    b:{
+      p:"♟",n:"♞",b:"♝",r:"♜",q:"♛",k:"♚"
+    }
+  },
+
+  foxie:{
+    w:{
+      p:"♙",n:"♘",b:"♗",r:"♖",q:"♕",k:"♔"
+    },
+    b:{
+      p:"♟",n:"♞",b:"♝",r:"♜",q:"♛",k:"♚"
+    }
+  },
+
+  glass:{
+    w:{
+      p:"♙",n:"♘",b:"♗",r:"♖",q:"♕",k:"♔"
+    },
+    b:{
+      p:"♟",n:"♞",b:"♝",r:"♜",q:"♛",k:"♚"
+    }
+  },
+
+  neon:{
+    w:{
+      p:"♙",n:"♘",b:"♗",r:"♖",q:"♕",k:"♔"
+    },
+    b:{
+      p:"♟",n:"♞",b:"♝",r:"♜",q:"♛",k:"♚"
+    }
+  }
+};
+
+
+/* -----------------------------
+   BOARD THEMES
+----------------------------- */
+
+const themes = {
+
+  classic:{
+    light:"#f0d9b5",
+    dark:"#b58863"
+  },
+
+  green:{
+    light:"#eeeed2",
+    dark:"#769656"
+  },
+
+  blue:{
+    light:"#dbe7ef",
+    dark:"#4d7898"
+  },
+
+  purple:{
+    light:"#eadcf7",
+    dark:"#8064a2"
+  },
+
+  neon:{
+    light:"#d7ffd0",
+    dark:"#246b27"
+  },
+
+  ice:{
+    light:"#e8f8ff",
+    dark:"#5d91a8"
+  }
+};
+
+
+/* -----------------------------
+   DOM
+----------------------------- */
+
+const boardEl = document.getElementById("board");
+const movesEl = document.getElementById("moves");
+
+const settingsModal =
+  document.getElementById("settingsModal");
+
+
+/* -----------------------------
+   LOGIN
+----------------------------- */
+
+document.getElementById("enterBtn").addEventListener("click",()=>{
   const name =
-    input.value.trim();
+    document.getElementById("displayName").value.trim()
+    || "Player";
 
-  if(!name){
-    showToast("Choose a display name first.");
+  localStorage.setItem("foxieDisplayName",name);
+
+  document.getElementById("whiteName").textContent = name;
+  document.getElementById("welcome").textContent =
+    `Welcome, ${name} 🦊`;
+
+  document.getElementById("login").classList.add("hidden");
+});
+
+const savedName =
+  localStorage.getItem("foxieDisplayName");
+
+if(savedName){
+  document.getElementById("whiteName").textContent =
+    savedName;
+
+  document.getElementById("welcome").textContent =
+    `Welcome, ${savedName} 🦊`;
+
+  document.getElementById("login").classList.add("hidden");
+}
+
+
+/* -----------------------------
+   CLOCK
+----------------------------- */
+
+function formatTime(seconds){
+
+  seconds = Math.max(0,seconds);
+
+  const mins =
+    Math.floor(seconds / 60)
+      .toString()
+      .padStart(2,"0");
+
+  const secs =
+    (seconds % 60)
+      .toString()
+      .padStart(2,"0");
+
+  return `${mins}:${secs}`;
+}
+
+
+function updateClocks(){
+
+  document.getElementById("whiteClock")
+    .textContent = formatTime(whiteTime);
+
+  document.getElementById("blackClock")
+    .textContent = formatTime(blackTime);
+
+  document.getElementById("whiteClock")
+    .classList.toggle("low",whiteTime <= 30);
+
+  document.getElementById("blackClock")
+    .classList.toggle("low",blackTime <= 30);
+
+  const whiteTurn =
+    chess.turn() === "w" && !gameOver;
+
+  document.getElementById("whiteClock")
+    .classList.toggle("active",whiteTurn);
+
+  document.getElementById("blackClock")
+    .classList.toggle(
+      "active",
+      chess.turn() === "b" && !gameOver
+    );
+}
+
+
+function startClock(){
+
+  clearInterval(timer);
+
+  timer = setInterval(()=>{
+
+    if(gameOver) return;
+
+    if(chess.turn() === "w"){
+      whiteTime--;
+
+      if(whiteTime <= 0){
+        finishGame("black");
+      }
+
+    }else{
+      blackTime--;
+
+      if(blackTime <= 0){
+        finishGame("white");
+      }
+    }
+
+    updateClocks();
+
+  },1000);
+}
+
+
+/* -----------------------------
+   BOARD RENDER
+----------------------------- */
+
+function renderBoard(){
+
+  boardEl.innerHTML = "";
+
+  const files = ["a","b","c","d","e","f","g","h"];
+  const ranks = [8,7,6,5,4,3,2,1];
+
+  const displayFiles =
+    boardFlipped ? [...files].reverse() : files;
+
+  const displayRanks =
+    boardFlipped ? [...ranks].reverse() : ranks;
+
+  const theme =
+    themes[settings.theme] || themes.classic;
+
+  document.documentElement.style
+    .setProperty("--light",theme.light);
+
+  document.documentElement.style
+    .setProperty("--dark",theme.dark);
+
+
+  for(let row=0;row<8;row++){
+
+    for(let col=0;col<8;col++){
+
+      const file = displayFiles[col];
+      const rank = displayRanks[row];
+
+      const squareName = `${file}${rank}`;
+
+      const square =
+        document.createElement("div");
+
+      square.className =
+        "square " +
+        (((files.indexOf(file)+rank)%2===0)
+          ? "light"
+          : "dark");
+
+      square.dataset.square = squareName;
+
+
+      /* LAST MOVE */
+
+      if(
+        settings.lastMove &&
+        chess.history({verbose:true}).length
+      ){
+
+        const history =
+          chess.history({verbose:true});
+
+        const last =
+          history[history.length-1];
+
+        if(
+          last &&
+          (
+            last.from === squareName ||
+            last.to === squareName
+          )
+        ){
+          square.classList.add("last");
+        }
+      }
+
+
+      /* SELECTED */
+
+      if(selectedSquare === squareName){
+        square.classList.add("selected");
+      }
+
+
+      /* CHECK */
+
+      if(settings.checkHighlight){
+
+        const piece =
+          chess.get(squareName);
+
+        if(
+          piece &&
+          piece.type === "k" &&
+          piece.color === chess.turn() &&
+          chess.isCheck()
+        ){
+          square.classList.add("check");
+        }
+      }
+
+
+      /* PIECE */
+
+      const piece =
+        chess.get(squareName);
+
+      if(piece){
+
+        const pieceEl =
+          document.createElement("div");
+
+        pieceEl.className =
+          "piece " +
+          (piece.color === "w"
+            ? "white-piece"
+            : "black-piece");
+
+        pieceEl.textContent =
+          pieces[settings.pieceStyle]?.[piece.color]?.[piece.type]
+          || pieces.classic[piece.color][piece.type];
+
+        square.appendChild(pieceEl);
+      }
+
+
+      /* LEGAL MOVES */
+
+      if(
+        settings.legalMoves &&
+        legalTargets.includes(squareName)
+      ){
+
+        const targetPiece =
+          chess.get(squareName);
+
+        const marker =
+          document.createElement("div");
+
+        if(targetPiece){
+          marker.className =
+            "capture-ring";
+        }else{
+          marker.className =
+            "move-dot";
+        }
+
+        square.appendChild(marker);
+      }
+
+
+      /* COORDINATES */
+
+      if(settings.coordinates !== "off"){
+
+        if(
+          col === 7 ||
+          settings.coordinates === "inside"
+        ){
+
+          const fileEl =
+            document.createElement("span");
+
+          fileEl.className = "coord file";
+          fileEl.textContent = file;
+
+          square.appendChild(fileEl);
+        }
+
+        if(
+          row === 0 ||
+          settings.coordinates === "inside"
+        ){
+
+          const rankEl =
+            document.createElement("span");
+
+          rankEl.className = "coord rank";
+          rankEl.textContent = rank;
+
+          square.appendChild(rankEl);
+        }
+      }
+
+
+      square.addEventListener(
+        "click",
+        ()=>handleSquareClick(squareName)
+      );
+
+      boardEl.appendChild(square);
+    }
+  }
+}
+
+
+/* -----------------------------
+   CLICK / MOVE
+----------------------------- */
+
+function handleSquareClick(square){
+
+  if(gameOver) return;
+
+  const piece = chess.get(square);
+
+  /* SELECT */
+
+  if(!selectedSquare){
+
+    if(
+      piece &&
+      piece.color === chess.turn()
+    ){
+
+      selectedSquare = square;
+
+      legalTargets =
+        chess.moves({
+          square,
+          verbose:true
+        }).map(move=>move.to);
+
+      renderBoard();
+    }
+
     return;
   }
 
-  displayName = name;
 
-  localStorage.setItem(
-    "foxieDisplayName",
-    name
-  );
+  /* CHANGE SELECTION */
 
-  document.getElementById(
-    "login"
-  ).classList.add("hidden");
+  if(
+    piece &&
+    piece.color === chess.turn()
+  ){
 
-  document.getElementById(
-    "playerDisplay"
-  ).textContent = name;
-}
+    selectedSquare = square;
 
-if(displayName){
+    legalTargets =
+      chess.moves({
+        square,
+        verbose:true
+      }).map(move=>move.to);
 
-  document.getElementById(
-    "login"
-  ).classList.add("hidden");
+    renderBoard();
 
-  document.getElementById(
-    "playerDisplay"
-  ).textContent =
-    displayName;
-}
-
-/* =========================================================
-   CLOCK
-========================================================= */
-
-function updateGlobalClock(){
-
-  const now = new Date();
-
-  document.getElementById(
-    "globalClock"
-  ).textContent =
-    now.toLocaleTimeString(
-      [],
-      {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      }
-    );
-}
-
-setInterval(updateGlobalClock,1000);
-updateGlobalClock();
-
-/* =========================================================
-   MATRIX
-========================================================= */
-
-const canvas =
-  document.getElementById("matrix");
-
-const ctx =
-  canvas.getContext("2d");
-
-function resizeMatrix(){
-
-  canvas.width =
-    window.innerWidth;
-
-  canvas.height =
-    window.innerHeight;
-}
-
-resizeMatrix();
-
-window.addEventListener(
-  "resize",
-  resizeMatrix
-);
-
-const chars =
-  "01FOXIE";
-
-let drops = [];
-
-function resetDrops(){
-
-  const count =
-    Math.floor(canvas.width / 14);
-
-  drops =
-    Array.from(
-      {length:count},
-      () => Math.random() * -50
-    );
-}
-
-resetDrops();
-
-function matrix(){
-
-  ctx.fillStyle =
-    "rgba(0,5,2,.13)";
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-  ctx.fillStyle =
-    "#39ff14";
-
-  ctx.font =
-    "12px monospace";
-
-  for(let i=0;i<drops.length;i++){
-
-    const text =
-      chars[
-        Math.floor(
-          Math.random()*chars.length
-        )
-      ];
-
-    ctx.fillText(
-      text,
-      i*14,
-      drops[i]*14
-    );
-
-    if(
-      drops[i]*14 >
-      canvas.height &&
-      Math.random() > .975
-    ){
-      drops[i]=0;
-    }
-
-    drops[i]+=.45;
+    return;
   }
 
-  requestAnimationFrame(matrix);
+
+  /* MOVE */
+
+  if(legalTargets.includes(square)){
+
+    const from = selectedSquare;
+
+    try{
+
+      const move =
+        chess.move({
+          from,
+          to:square,
+          promotion:"q"
+        });
+
+      if(move){
+
+        playMoveSound(move);
+
+        selectedSquare = null;
+        legalTargets = [];
+
+        renderBoard();
+        renderMoves();
+        updateClocks();
+
+        checkGameState();
+      }
+
+    }catch(error){
+
+      selectedSquare = null;
+      legalTargets = [];
+
+      renderBoard();
+    }
+
+    return;
+  }
+
+
+  selectedSquare = null;
+  legalTargets = [];
+
+  renderBoard();
 }
 
-matrix();
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+/* -----------------------------
+   MOVES
+----------------------------- */
 
-document.querySelectorAll(
-  ".navBtn"
-).forEach(btn => {
+function renderMoves(){
 
-  btn.addEventListener(
-    "click",
-    () => {
+  movesEl.innerHTML = "";
 
-      const page =
-        btn.dataset.page;
+  const history =
+    chess.history();
 
-      document.querySelectorAll(
-        ".navBtn"
-      ).forEach(b =>
-        b.classList.remove("active")
-      );
+  for(
+    let i=0;
+    i<history.length;
+    i+=2
+  ){
 
-      btn.classList.add("active");
+    const row =
+      document.createElement("div");
 
-      document.querySelectorAll(
-        ".page"
-      ).forEach(p =>
-        p.classList.remove("active")
-      );
+    row.className = "move-row";
 
-      const target =
-        document.getElementById(
-          "page-" + page
-        );
+    const number =
+      document.createElement("div");
 
-      if(target){
-        target.classList.add("active");
-      }
+    number.className = "move-number";
+    number.textContent =
+      `${Math.floor(i/2)+1}.`;
 
-      document.getElementById(
-        "topTitle"
-      ).textContent =
-        btn.innerText.trim();
+    const white =
+      document.createElement("div");
 
-      if(page==="chess"){
-        renderBoard();
-      }
+    white.className = "move";
+    white.textContent =
+      history[i] || "";
 
-    }
+    const black =
+      document.createElement("div");
+
+    black.className = "move";
+    black.textContent =
+      history[i+1] || "";
+
+    row.appendChild(number);
+    row.appendChild(white);
+    row.appendChild(black);
+
+    movesEl.appendChild(row);
+  }
+
+  movesEl.scrollTop =
+    movesEl.scrollHeight;
+}
+
+
+/* -----------------------------
+   GAME STATE
+----------------------------- */
+
+function checkGameState(){
+
+  if(chess.isCheckmate()){
+
+    const winner =
+      chess.turn() === "w"
+        ? "black"
+        : "white";
+
+    finishGame(winner);
+
+    return;
+  }
+
+  if(
+    chess.isDraw() ||
+    chess.isStalemate() ||
+    chess.isThreefoldRepetition() ||
+    chess.isInsufficientMaterial()
+  ){
+
+    finishGame("draw");
+
+    return;
+  }
+}
+
+
+function finishGame(result){
+
+  if(gameOver) return;
+
+  gameOver = true;
+
+  clearInterval(timer);
+
+  if(result === "white"){
+
+    stats.wins++;
+    stats.streak++;
+
+    alert("🦊 You won!");
+
+  }else if(result === "black"){
+
+    stats.losses++;
+    stats.streak = 0;
+
+    alert("Foxie won this game!");
+
+  }else{
+
+    stats.draws++;
+
+    alert("Draw!");
+  }
+
+  localStorage.setItem(
+    "foxieChessStats",
+    JSON.stringify(stats)
   );
 
-});
+  updateStats();
+}
 
-/* =========================================================
-   FOXIE CHAT
-========================================================= */
+
+/* -----------------------------
+   NEW GAME
+----------------------------- */
+
+function newGame(){
+
+  chess = new Chess();
+
+  selectedSquare = null;
+  legalTargets = [];
+
+  gameOver = false;
+
+  whiteTime = 600;
+  blackTime = 600;
+
+  renderBoard();
+  renderMoves();
+  updateClocks();
+
+  startClock();
+}
+
+
+/* -----------------------------
+   UNDO
+----------------------------- */
+
+function undoMove(){
+
+  if(gameOver) return;
+
+  chess.undo();
+
+  selectedSquare = null;
+  legalTargets = [];
+
+  renderBoard();
+  renderMoves();
+  updateClocks();
+}
+
+
+/* -----------------------------
+   FLIP
+----------------------------- */
+
+function flipBoard(){
+
+  boardFlipped =
+    !boardFlipped;
+
+  renderBoard();
+}
+
+
+/* -----------------------------
+   RESIGN
+----------------------------- */
+
+function resign(){
+
+  if(gameOver) return;
+
+  finishGame("black");
+}
+
+
+/* -----------------------------
+   SOUND
+----------------------------- */
+
+function playMoveSound(move){
+
+  if(settings.sound === "off") return;
+
+  try{
+
+    const AudioContext =
+      window.AudioContext ||
+      window.webkitAudioContext;
+
+    const ctx =
+      new AudioContext();
+
+    const osc =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.frequency.value =
+      move.captured ? 180 : 280;
+
+    gain.gain.setValueAtTime(
+      .08,
+      ctx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      ctx.currentTime + .08
+    );
+
+    osc.start();
+    osc.stop(ctx.currentTime + .08);
+
+  }catch(e){}
+}
+
+
+/* -----------------------------
+   SETTINGS
+----------------------------- */
+
+function openSettings(){
+
+  loadSettingsIntoUI();
+
+  settingsModal.classList.add("show");
+}
+
+
+function closeSettings(){
+
+  settingsModal.classList.remove("show");
+}
+
+
+function loadSettingsIntoUI(){
+
+  document.getElementById("pieceStyle").value =
+    settings.pieceStyle;
+
+  document.getElementById("background").value =
+    settings.background;
+
+  document.getElementById("animation").value =
+    settings.animation;
+
+  document.getElementById("sound").value =
+    settings.sound;
+
+  document.getElementById("coordinates").value =
+    settings.coordinates;
+
+  document.getElementById("boardSize").value =
+    settings.boardSize;
+
+  document.getElementById("legalMoves").checked =
+    settings.legalMoves;
+
+  document.getElementById("lastMove").checked =
+    settings.lastMove;
+
+  document.getElementById("checkHighlight").checked =
+    settings.checkHighlight;
+
+  document.querySelectorAll(".color")
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.theme === settings.theme
+      );
+    });
+}
+
+
+function saveSettings(){
+
+  settings.pieceStyle =
+    document.getElementById("pieceStyle").value;
+
+  settings.background =
+    document.getElementById("background").value;
+
+  settings.animation =
+    document.getElementById("animation").value;
+
+  settings.sound =
+    document.getElementById("sound").value;
+
+  settings.coordinates =
+    document.getElementById("coordinates").value;
+
+  settings.boardSize =
+    document.getElementById("boardSize").value;
+
+  settings.legalMoves =
+    document.getElementById("legalMoves").checked;
+
+  settings.lastMove =
+    document.getElementById("lastMove").checked;
+
+  settings.checkHighlight =
+    document.getElementById("checkHighlight").checked;
+
+  localStorage.setItem(
+    "foxieChessSettings",
+    JSON.stringify(settings)
+  );
+
+  applyBackground();
+  applyBoardSize();
+
+  closeSettings();
+  renderBoard();
+}
+
+
+function resetSettings(){
+
+  settings = {
+    theme:"classic",
+    pieceStyle:"classic",
+    background:"dark",
+    animation:"natural",
+    sound:"foxie",
+    coordinates:"outside",
+    boardSize:"normal",
+    legalMoves:true,
+    lastMove:true,
+    checkHighlight:true
+  };
+
+  localStorage.setItem(
+    "foxieChessSettings",
+    JSON.stringify(settings)
+  );
+
+  loadSettingsIntoUI();
+  applyBackground();
+  applyBoardSize();
+  renderBoard();
+}
+
+
+function applyBoardSize(){
+
+  const shell =
+    document.querySelector(".board-shell");
+
+  if(settings.boardSize === "large"){
+
+    shell.style.width =
+      "min(90vh,900px)";
+
+  }else if(settings.boardSize === "small"){
+
+    shell.style.width =
+      "min(68vh,650px)";
+
+  }else{
+
+    shell.style.width =
+      "min(82vh,calc(100vw - 650px),900px)";
+  }
+}
+
+
+function applyBackground(){
+
+  const main =
+    document.querySelector(".main");
+
+  const backgrounds = {
+
+    dark:
+      "radial-gradient(circle at 50% 20%,#102010 0%,#030603 55%)",
+
+    forest:
+      "radial-gradient(circle at 50% 20%,#17431c 0%,#020702 70%)",
+
+    space:
+      "radial-gradient(circle at 50% 20%,#151548 0%,#020205 70%)",
+
+    city:
+      "radial-gradient(circle at 50% 20%,#203020 0%,#050805 70%)",
+
+    midnight:
+      "radial-gradient(circle at 50% 20%,#111b25 0%,#020306 70%)"
+  };
+
+  main.style.background =
+    backgrounds[settings.background]
+    || backgrounds.dark;
+}
+
+
+/* -----------------------------
+   STATS
+----------------------------- */
+
+function updateStats(){
+
+  document.getElementById("wins").textContent =
+    stats.wins;
+
+  document.getElementById("losses").textContent =
+    stats.losses;
+
+  document.getElementById("draws").textContent =
+    stats.draws;
+
+  document.getElementById("streak").textContent =
+    stats.streak;
+}
+
+
+/* -----------------------------
+   SETTINGS EVENTS
+----------------------------- */
+
+document.querySelectorAll(".color")
+  .forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+      settings.theme =
+        button.dataset.theme;
+
+      document.querySelectorAll(".color")
+        .forEach(x=>
+          x.classList.remove("active")
+        );
+
+      button.classList.add("active");
+
+      renderBoard();
+    });
+
+  });
+
+
+document.getElementById("settingsBtn")
+  .addEventListener("click",openSettings);
+
+document.getElementById("closeSettings")
+  .addEventListener("click",closeSettings);
+
+document.getElementById("saveSettings")
+  .addEventListener("click",saveSettings);
+
+document.getElementById("resetSettings")
+  .addEventListener("click",resetSettings);
+
+document.getElementById("newGameBtn")
+  .addEventListener("click",newGame);
+
+document.getElementById("undoBtn")
+  .addEventListener("click",undoMove);
+
+document.getElementById("flipBtn")
+  .addEventListener("click",flipBoard);
+
+document.getElementById("resignBtn")
+  .addEventListener("click",resign);
+
+document.getElementById("analysisBtn")
+  .addEventListener("click",()=>{
+    alert(
+      "🦊 Foxie Analysis is next: engine evaluation, blunders, mistakes, missed opportunities and candidate moves."
+    );
+  });
+
+
+/* -----------------------------
+   CHESS TABS
+----------------------------- */
+
+document.querySelectorAll(".tab")
+  .forEach(tab=>{
+
+    tab.addEventListener("click",()=>{
+
+      document.querySelectorAll(".tab")
+        .forEach(t=>t.classList.remove("active"));
+
+      document.querySelectorAll(".tab-content")
+        .forEach(c=>c.style.display="none");
+
+      tab.classList.add("active");
+
+      const content =
+        document.getElementById(
+          `tab-${tab.dataset.tab}`
+        );
+
+      if(content){
+        content.style.display = "block";
+      }
+
+    });
+
+  });
+
+
+/* -----------------------------
+   NAVIGATION
+----------------------------- */
+
+function showPage(page){
+
+  document.querySelectorAll(".page")
+    .forEach(p=>
+      p.classList.remove("active")
+    );
+
+  const target =
+    document.getElementById(`page-${page}`);
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  document.querySelectorAll(".nav button")
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.page === page
+      );
+    });
+
+  if(page === "chess"){
+    renderBoard();
+    renderMoves();
+  }
+}
+
+
+document.querySelectorAll(".nav button")
+  .forEach(button=>{
+
+    button.addEventListener("click",()=>{
+      showPage(button.dataset.page);
+    });
+
+  });
+
+
+document.querySelectorAll("[data-go]")
+  .forEach(button=>{
+
+    button.addEventListener("click",()=>{
+      showPage(button.dataset.go);
+    });
+
+  });
+
+
+/* -----------------------------
+   CHAT
+----------------------------- */
 
 async function sendChat(){
 
   const input =
-    document.getElementById(
-      "chatInput"
-    );
+    document.getElementById("chatInput");
 
   const text =
     input.value.trim();
 
   if(!text) return;
 
-  const box =
-    document.getElementById(
-      "chatMessages"
-    );
+  const messages =
+    document.getElementById("chatMessages");
 
-  const userMsg =
-    document.createElement("div");
+  const user =
+    document.createElement("p");
 
-  userMsg.className =
-    "msg user";
+  user.innerHTML =
+    `<b>You:</b> ${escapeHTML(text)}`;
 
-  userMsg.textContent =
-    text;
+  messages.appendChild(user);
 
-  box.appendChild(userMsg);
-
-  input.value="";
-
-  const thinking =
-    document.createElement("div");
-
-  thinking.className =
-    "msg ai";
-
-  thinking.textContent =
-    "Foxie is thinking...";
-
-  box.appendChild(thinking);
-
-  box.scrollTop =
-    box.scrollHeight;
+  input.value = "";
 
   try{
 
     const response =
       await fetch(
-        BACKEND + "/chat",
+        "https://foxie-ai-backend.onrender.com/chat",
         {
           method:"POST",
           headers:{
-            "Content-Type":
-              "application/json"
+            "Content-Type":"application/json"
           },
           body:JSON.stringify({
             message:text
@@ -2551,1812 +2423,84 @@ async function sendChat(){
     const data =
       await response.json();
 
-    thinking.textContent =
-      data.reply ||
-      data.message ||
-      "Foxie didn't return a response.";
-
-  }catch(error){
-
-    thinking.textContent =
-      "I couldn't connect to Foxie AI right now.";
-
-  }
-
-  box.scrollTop =
-    box.scrollHeight;
-}
-
-/* =========================================================
-   CHESS
-========================================================= */
-
-let chess =
-  new Chess();
-
-let selectedSquare =
-  null;
-
-let boardFlipped =
-  false;
-
-let lastMove =
-  null;
-
-let gameMode =
-  "bot";
-
-let playerColor =
-  "w";
-
-let whiteTime =
-  600;
-
-let blackTime =
-  600;
-
-let clockInterval =
-  null;
-
-let gameStarted =
-  false;
-
-let settings = {
-
-  theme:"green",
-
-  coordinates:"inside",
-
-  legal:true,
-
-  highlight:true,
-
-  sound:true,
-
-  animation:true
-
-};
-
-let wins =
-  Number(
-    localStorage.getItem(
-      "foxieChessWins"
-    ) || 0
-  );
-
-let draws =
-  Number(
-    localStorage.getItem(
-      "foxieChessDraws"
-    ) || 0
-  );
-
-let losses =
-  Number(
-    localStorage.getItem(
-      "foxieChessLosses"
-    ) || 0
-  );
-
-let rating =
-  Number(
-    localStorage.getItem(
-      "foxieChessRating"
-    ) || 1000
-  );
-
-document.getElementById(
-  "winsStat"
-).textContent = wins;
-
-document.getElementById(
-  "drawsStat"
-).textContent = draws;
-
-document.getElementById(
-  "lossesStat"
-).textContent = losses;
-
-document.getElementById(
-  "ratingDisplay"
-).textContent = rating;
-
-/* PIECES */
-
-const pieces = {
-
-  wp:"♙",
-  wn:"♘",
-  wb:"♗",
-  wr:"♖",
-  wq:"♕",
-  wk:"♔",
-
-  bp:"♟",
-  bn:"♞",
-  bb:"♝",
-  br:"♜",
-  bq:"♛",
-  bk:"♚"
-
-};
-
-/* FILES */
-
-const files =
-  ["a","b","c","d","e","f","g","h"];
-
-const ranks =
-  ["8","7","6","5","4","3","2","1"];
-
-/* RENDER BOARD */
-
-function renderBoard(){
-
-  const board =
-    document.getElementById(
-      "chessBoard"
-    );
-
-  board.innerHTML="";
-
-  let rows =
-    boardFlipped
-      ? [...ranks].reverse()
-      : [...ranks];
-
-  let cols =
-    boardFlipped
-      ? [...files].reverse()
-      : [...files];
-
-  const current =
-    chess.turn();
-
-  const selectedMoves =
-    selectedSquare
-      ? chess.moves({
-          square:selectedSquare,
-          verbose:true
-        })
-      : [];
-
-  const legalTargets =
-    new Set(
-      selectedMoves.map(
-        move => move.to
-      )
-    );
-
-  const checkedKing =
-    chess.inCheck()
-      ? findKing(chess.turn())
-      : null;
-
-  rows.forEach(
-    (rank,rowIndex) => {
-
-      cols.forEach(
-        (file,colIndex) => {
-
-          const squareName =
-            file + rank;
-
-          const square =
-            document.createElement(
-              "div"
-            );
-
-          const realRow =
-            rowIndex;
-
-          const realCol =
-            colIndex;
-
-          square.className =
-            "square " +
-            (
-              (files.indexOf(file) +
-               ranks.indexOf(rank))
-               % 2 === 0
-              ? "light"
-              : "dark"
-            );
-
-          if(
-            lastMove &&
-            settings.highlight &&
-            (
-              squareName===lastMove.from ||
-              squareName===lastMove.to
-            )
-          ){
-            square.classList.add(
-              "lastMove"
-            );
-          }
-
-          if(
-            squareName===
-            selectedSquare
-          ){
-            square.classList.add(
-              "selected"
-            );
-          }
-
-          if(
-            squareName===
-            checkedKing
-          ){
-            square.classList.add(
-              "check"
-            );
-          }
-
-          if(
-            settings.legal &&
-            legalTargets.has(squareName)
-          ){
-
-            const move =
-              selectedMoves.find(
-                m => m.to===squareName
-              );
-
-            if(
-              move &&
-              chess.get(squareName)
-            ){
-              square.classList.add(
-                "captureTarget"
-              );
-            }else{
-
-              const dot =
-                document.createElement(
-                  "div"
-                );
-
-              dot.className =
-                "moveDot";
-
-              square.appendChild(dot);
-
-            }
-
-          }
-
-          /* COORDINATES */
-
-          if(
-            settings.coordinates!=="none"
-          ){
-
-            if(
-              realRow === 7
-            ){
-
-              const coord =
-                document.createElement(
-                  "span"
-                );
-
-              coord.className =
-                "coord file";
-
-              coord.textContent =
-                file;
-
-              square.appendChild(
-                coord
-              );
-
-            }
-
-            if(
-              realCol === 0
-            ){
-
-              const coord =
-                document.createElement(
-                  "span"
-                );
-
-              coord.className =
-                "coord rank";
-
-              coord.textContent =
-                rank;
-
-              square.appendChild(
-                coord
-              );
-
-            }
-
-          }
-
-          const piece =
-            chess.get(
-              squareName
-            );
-
-          if(piece){
-
-            const pieceEl =
-              document.createElement(
-                "div"
-              );
-
-            pieceEl.className =
-              "piece " +
-              (
-                piece.color==="w"
-                  ? "white"
-                  : "black"
-              );
-
-            pieceEl.textContent =
-              pieces[
-                piece.color +
-                piece.type
-              ];
-
-            if(
-              settings.animation
-            ){
-              pieceEl.style.transition =
-                "transform .12s ease";
-            }else{
-              pieceEl.style.transition =
-                "none";
-            }
-
-            square.appendChild(
-              pieceEl
-            );
-
-          }
-
-          square.addEventListener(
-            "click",
-            () =>
-              handleSquareClick(
-                squareName
-              )
-          );
-
-          board.appendChild(
-            square
-          );
-
-        }
-      );
-
-    }
-  );
-
-  updateClocksUI();
-
-  updateStatus();
-
-}
-
-/* FIND KING */
-
-function findKing(color){
-
-  const board =
-    chess.board();
-
-  for(
-    let row=0;
-    row<8;
-    row++
-  ){
-
-    for(
-      let col=0;
-      col<8;
-      col++
-    ){
-
-      const p =
-        board[row][col];
-
-      if(
-        p &&
-        p.type==="k" &&
-        p.color===color
-      ){
-
-        return (
-          files[col] +
-          (8-row)
-        );
-
-      }
-
-    }
-
-  }
-
-  return null;
-}
-
-/* HANDLE SQUARE */
-
-function handleSquareClick(square){
-
-  if(chess.isGameOver())
-    return;
-
-  if(
-    gameMode==="bot" &&
-    chess.turn()!=="w"
-  ){
-    return;
-  }
-
-  const piece =
-    chess.get(square);
-
-  /* SELECT */
-
-  if(!selectedSquare){
-
-    if(
-      piece &&
-      piece.color===chess.turn()
-    ){
-
-      selectedSquare =
-        square;
-
-      renderBoard();
-
-    }
-
-    return;
-  }
-
-  /* SELECT ANOTHER FRIENDLY PIECE */
-
-  if(
-    piece &&
-    piece.color===chess.turn()
-  ){
-
-    selectedSquare =
-      square;
-
-    renderBoard();
-
-    return;
-  }
-
-  /* ATTEMPT MOVE */
-
-  try{
-
-    const move =
-      chess.move({
-        from:selectedSquare,
-        to:square,
-        promotion:"q"
-      });
-
-    if(move){
-
-      lastMove = {
-        from:move.from,
-        to:move.to
-      };
-
-      selectedSquare=null;
-
-      gameStarted=true;
-
-      playMoveSound(
-        move.captured
-          ? "capture"
-          : "move"
-      );
-
-      renderBoard();
-
-      updateMoveList();
-
-      if(
-        checkGameEnd()
-      ){
-        return;
-      }
-
-      if(
-        gameMode==="bot" &&
-        chess.turn()==="b"
-      ){
-
-        document.getElementById(
-          "gameStatus"
-        ).textContent =
-          "Foxie is thinking...";
-
-        setTimeout(
-          botMove,
-          400
-        );
-
-      }
-
-    }
-
-  }catch(error){
-
-    selectedSquare=null;
-
-    renderBoard();
-
-  }
-
-}
-
-/* BOT */
-
-function botMove(){
-
-  if(
-    chess.isGameOver()
-  ){
-    return;
-  }
-
-  if(
-    chess.turn()!=="b"
-  ){
-    return;
-  }
-
-  const moves =
-    chess.moves({
-      verbose:true
-    });
-
-  if(!moves.length){
-    checkGameEnd();
-    return;
-  }
-
-  let chosen =
-    moves[
-      Math.floor(
-        Math.random()*
-        moves.length
-      )
-    ];
-
-  /*
-    Small preference system so the bot
-    doesn't feel completely random.
-  */
-
-  const captures =
-    moves.filter(
-      m => m.captured
-    );
-
-  if(
-    captures.length &&
-    Math.random() > .35
-  ){
-
-    chosen =
-      captures[
-        Math.floor(
-          Math.random()*
-          captures.length
+    const foxie =
+      document.createElement("p");
+
+    foxie.innerHTML =
+      `<b style="color:#39ff14">Foxie:</b> ${
+        escapeHTML(
+          data.reply ||
+          data.message ||
+          "Foxie couldn't answer right now."
         )
-      ];
+      }`;
 
-  }
-
-  try{
-
-    const move =
-      chess.move({
-        from:chosen.from,
-        to:chosen.to,
-        promotion:"q"
-      });
-
-    lastMove = {
-      from:move.from,
-      to:move.to
-    };
-
-    playMoveSound(
-      move.captured
-        ? "capture"
-        : "move"
-    );
-
-    renderBoard();
-
-    updateMoveList();
-
-    checkGameEnd();
+    messages.appendChild(foxie);
 
   }catch(error){
 
-    console.error(error);
+    const foxie =
+      document.createElement("p");
 
+    foxie.innerHTML =
+      `<b style="color:#39ff14">Foxie:</b> Backend connection failed.`;
+
+    messages.appendChild(foxie);
   }
-
 }
 
-/* MOVE LIST */
 
-function updateMoveList(){
+function escapeHTML(text){
 
-  const list =
-    document.getElementById(
-      "moveList"
-    );
+  return text
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
 
-  const history =
-    chess.history();
 
-  list.innerHTML="";
+document.getElementById("chatSend")
+  .addEventListener("click",sendChat);
 
-  for(
-    let i=0;
-    i<history.length;
-    i+=2
-  ){
-
-    const row =
-      document.createElement(
-        "div"
-      );
-
-    row.className =
-      "moveRow";
-
-    const num =
-      document.createElement(
-        "div"
-      );
-
-    num.className =
-      "moveNum";
-
-    num.textContent =
-      (i/2+1) + ".";
-
-    const white =
-      document.createElement(
-        "div"
-      );
-
-    white.className =
-      "moveCell";
-
-    white.textContent =
-      history[i] || "";
-
-    if(
-      i===history.length-1
-    ){
-      white.classList.add(
-        "current"
-      );
+document.getElementById("chatInput")
+  .addEventListener("keydown",event=>{
+    if(event.key === "Enter"){
+      sendChat();
     }
+  });
 
-    const black =
-      document.createElement(
-        "div"
-      );
 
-    black.className =
-      "moveCell";
+/* -----------------------------
+   CLOCK AT TOP
+----------------------------- */
 
-    black.textContent =
-      history[i+1] || "";
+function updateTopClock(){
 
-    if(
-      i+1===history.length-1
-    ){
-      black.classList.add(
-        "current"
-      );
-    }
+  const now = new Date();
 
-    row.appendChild(num);
-    row.appendChild(white);
-    row.appendChild(black);
-
-    list.appendChild(row);
-
-  }
-
-  list.scrollTop =
-    list.scrollHeight;
-
-  updateCaptured();
-
+  document.getElementById("clock")
+    .textContent =
+      now.toLocaleTimeString();
 }
 
-/* CAPTURED */
+setInterval(updateTopClock,1000);
+updateTopClock();
 
-function updateCaptured(){
 
-  const history =
-    chess.history({
-      verbose:true
-    });
+/* -----------------------------
+   START
+----------------------------- */
 
-  const captured = {
-    w:[],
-    b:[]
-  };
-
-  history.forEach(
-    move => {
-
-      if(move.captured){
-
-        captured[
-          move.color
-        ].push(
-          pieces[
-            (
-              move.color==="w"
-                ? "b"
-                : "w"
-            ) +
-            move.captured
-          ]
-        );
-
-      }
-
-    }
-  );
-
-  document.getElementById(
-    "capturedPieces"
-  ).textContent =
-    "Captured: " +
-    (
-      captured.w.join("") ||
-      "—"
-    ) +
-    "   " +
-    (
-      captured.b.join("") ||
-      ""
-    );
-
-}
-
-/* GAME END */
-
-function checkGameEnd(){
-
-  if(
-    !chess.isGameOver()
-  ){
-
-    updateStatus();
-
-    return false;
-
-  }
-
-  stopClock();
-
-  let title =
-    "Game Over";
-
-  let text =
-    "Well played!";
-
-  let icon =
-    "🦊";
-
-  if(
-    chess.isCheckmate()
-  ){
-
-    const winner =
-      chess.turn()==="w"
-        ? "Foxie"
-        : "You";
-
-    if(
-      winner==="You"
-    ){
-
-      wins++;
-      rating += 12;
-
-      localStorage.setItem(
-        "foxieChessWins",
-        wins
-      );
-
-      localStorage.setItem(
-        "foxieChessRating",
-        rating
-      );
-
-      title =
-        "You won!";
-
-      text =
-        "Checkmate — great game!";
-
-      icon =
-        "🏆";
-
-      celebrate();
-
-    }else{
-
-      losses++;
-      rating =
-        Math.max(
-          100,
-          rating-12
-        );
-
-      localStorage.setItem(
-        "foxieChessLosses",
-        losses
-      );
-
-      localStorage.setItem(
-        "foxieChessRating",
-        rating
-      );
-
-      title =
-        "Foxie wins";
-
-      text =
-        "Checkmate. Try again!";
-
-      icon =
-        "🦊";
-
-    }
-
-  }else{
-
-    draws++;
-
-    localStorage.setItem(
-      "foxieChessDraws",
-      draws
-    );
-
-    title =
-      "Draw";
-
-    text =
-      "The game ended in a draw.";
-
-    icon =
-      "🤝";
-
-  }
-
-  document.getElementById(
-    "winsStat"
-  ).textContent=wins;
-
-  document.getElementById(
-    "drawsStat"
-  ).textContent=draws;
-
-  document.getElementById(
-    "lossesStat"
-  ).textContent=losses;
-
-  document.getElementById(
-    "ratingDisplay"
-  ).textContent=rating;
-
-  document.getElementById(
-    "resultIcon"
-  ).textContent=icon;
-
-  document.getElementById(
-    "resultTitle"
-  ).textContent=title;
-
-  document.getElementById(
-    "resultText"
-  ).textContent=text;
-
-  document.getElementById(
-    "resultOverlay"
-  ).classList.add("show");
-
-  updateStatus();
-
-  return true;
-}
-
-/* STATUS */
-
-function updateStatus(){
-
-  const status =
-    document.getElementById(
-      "gameStatus"
-    );
-
-  if(
-    chess.isCheckmate()
-  ){
-
-    status.textContent =
-      "Checkmate";
-
-    return;
-
-  }
-
-  if(
-    chess.isDraw()
-  ){
-
-    status.textContent =
-      "Draw";
-
-    return;
-
-  }
-
-  if(
-    chess.isCheck()
-  ){
-
-    status.textContent =
-      chess.turn()==="w"
-        ? "Your king is in check!"
-        : "Foxie is in check!";
-
-    return;
-
-  }
-
-  status.textContent =
-    chess.turn()==="w"
-      ? "Your move"
-      : "Foxie's move";
-
-}
-
-/* NEW GAME */
-
-function newGame(){
-
-  stopClock();
-
-  chess =
-    new Chess();
-
-  selectedSquare=null;
-
-  lastMove=null;
-
-  whiteTime=600;
-
-  blackTime=600;
-
-  gameStarted=false;
-
-  document.getElementById(
-    "resultOverlay"
-  ).classList.remove(
-    "show"
-  );
-
-  updateMoveList();
-
-  renderBoard();
-
-  startClock();
-
-}
-
-/* UNDO */
-
-function undoMove(){
-
-  if(
-    !chess.history().length
-  ){
-    return;
-  }
-
-  /*
-    Against the bot, undo the bot move
-    and the player's move together.
-  */
-
-  chess.undo();
-
-  if(
-    gameMode==="bot" &&
-    chess.turn()==="w" &&
-    chess.history().length
-  ){
-
-    chess.undo();
-
-  }
-
-  const history =
-    chess.history({
-      verbose:true
-    });
-
-  const last =
-    history[
-      history.length-1
-    ];
-
-  lastMove =
-    last
-      ? {
-          from:last.from,
-          to:last.to
-        }
-      : null;
-
-  selectedSquare=null;
-
-  document.getElementById(
-    "resultOverlay"
-  ).classList.remove(
-    "show"
-  );
-
-  renderBoard();
-
-  updateMoveList();
-
-  startClock();
-
-}
-
-/* FLIP */
-
-function flipBoard(){
-
-  boardFlipped =
-    !boardFlipped;
-
-  renderBoard();
-
-}
-
-/* RESIGN */
-
-function resignGame(){
-
-  if(
-    chess.isGameOver()
-  ){
-    return;
-  }
-
-  losses++;
-
-  rating =
-    Math.max(
-      100,
-      rating-10
-    );
-
-  localStorage.setItem(
-    "foxieChessLosses",
-    losses
-  );
-
-  localStorage.setItem(
-    "foxieChessRating",
-    rating
-  );
-
-  stopClock();
-
-  document.getElementById(
-    "winsStat"
-  ).textContent=wins;
-
-  document.getElementById(
-    "lossesStat"
-  ).textContent=losses;
-
-  document.getElementById(
-    "ratingDisplay"
-  ).textContent=rating;
-
-  document.getElementById(
-    "resultIcon"
-  ).textContent="🏳️";
-
-  document.getElementById(
-    "resultTitle"
-  ).textContent="You resigned";
-
-  document.getElementById(
-    "resultText"
-  ).textContent="Foxie wins this game.";
-
-  document.getElementById(
-    "resultOverlay"
-  ).classList.add("show");
-
-}
-
-/* =========================================================
-   CLOCK
-========================================================= */
-
-function startClock(){
-
-  stopClock();
-
-  clockInterval =
-    setInterval(
-      () => {
-
-        if(
-          !gameStarted
-        ){
-          return;
-        }
-
-        if(
-          chess.isGameOver()
-        ){
-          stopClock();
-          return;
-        }
-
-        if(
-          chess.turn()==="w"
-        ){
-
-          whiteTime--;
-
-          if(
-            whiteTime<=0
-          ){
-
-            whiteTime=0;
-
-            stopClock();
-
-            losses++;
-
-            localStorage.setItem(
-              "foxieChessLosses",
-              losses
-            );
-
-            finishByTime(
-              "Foxie wins on time."
-            );
-
-            return;
-          }
-
-        }else{
-
-          blackTime--;
-
-          if(
-            blackTime<=0
-          ){
-
-            blackTime=0;
-
-            stopClock();
-
-            wins++;
-
-            rating+=12;
-
-            localStorage.setItem(
-              "foxieChessWins",
-              wins
-            );
-
-            localStorage.setItem(
-              "foxieChessRating",
-              rating
-            );
-
-            finishByTime(
-              "You win on time!"
-            );
-
-            return;
-          }
-
-        }
-
-        updateClocksUI();
-
-      },
-      1000
-    );
-
-}
-
-function stopClock(){
-
-  if(clockInterval){
-
-    clearInterval(
-      clockInterval
-    );
-
-    clockInterval=null;
-
-  }
-
-}
-
-function finishByTime(message){
-
-  document.getElementById(
-    "winsStat"
-  ).textContent=wins;
-
-  document.getElementById(
-    "lossesStat"
-  ).textContent=losses;
-
-  document.getElementById(
-    "ratingDisplay"
-  ).textContent=rating;
-
-  document.getElementById(
-    "resultIcon"
-  ).textContent =
-    message.includes("You")
-      ? "🏆"
-      : "🦊";
-
-  document.getElementById(
-    "resultTitle"
-  ).textContent =
-    message.includes("You")
-      ? "You won!"
-      : "Foxie wins";
-
-  document.getElementById(
-    "resultText"
-  ).textContent =
-    message;
-
-  document.getElementById(
-    "resultOverlay"
-  ).classList.add("show");
-
-  if(
-    message.includes("You")
-  ){
-    celebrate();
-  }
-
-}
-
-function updateClocksUI(){
-
-  const white =
-    document.getElementById(
-      "whiteClock"
-    );
-
-  const black =
-    document.getElementById(
-      "blackClock"
-    );
-
-  white.textContent =
-    formatTime(
-      whiteTime
-    );
-
-  black.textContent =
-    formatTime(
-      blackTime
-    );
-
-  white.classList.toggle(
-    "active",
-    chess.turn()==="w"
-  );
-
-  black.classList.toggle(
-    "active",
-    chess.turn()==="b"
-  );
-
-  white.classList.toggle(
-    "low",
-    whiteTime<=30
-  );
-
-  black.classList.toggle(
-    "low",
-    blackTime<=30
-  );
-
-}
-
-function formatTime(seconds){
-
-  const mins =
-    Math.floor(
-      seconds/60
-    );
-
-  const secs =
-    seconds%60;
-
-  return (
-    String(mins)
-      .padStart(2,"0")
-    +
-    ":" +
-    String(secs)
-      .padStart(2,"0")
-  );
-
-}
-
-/* =========================================================
-   SOUND
-========================================================= */
-
-let audioContext =
-  null;
-
-function playMoveSound(type){
-
-  if(
-    !settings.sound
-  ){
-    return;
-  }
-
-  try{
-
-    if(!audioContext){
-
-      audioContext =
-        new (
-          window.AudioContext ||
-          window.webkitAudioContext
-        )();
-
-    }
-
-    const oscillator =
-      audioContext.createOscillator();
-
-    const gain =
-      audioContext.createGain();
-
-    oscillator.type =
-      "sine";
-
-    oscillator.frequency.value =
-      type==="capture"
-        ? 220
-        : 340;
-
-    gain.gain.setValueAtTime(
-      .0001,
-      audioContext.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      .08,
-      audioContext.currentTime+.01
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      .0001,
-      audioContext.currentTime+.09
-    );
-
-    oscillator.connect(gain);
-    gain.connect(
-      audioContext.destination
-    );
-
-    oscillator.start();
-
-    oscillator.stop(
-      audioContext.currentTime+.1
-    );
-
-  }catch(e){}
-
-}
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-function openSettings(){
-
-  document.getElementById(
-    "settingsOverlay"
-  ).classList.add("open");
-
-}
-
-function closeSettings(){
-
-  document.getElementById(
-    "settingsOverlay"
-  ).classList.remove("open");
-
-}
-
-function toggleSetting(name){
-
-  settings[name] =
-    !settings[name];
-
-  const ids = {
-    legal:"legalToggle",
-    highlight:"highlightToggle",
-    sound:"soundToggle",
-    animation:"animationToggle"
-  };
-
-  const element =
-    document.getElementById(
-      ids[name]
-    );
-
-  element.classList.toggle(
-    "on",
-    settings[name]
-  );
-
-}
-
-function saveSettings(){
-
-  settings.theme =
-    document.getElementById(
-      "boardTheme"
-    ).value;
-
-  settings.coordinates =
-    document.getElementById(
-      "coordinates"
-    ).value;
-
-  localStorage.setItem(
-    "foxieChessSettings",
-    JSON.stringify(settings)
-  );
-
-  applySettings();
-
-  closeSettings();
-
-  showToast(
-    "Chess settings saved."
-  );
-
-}
-
-function applySettings(){
-
-  const boardWrap =
-    document.getElementById(
-      "boardWrap"
-    );
-
-  boardWrap.className =
-    "boardWrap theme-" +
-    settings.theme;
-
-  const board =
-    document.getElementById(
-      "chessBoard"
-    );
-
-  board.classList.toggle(
-    "coordsInside",
-    settings.coordinates==="inside"
-  );
-
-  board.classList.toggle(
-    "coordsNone",
-    settings.coordinates==="none"
-  );
-
-  document.getElementById(
-    "legalToggle"
-  ).classList.toggle(
-    "on",
-    settings.legal
-  );
-
-  document.getElementById(
-    "highlightToggle"
-  ).classList.toggle(
-    "on",
-    settings.highlight
-  );
-
-  document.getElementById(
-    "soundToggle"
-  ).classList.toggle(
-    "on",
-    settings.sound
-  );
-
-  document.getElementById(
-    "animationToggle"
-  ).classList.toggle(
-    "on",
-    settings.animation
-  );
-
-  document.getElementById(
-    "boardTheme"
-  ).value =
-    settings.theme;
-
-  document.getElementById(
-    "coordinates"
-  ).value =
-    settings.coordinates;
-
-  renderBoard();
-
-}
-
-const savedSettings =
-  localStorage.getItem(
-    "foxieChessSettings"
-  );
-
-if(savedSettings){
-
-  try{
-
-    settings =
-      Object.assign(
-        settings,
-        JSON.parse(
-          savedSettings
-        )
-      );
-
-  }catch(e){}
-
-}
-
-applySettings();
-
-/* =========================================================
-   CONFETTI
-========================================================= */
-
-function celebrate(){
-
-  for(
-    let i=0;
-    i<70;
-    i++
-  ){
-
-    const piece =
-      document.createElement(
-        "div"
-      );
-
-    piece.className =
-      "confetti";
-
-    piece.style.left =
-      Math.random()*100 + "%";
-
-    piece.style.top =
-      "-20px";
-
-    piece.style.background =
-      [
-        "#39ff14",
-        "#ffffff",
-        "#ffd84d",
-        "#43a9ff",
-        "#ff4f7b"
-      ][
-        Math.floor(
-          Math.random()*5
-        )
-      ];
-
-    piece.style.animationDelay =
-      Math.random()*0.8 + "s";
-
-    document.body.appendChild(
-      piece
-    );
-
-    setTimeout(
-      () => piece.remove(),
-      3000
-    );
-
-  }
-
-}
-
-/* =========================================================
-   CREATOR LOGIN
-========================================================= */
-
-async function creatorLogin(){
-
-  const code =
-    document.getElementById(
-      "creatorCode"
-    ).value;
-
-  if(!code){
-
-    showToast(
-      "Enter your creator code."
-    );
-
-    return;
-
-  }
-
-  try{
-
-    const response =
-      await fetch(
-        BACKEND +
-        "/creator-login",
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-          body:JSON.stringify({
-            code:code
-          })
-        }
-      );
-
-    const data =
-      await response.json();
-
-    document.getElementById(
-      "creatorStatus"
-    ).textContent =
-      data.message ||
-      (
-        data.success
-          ? "Creator authenticated."
-          : "Authentication failed."
-      );
-
-  }catch(error){
-
-    document.getElementById(
-      "creatorStatus"
-    ).textContent =
-      "Could not connect to Creator Mode.";
-
-  }
-
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-function showToast(message){
-
-  const toast =
-    document.getElementById(
-      "toast"
-    );
-
-  toast.textContent =
-    message;
-
-  toast.classList.add(
-    "show"
-  );
-
-  clearTimeout(
-    toastTimer
-  );
-
-  toastTimer =
-    setTimeout(
-      () => {
-
-        toast.classList.remove(
-          "show"
-        );
-
-      },
-      2500
-    );
-
-}
-
-/* =========================================================
-   CHESS TAB VISUALS
-========================================================= */
-
-document.querySelectorAll(
-  ".chessTab"
-).forEach(tab => {
-
-  tab.addEventListener(
-    "click",
-    () => {
-
-      document.querySelectorAll(
-        ".chessTab"
-      ).forEach(t =>
-        t.classList.remove("active")
-      );
-
-      tab.classList.add(
-        "active"
-      );
-
-      showToast(
-        tab.textContent.trim() +
-        " section selected."
-      );
-
-    }
-  );
-
-});
-
-/* =========================================================
-   INITIALISE
-========================================================= */
+loadSettingsIntoUI();
+applyBackground();
+applyBoardSize();
+updateStats();
 
 renderBoard();
-
-updateMoveList();
-
-updateClocksUI();
-
+renderMoves();
+updateClocks();
 startClock();
 
 </script>

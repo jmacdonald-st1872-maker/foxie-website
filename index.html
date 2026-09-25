@@ -7,17 +7,14 @@
 <style>
 :root {
   --green: #39ff14;
-  --green2: #00ff88;
   --bg: #020604;
-  --panel: #07120b;
   --text: #eaffea;
   --muted: #8ba98f;
+  --panel: #07120b;
   --danger: #ff496c;
   --rain-color: #39ff14;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -25,25 +22,11 @@ body {
   overflow: hidden;
   height: 100vh;
 }
-
-/* Matrix Rain Canvas */
 #matrix {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  opacity: 0.18;
-  pointer-events: none;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; opacity: 0.18; pointer-events: none;
 }
-
-#app {
-  display: flex;
-  height: 100vh;
-  position: relative;
-  z-index: 1;
-}
+#app { display: flex; height: 100vh; position: relative; z-index: 1; }
 
 /* Sidebar */
 .sidebar {
@@ -55,311 +38,158 @@ body {
   flex-direction: column;
   z-index: 20;
 }
-
 .logo {
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--green);
-  letter-spacing: 1px;
-  margin-bottom: 4px;
+  font-size: 28px; font-weight: 900; color: var(--green);
+  letter-spacing: 1px; margin-bottom: 4px;
   text-shadow: 0 0 18px rgba(57, 255, 20, 0.45);
 }
-
-.tag {
-  color: var(--muted);
-  font-size: 12px;
-  margin-bottom: 20px;
-}
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
+.tag { color: var(--muted); font-size: 12px; margin-bottom: 20px; }
+.nav { display: flex; flex-direction: column; gap: 8px; }
 .nav button {
-  border: 1px solid transparent;
-  background: transparent;
-  color: #b8d5bd;
-  text-align: left;
-  padding: 12px 13px;
-  border-radius: 10px;
-  transition: 0.2s;
-  cursor: pointer;
-  font-size: 14px;
+  border: 1px solid transparent; background: transparent;
+  color: #b8d5bd; text-align: left; padding: 12px 13px;
+  border-radius: 10px; transition: 0.2s; cursor: pointer; font-size: 14px;
 }
-
-.nav button:hover,
-.nav button.active {
-  color: var(--green);
-  background: rgba(57, 255, 20, 0.08);
-  border-color: rgba(57, 255, 20, 0.18);
-  transform: translateX(3px);
+.nav button:hover, .nav button.active {
+  color: var(--green); background: rgba(57, 255, 20, 0.08);
+  border-color: rgba(57, 255, 20, 0.18); transform: translateX(3px);
 }
-
-.sidebarBottom {
-  margin-top: auto;
-  color: #67806b;
-  font-size: 11px;
-  line-height: 1.6;
-}
-
+.sidebarBottom { margin-top: auto; color: #67806b; font-size: 11px; line-height: 1.6; }
 .creatorName { color: var(--green); }
 
 /* Main */
-.main {
-  flex: 1;
-  min-width: 0;
-  position: relative;
-  overflow: hidden;
-}
-
+.main { flex: 1; min-width: 0; position: relative; overflow: hidden; }
 .topbar {
-  height: 62px;
-  border-bottom: 1px solid rgba(57, 255, 20, 0.12);
-  background: rgba(2, 8, 4, 0.82);
-  backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  position: relative;
-  z-index: 10;
+  height: 62px; border-bottom: 1px solid rgba(57, 255, 20, 0.12);
+  background: rgba(2, 8, 4, 0.82); backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; z-index: 10;
 }
-
 .status { color: #83a88b; font-size: 13px; }
 .clock { color: var(--green); font-weight: bold; }
-
-.userInfo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-}
-
+.userInfo { display: flex; align-items: center; gap: 12px; font-size: 13px; }
 .userInfo button {
-  background: rgba(57, 255, 20, 0.1);
-  border: 1px solid rgba(57, 255, 20, 0.3);
-  color: var(--green);
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
+  background: rgba(57, 255, 20, 0.1); border: 1px solid rgba(57, 255, 20, 0.3);
+  color: var(--green); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;
 }
 
 /* Pages */
-.pages {
-  height: calc(100vh - 62px);
-  overflow: auto;
-}
-
-.page {
-  display: none;
-  min-height: 100%;
-  padding: 22px;
-}
-
+.pages { height: calc(100vh - 62px); overflow: auto; }
+.page { display: none; min-height: 100%; padding: 22px; }
 .page.active { display: block; }
 
-/* Cards & UI */
+/* UI */
 .card {
   background: linear-gradient(145deg, rgba(8, 25, 14, 0.94), rgba(4, 13, 8, 0.94));
   border: 1px solid rgba(57, 255, 20, 0.14);
-  border-radius: 16px;
-  padding: 18px;
+  border-radius: 16px; padding: 18px;
   box-shadow: 0 12px 45px rgba(0, 0, 0, 0.25);
 }
-
 .bigHero {
-  padding: 28px;
-  border: 1px solid rgba(57, 255, 20, 0.2);
-  border-radius: 20px;
+  padding: 28px; border: 1px solid rgba(57, 255, 20, 0.2); border-radius: 20px;
   background: radial-gradient(circle at 80% 20%, rgba(57, 255, 20, 0.12), transparent 30%),
               linear-gradient(145deg, #08170d, #030a05);
   margin-bottom: 18px;
 }
-
 .btn {
-  border: 1px solid rgba(57, 255, 20, 0.35);
-  background: rgba(57, 255, 20, 0.09);
-  color: var(--green);
-  padding: 10px 14px;
-  border-radius: 9px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
+  border: 1px solid rgba(57, 255, 20, 0.35); background: rgba(57, 255, 20, 0.09);
+  color: var(--green); padding: 10px 14px; border-radius: 9px;
+  font-weight: bold; cursor: pointer; transition: 0.2s;
 }
-
-.btn:hover {
-  background: rgba(57, 255, 20, 0.17);
-  box-shadow: 0 0 18px rgba(57, 255, 20, 0.12);
-}
-
-.btn.secondary {
-  color: #d6e9d8;
-  border-color: #25422d;
-  background: #09140d;
-}
-
-.btn.danger {
-  color: #ff7190;
-  border-color: #512031;
-  background: #180810;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-}
-
+.btn:hover { background: rgba(57, 255, 20, 0.17); box-shadow: 0 0 18px rgba(57, 255, 20, 0.12); }
+.btn.secondary { color: #d6e9d8; border-color: #25422d; background: #09140d; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* Login Overlay */
+/* Login */
 #loginOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
 }
-
 .loginBox {
-  background: #07120b;
-  border: 1px solid rgba(57, 255, 20, 0.3);
-  border-radius: 20px;
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
-  text-align: center;
+  background: #07120b; border: 1px solid rgba(57, 255, 20, 0.3);
+  border-radius: 20px; padding: 40px; width: 100%; max-width: 420px; text-align: center;
 }
-
-.loginBox h1 {
-  color: var(--green);
-  margin-bottom: 8px;
-  font-size: 32px;
-}
-
+.loginBox h1 { color: var(--green); margin-bottom: 8px; font-size: 32px; }
 .loginBox input {
-  width: 100%;
-  background: #030a05;
-  border: 1px solid #25422d;
-  color: white;
-  padding: 14px;
-  border-radius: 10px;
-  margin: 10px 0;
-  font-size: 15px;
-  outline: none;
+  width: 100%; background: #030a05; border: 1px solid #25422d; color: white;
+  padding: 14px; border-radius: 10px; margin: 10px 0; font-size: 15px; outline: none;
 }
-
 .loginBox input:focus { border-color: var(--green); }
 
-/* Customize Panel */
+/* Customize */
 #customizePanel {
-  position: fixed;
-  top: 80px;
-  right: 20px;
-  width: 280px;
-  background: rgba(7, 18, 11, 0.97);
-  border: 1px solid rgba(57, 255, 20, 0.25);
-  border-radius: 16px;
-  padding: 20px;
-  z-index: 50;
-  display: none;
+  position: fixed; top: 80px; right: 20px; width: 280px;
+  background: rgba(7, 18, 11, 0.97); border: 1px solid rgba(57, 255, 20, 0.25);
+  border-radius: 16px; padding: 20px; z-index: 50; display: none;
 }
-
-#customizePanel h3 {
-  color: var(--green);
-  margin-bottom: 15px;
-}
-
+#customizePanel h3 { color: var(--green); margin-bottom: 15px; }
 .colorRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 13px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; font-size: 13px;
 }
+.colorRow input[type="color"] { width: 42px; height: 32px; border: none; background: none; cursor: pointer; }
 
-.colorRow input[type="color"] {
-  width: 42px;
-  height: 32px;
-  border: none;
-  background: none;
-  cursor: pointer;
+/* Games */
+.gameArea { max-width: 500px; margin: 0 auto; }
+.board {
+  display: grid; gap: 8px; margin: 20px auto; justify-content: center;
 }
-
-/* Avatar & World remain similar */
-.avatarLayout {
-  display: grid;
-  grid-template-columns: minmax(420px, 1.35fr) minmax(300px, 0.65fr);
-  gap: 16px;
-  height: calc(100vh - 110px);
-  min-height: 600px;
+.cell {
+  width: 80px; height: 80px; background: #0a1a0f;
+  border: 2px solid #1a3324; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; cursor: pointer; transition: 0.15s;
 }
+.cell:hover { background: #0f2418; border-color: var(--green); }
+.cell.taken { cursor: default; }
+.statusText { text-align: center; margin: 15px 0; font-size: 18px; color: var(--green); }
 
-.avatarViewer {
-  position: relative;
-  overflow: hidden;
-  padding: 0;
-  min-height: 580px;
-  background: radial-gradient(circle at 50% 38%, rgba(57, 255, 20, 0.11), transparent 26%),
-              linear-gradient(#07130c, #020604);
+/* Connect 4 */
+.c4-board {
+  display: grid; grid-template-columns: repeat(7, 50px); gap: 6px;
+  justify-content: center; margin: 20px auto;
 }
-
-#avatarCanvas, #worldCanvas {
-  width: 100%;
-  height: 100%;
-  display: block;
+.c4-cell {
+  width: 50px; height: 50px; background: #0a1a0f;
+  border: 2px solid #1a3324; border-radius: 50%;
+  cursor: pointer; transition: 0.15s;
 }
+.c4-cell:hover { border-color: var(--green); }
+.c4-red { background: #ff496c !important; }
+.c4-yellow { background: #ffd700 !important; }
 
-/* Locked feature notice */
 .lockedNotice {
-  background: rgba(255, 73, 108, 0.08);
-  border: 1px solid rgba(255, 73, 108, 0.25);
-  color: #ff8fa3;
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  font-size: 13px;
+  background: rgba(255, 73, 108, 0.08); border: 1px solid rgba(255, 73, 108, 0.25);
+  color: #ff8fa3; padding: 12px 16px; border-radius: 10px; margin-bottom: 15px; font-size: 13px;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
   .sidebar { width: 74px; padding: 10px; }
   .logo { font-size: 21px; text-align: center; }
   .tag, .sidebarBottom { display: none; }
   .nav button { font-size: 0; text-align: center; }
   .nav button::first-letter { font-size: 20px; }
-  .avatarLayout { grid-template-columns: 1fr; height: auto; }
 }
 </style>
 </head>
 <body>
 
-<!-- Matrix Rain -->
 <canvas id="matrix"></canvas>
 
-<!-- Login Overlay -->
+<!-- Login -->
 <div id="loginOverlay">
   <div class="loginBox">
     <div style="font-size: 48px; margin-bottom: 10px;">🦊</div>
     <h1>Welcome to Foxie</h1>
     <p style="color: #8ba98f; margin-bottom: 25px;">Your world. Your people. Your games.</p>
-
     <input type="text" id="usernameInput" placeholder="Choose a username" maxlength="20">
     <input type="password" id="passwordInput" placeholder="Password (optional)">
-
     <div class="row" style="justify-content: center; margin-top: 15px;">
       <button class="btn" onclick="createAccount()">Create Account</button>
       <button class="btn secondary" onclick="continueAsGuest()">Continue as Guest</button>
     </div>
-
-    <p style="color: #67806b; font-size: 12px; margin-top: 20px;">
-      Guests can explore but have limited access
-    </p>
+    <p style="color: #67806b; font-size: 12px; margin-top: 20px;">Guests can explore but have limited access</p>
   </div>
 </div>
 
@@ -367,20 +197,19 @@ body {
   <aside class="sidebar">
     <div class="logo">🦊 FOXIE</div>
     <div class="tag">Your world. Your people. Your games.</div>
-
     <nav class="nav">
       <button class="active" data-page="home">🏠 Home</button>
       <button data-page="social">🎬 Social</button>
       <button data-page="avatar">🧍 Avatar</button>
       <button data-page="world">🌎 Foxie World</button>
       <button data-page="games">🎮 Games</button>
+      <button data-page="leaderboard">🏆 Leaderboard</button>
       <button data-page="learn">📚 Learn</button>
       <button data-page="messages">💬 Messages</button>
       <button data-page="search">🔎 Search</button>
       <button data-page="maps">🗺️ Maps</button>
       <button data-page="creator">👑 Creator Mode</button>
     </nav>
-
     <div class="sidebarBottom">
       <div>FOXIE ONLINE</div>
       <div class="creatorName">Created by Jayden Wayne Macdonald</div>
@@ -392,79 +221,109 @@ body {
       <div class="status">🟢 Foxie systems online</div>
       <div class="userInfo">
         <span id="currentUser">Guest</span>
+        <span id="xpDisplay" style="color: var(--green);">XP: 0</span>
         <button onclick="toggleCustomize()">🎨 Customize</button>
         <button onclick="logout()">Logout</button>
         <div class="clock" id="clock">--:--:--</div>
       </div>
     </header>
 
-    <!-- Customize Panel -->
     <div id="customizePanel">
       <h3>🎨 Customize Foxie</h3>
-      
-      <div class="colorRow">
-        <span>Background</span>
-        <input type="color" id="bgColor" value="#020604" onchange="updateTheme()">
-      </div>
-      
-      <div class="colorRow">
-        <span>Matrix Rain</span>
-        <input type="color" id="rainColor" value="#39ff14" onchange="updateTheme()">
-      </div>
-
-      <div class="colorRow">
-        <span>Accent Green</span>
-        <input type="color" id="accentColor" value="#39ff14" onchange="updateTheme()">
-      </div>
-
+      <div class="colorRow"><span>Background</span><input type="color" id="bgColor" value="#020604" onchange="updateTheme()"></div>
+      <div class="colorRow"><span>Matrix Rain</span><input type="color" id="rainColor" value="#39ff14" onchange="updateTheme()"></div>
+      <div class="colorRow"><span>Accent Green</span><input type="color" id="accentColor" value="#39ff14" onchange="updateTheme()"></div>
       <button class="btn" style="width:100%; margin-top:15px;" onclick="resetTheme()">Reset to Default</button>
     </div>
 
     <div class="pages">
+
       <!-- HOME -->
       <section class="page active" id="home">
         <div class="bigHero">
           <div style="font-size:12px;color:#83a88b">WELCOME TO</div>
           <h1>FOXIE <span style="color:var(--green)">🦊</span></h1>
-          <p style="color:#9eb5a2; margin: 12px 0 20px;">
-            One place for your friends, avatar, games, learning and creators.
-          </p>
+          <p style="color:#9eb5a2; margin: 12px 0 20px;">One place for your friends, avatar, games, learning and creators.</p>
           <div class="row">
-            <button class="btn" onclick="showPage('avatar')">Create Avatar</button>
-            <button class="btn secondary" onclick="showPage('world')">Enter World</button>
+            <button class="btn" onclick="showPage('games')">Play Games</button>
             <button class="btn secondary" onclick="showPage('learn')">Start Learning</button>
-            <button class="btn secondary" onclick="showPage('social')">Open Social</button>
+            <button class="btn secondary" onclick="showPage('leaderboard')">Leaderboard</button>
           </div>
         </div>
-
         <div class="grid">
-          <div class="card">
-            <h3>🧍 3D Avatar</h3>
-            <p style="color:#91a895">Build your own detailed Foxie character.</p>
-          </div>
-          <div class="card">
-            <h3>🌎 3D World</h3>
-            <p style="color:#91a895">Explore the Foxie universe.</p>
-          </div>
-          <div class="card">
-            <h3>📚 Learn Anything</h3>
-            <p style="color:#91a895">Foxie can teach you almost anything.</p>
-          </div>
-          <div class="card">
-            <h3>🎮 Games</h3>
-            <p style="color:#91a895">Play and compete inside Foxie.</p>
+          <div class="card"><h3>🎮 Games</h3><p style="color:#91a895">Tic Tac Toe, Connect 4 and more.</p></div>
+          <div class="card"><h3>🏆 Leaderboard</h3><p style="color:#91a895">Compete and climb the ranks.</p></div>
+          <div class="card"><h3>📚 Learn</h3><p style="color:#91a895">Foxie can teach you almost anything.</p></div>
+          <div class="card"><h3>🧍 Avatar</h3><p style="color:#91a895">Customize your Foxie character.</p></div>
+        </div>
+      </section>
+
+      <!-- GAMES HUB -->
+      <section class="page" id="games">
+        <div class="bigHero">
+          <h1>🎮 Foxie <span style="color:var(--green)">Games</span></h1>
+          <p style="color:#91a895">Play, win XP, and climb the leaderboard.</p>
+        </div>
+
+        <div id="gameSelect">
+          <div class="grid">
+            <div class="card" style="cursor:pointer" onclick="startGame('tictactoe')">
+              <h3>❌ Tic Tac Toe</h3>
+              <p style="color:#91a895">Classic 3x3. Beat the computer.</p>
+              <button class="btn" style="margin-top:12px">Play</button>
+            </div>
+            <div class="card" style="cursor:pointer" onclick="startGame('connect4')">
+              <h3>🔴 Connect 4</h3>
+              <p style="color:#91a895">Drop discs. Get 4 in a row.</p>
+              <button class="btn" style="margin-top:12px">Play</button>
+            </div>
+            <div class="card">
+              <h3>♟️ Chess</h3>
+              <p style="color:#91a895">Coming soon</p>
+              <button class="btn secondary" style="margin-top:12px">Soon</button>
+            </div>
+            <div class="card">
+              <h3>🐍 Snake</h3>
+              <p style="color:#91a895">Coming soon</p>
+              <button class="btn secondary" style="margin-top:12px">Soon</button>
+            </div>
           </div>
         </div>
 
-        <!-- AI Chat -->
-        <div class="card" style="margin-top:18px">
-          <h3>🦊 Foxie AI</h3>
-          <div id="chatMessages" style="height:180px;overflow:auto;background:#020704;border-radius:10px;padding:12px;margin-bottom:10px">
-            <div style="color:#8faa94">Foxie: Hey! I'm ready. What do you want to learn or do today? 🦊</div>
+        <!-- TIC TAC TOE -->
+        <div id="tictactoeGame" style="display:none">
+          <div class="gameArea">
+            <div class="row" style="justify-content:space-between; margin-bottom:15px">
+              <button class="btn secondary" onclick="backToGames()">← Back</button>
+              <button class="btn" onclick="resetTicTacToe()">New Game</button>
+            </div>
+            <div class="statusText" id="tttStatus">Your turn (X)</div>
+            <div class="board" id="tttBoard" style="grid-template-columns: repeat(3, 80px);"></div>
           </div>
-          <div class="row">
-            <input id="chatInput" style="flex:1;background:#030a05;color:white;border:1px solid #25422d;border-radius:9px;padding:11px;outline:none" placeholder="Talk to Foxie...">
-            <button class="btn" onclick="sendChat()">Send</button>
+        </div>
+
+        <!-- CONNECT 4 -->
+        <div id="connect4Game" style="display:none">
+          <div class="gameArea">
+            <div class="row" style="justify-content:space-between; margin-bottom:15px">
+              <button class="btn secondary" onclick="backToGames()">← Back</button>
+              <button class="btn" onclick="resetConnect4()">New Game</button>
+            </div>
+            <div class="statusText" id="c4Status">Your turn (Red)</div>
+            <div class="c4-board" id="c4Board"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEADERBOARD -->
+      <section class="page" id="leaderboard">
+        <div class="bigHero">
+          <h1>🏆 Leaderboard</h1>
+          <p style="color:#91a895">Top Foxie players</p>
+        </div>
+        <div class="card">
+          <div id="leaderboardList" style="min-height:200px">
+            <!-- filled by JS -->
           </div>
         </div>
       </section>
@@ -473,103 +332,27 @@ body {
       <section class="page" id="learn">
         <div class="bigHero">
           <h1>📚 Learn <span style="color:var(--green)">Anything</span></h1>
-          <p style="color:#91a895">Ask Foxie to teach you any skill, topic or subject.</p>
+          <p style="color:#91a895">Ask Foxie to teach you any skill or topic.</p>
         </div>
-
         <div id="guestLearnLock" class="lockedNotice" style="display:none">
-          🔒 Create an account to save your learning progress and unlock full lessons.
+          🔒 Create an account to save progress.
         </div>
-
         <div class="grid">
-          <div class="card" style="cursor:pointer" onclick="startLesson('chess')">
-            <h3>♟️ Chess Mastery</h3>
-            <p style="color:#91a895">Learn openings, tactics and strategy.</p>
-          </div>
-          <div class="card" style="cursor:pointer" onclick="startLesson('coding')">
-            <h3>💻 Coding</h3>
-            <p style="color:#91a895">HTML, Python, JavaScript and more.</p>
-          </div>
-          <div class="card" style="cursor:pointer" onclick="startLesson('productivity')">
-            <h3>⚡ Productivity</h3>
-            <p style="color:#91a895">Focus, habits and getting things done.</p>
-          </div>
-          <div class="card" style="cursor:pointer" onclick="startLesson('creativity')">
-            <h3>🎨 Creativity</h3>
-            <p style="color:#91a895">Writing, design, music and ideas.</p>
-          </div>
-          <div class="card" style="cursor:pointer" onclick="startLesson('life')">
-            <h3>🧠 Life Skills</h3>
-            <p style="color:#91a895">Communication, confidence, decisions.</p>
-          </div>
-          <div class="card" style="cursor:pointer" onclick="startLesson('custom')">
-            <h3>🔍 Learn Anything</h3>
-            <p style="color:#91a895">Type any topic and Foxie will teach you.</p>
-          </div>
+          <div class="card" style="cursor:pointer" onclick="startLesson('chess')"><h3>♟️ Chess</h3></div>
+          <div class="card" style="cursor:pointer" onclick="startLesson('coding')"><h3>💻 Coding</h3></div>
+          <div class="card" style="cursor:pointer" onclick="startLesson('productivity')"><h3>⚡ Productivity</h3></div>
+          <div class="card" style="cursor:pointer" onclick="startLesson('custom')"><h3>🔍 Anything</h3></div>
         </div>
-
         <div class="card" style="margin-top:20px">
-          <h3>Current Lesson</h3>
-          <div id="lessonArea" style="min-height:120px;color:#9eb5a2;padding:10px 0">
-            Choose a topic above or ask Foxie anything in the chat.
-          </div>
+          <h3>Lesson</h3>
+          <div id="lessonArea" style="min-height:100px;color:#9eb5a2;padding:10px 0">Choose a topic above.</div>
         </div>
       </section>
 
-      <!-- SOCIAL -->
-      <section class="page" id="social">
-        <div class="bigHero">
-          <h1>Foxie <span style="color:var(--green)">Social</span></h1>
-          <p style="color:#91a895">Posts, photos, short videos, stories and creators.</p>
-        </div>
-        <div class="card">
-          <p style="color:#91a895">Social feed is growing. More real posts and interactions coming soon.</p>
-          <button class="btn" style="margin-top:12px" onclick="showPage('avatar')">Customize your profile first</button>
-        </div>
-      </section>
-
-      <!-- AVATAR -->
-      <section class="page" id="avatar">
-        <div class="bigHero">
-          <h1>🧍 Avatar Studio</h1>
-          <p style="color:#91a895">Your 3D Foxie character (full customizer coming in next update)</p>
-        </div>
-        <div class="card">
-          <p>Avatar system from your original version will be fully restored and improved in the next drop.</p>
-        </div>
-      </section>
-
-      <!-- WORLD -->
-      <section class="page" id="world">
-        <div class="bigHero">
-          <h1>🌎 Foxie World</h1>
-          <p style="color:#91a895">3D world – enhanced version coming next.</p>
-        </div>
-      </section>
-
-      <!-- GAMES -->
-      <section class="page" id="games">
-        <div class="bigHero">
-          <h1>🎮 Foxie Games</h1>
-          <p style="color:#91a895">More realistic games are being built.</p>
-        </div>
-        <div class="grid">
-          <div class="card">
-            <h3>♟️ Chess</h3>
-            <p style="color:#91a895">Full playable chess with AI – coming in next update</p>
-            <button class="btn secondary" style="margin-top:10px">Coming Very Soon</button>
-          </div>
-          <div class="card">
-            <h3>🏎️ Racing</h3>
-            <p style="color:#91a895">More realistic driving</p>
-          </div>
-          <div class="card">
-            <h3>🐍 Snake 3D</h3>
-            <p style="color:#91a895">Classic with a Foxie twist</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Other pages simplified for now -->
+      <!-- Other pages -->
+      <section class="page" id="social"><div class="bigHero"><h1>🎬 Social</h1></div></section>
+      <section class="page" id="avatar"><div class="bigHero"><h1>🧍 Avatar Studio</h1><p style="color:#91a895">Coming back soon in stronger form.</p></div></section>
+      <section class="page" id="world"><div class="bigHero"><h1>🌎 Foxie World</h1></div></section>
       <section class="page" id="messages"><div class="bigHero"><h1>💬 Messages</h1></div></section>
       <section class="page" id="search"><div class="bigHero"><h1>🔎 Search</h1></div></section>
       <section class="page" id="maps"><div class="bigHero"><h1>🗺️ Maps</h1></div></section>
@@ -579,203 +362,294 @@ body {
 </div>
 
 <script>
-// ====================== MATRIX RAIN ======================
+// ========== MATRIX ==========
 const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
 let rainColor = '#39ff14';
-
-function resizeMatrix() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeMatrix();
-window.addEventListener('resize', resizeMatrix);
-
-const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()アカサタナハマヤラワ';
+function resizeMatrix(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resizeMatrix(); addEventListener('resize', resizeMatrix);
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
 const fontSize = 14;
-let columns = canvas.width / fontSize;
 let drops = [];
-
-function initDrops() {
-  columns = canvas.width / fontSize;
-  drops = [];
-  for (let i = 0; i < columns; i++) {
-    drops[i] = Math.random() * -100;
-  }
-}
+function initDrops(){ drops = Array(Math.floor(canvas.width/fontSize)).fill(1); }
 initDrops();
-
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(2, 6, 4, 0.08)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
+function drawMatrix(){
+  ctx.fillStyle = 'rgba(2,6,4,0.08)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle = rainColor;
   ctx.font = fontSize + 'px monospace';
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = letters[Math.floor(Math.random() * letters.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-    
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
+  drops.forEach((y,i)=>{
+    ctx.fillText(letters[Math.floor(Math.random()*letters.length)], i*fontSize, y*fontSize);
+    if(y*fontSize > canvas.height && Math.random()>0.975) drops[i]=0;
     drops[i]++;
-  }
+  });
 }
 setInterval(drawMatrix, 50);
 
-// ====================== THEME ======================
-function updateTheme() {
-  const bg = document.getElementById('bgColor').value;
-  const rain = document.getElementById('rainColor').value;
-  const accent = document.getElementById('accentColor').value;
-
+// ========== THEME ==========
+function updateTheme(){
+  const bg = bgColor.value, rain = rainColorPicker.value, accent = accentColor.value;
   document.documentElement.style.setProperty('--bg', bg);
   document.documentElement.style.setProperty('--green', accent);
   document.body.style.background = bg;
   rainColor = rain;
-
-  localStorage.setItem('foxieTheme', JSON.stringify({ bg, rain, accent }));
+  localStorage.setItem('foxieTheme', JSON.stringify({bg, rain, accent}));
 }
-
-function resetTheme() {
-  document.getElementById('bgColor').value = '#020604';
-  document.getElementById('rainColor').value = '#39ff14';
-  document.getElementById('accentColor').value = '#39ff14';
+function resetTheme(){
+  bgColor.value = '#020604'; rainColorPicker.value = '#39ff14'; accentColor.value = '#39ff14';
   updateTheme();
 }
-
-function loadTheme() {
-  const saved = localStorage.getItem('foxieTheme');
-  if (saved) {
-    const t = JSON.parse(saved);
-    document.getElementById('bgColor').value = t.bg || '#020604';
-    document.getElementById('rainColor').value = t.rain || '#39ff14';
-    document.getElementById('accentColor').value = t.accent || '#39ff14';
-    updateTheme();
-  }
+function loadTheme(){
+  const s = localStorage.getItem('foxieTheme');
+  if(s){ const t = JSON.parse(s); bgColor.value=t.bg||'#020604'; rainColorPicker.value=t.rain||'#39ff14'; accentColor.value=t.accent||'#39ff14'; updateTheme(); }
 }
+function toggleCustomize(){ customizePanel.style.display = customizePanel.style.display==='block'?'none':'block'; }
+const bgColor = document.getElementById('bgColor');
+const rainColorPicker = document.getElementById('rainColor');
+const accentColor = document.getElementById('accentColor');
+const customizePanel = document.getElementById('customizePanel');
 
-function toggleCustomize() {
-  const panel = document.getElementById('customizePanel');
-  panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-}
-
-// ====================== AUTH ======================
+// ========== AUTH + STATS ==========
 let currentUser = null;
+let stats = { xp: 0, wins: 0, losses: 0 };
 
-function createAccount() {
-  const username = document.getElementById('usernameInput').value.trim();
-  if (!username) return alert('Please enter a username');
-  
+function loadStats(){
+  const s = localStorage.getItem('foxieStats_' + (currentUser?.username || 'Guest'));
+  stats = s ? JSON.parse(s) : { xp: 0, wins: 0, losses: 0 };
+  updateXPDisplay();
+}
+function saveStats(){
+  localStorage.setItem('foxieStats_' + (currentUser?.username || 'Guest'), JSON.stringify(stats));
+  updateXPDisplay();
+  updateLeaderboard();
+}
+function updateXPDisplay(){
+  document.getElementById('xpDisplay').textContent = `XP: ${stats.xp} | Wins: ${stats.wins}`;
+}
+function addWin(points = 25){
+  stats.xp += points;
+  stats.wins += 1;
+  saveStats();
+}
+function addLoss(){
+  stats.losses += 1;
+  saveStats();
+}
+
+function createAccount(){
+  const username = usernameInput.value.trim();
+  if(!username) return alert('Enter a username');
   currentUser = { username, isGuest: false };
   localStorage.setItem('foxieUser', JSON.stringify(currentUser));
   enterApp();
 }
-
-function continueAsGuest() {
+function continueAsGuest(){
   currentUser = { username: 'Guest', isGuest: true };
   localStorage.setItem('foxieUser', JSON.stringify(currentUser));
   enterApp();
 }
-
-function logout() {
-  localStorage.removeItem('foxieUser');
-  location.reload();
+function logout(){ localStorage.removeItem('foxieUser'); location.reload(); }
+function enterApp(){
+  loginOverlay.style.display = 'none';
+  app.style.display = 'flex';
+  currentUserSpan.textContent = currentUser.username + (currentUser.isGuest ? ' (Guest)' : '');
+  loadStats();
+  if(currentUser.isGuest) guestLearnLock.style.display = 'block';
+  updateLeaderboard();
 }
-
-function enterApp() {
-  document.getElementById('loginOverlay').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('currentUser').textContent = currentUser.username + (currentUser.isGuest ? ' (Guest)' : '');
-  
-  if (currentUser.isGuest) {
-    document.getElementById('guestLearnLock').style.display = 'block';
-  }
-}
-
-// Check if already logged in
 const savedUser = localStorage.getItem('foxieUser');
-if (savedUser) {
-  currentUser = JSON.parse(savedUser);
-  enterApp();
-}
+if(savedUser){ currentUser = JSON.parse(savedUser); enterApp(); }
 
-// ====================== NAVIGATION ======================
-function showPage(page) {
+// ========== NAV ==========
+function showPage(page){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-  
-  const target = document.getElementById(page);
-  if (target) target.classList.add('active');
-  
-  const btn = document.querySelector(`.nav button[data-page="${page}"]`);
-  if (btn) btn.classList.add('active');
+  document.getElementById(page)?.classList.add('active');
+  document.querySelector(`.nav button[data-page="${page}"]`)?.classList.add('active');
+  if(page === 'leaderboard') updateLeaderboard();
 }
-
 document.querySelectorAll('.nav button').forEach(btn => {
   btn.addEventListener('click', () => showPage(btn.dataset.page));
 });
 
-// ====================== CLOCK ======================
-function updateClock() {
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString();
-}
-setInterval(updateClock, 1000);
-updateClock();
+// ========== CLOCK ==========
+setInterval(() => clock.textContent = new Date().toLocaleTimeString(), 1000);
 
-// ====================== LEARN ======================
-function startLesson(topic) {
-  const area = document.getElementById('lessonArea');
-  const messages = {
-    chess: "Great choice. Let's start with chess fundamentals. Would you like to learn openings, tactics, or endgames first?",
-    coding: "Ready to code. What language or concept do you want to learn? (HTML, Python, JavaScript, etc.)",
-    productivity: "Let's level up your focus and systems. What's your biggest productivity struggle right now?",
-    creativity: "Creativity mode activated. Want help with writing, ideas, design, or something else?",
-    life: "Life skills are powerful. What area do you want to improve? (confidence, communication, decisions...)",
-    custom: "Tell me exactly what you want to learn and I'll teach you step by step."
+// ========== LEARN ==========
+function startLesson(topic){
+  const msgs = {
+    chess: "Let's learn chess. Openings, tactics or endgames?",
+    coding: "What do you want to learn? HTML, Python, JavaScript...",
+    productivity: "What's your biggest focus problem right now?",
+    custom: "Tell me exactly what you want to learn."
   };
-  area.innerHTML = `<strong style="color:var(--green)">Foxie:</strong> ${messages[topic] || messages.custom}`;
+  lessonArea.innerHTML = `<strong style="color:var(--green)">Foxie:</strong> ${msgs[topic] || msgs.custom}`;
 }
 
-// ====================== CHAT ======================
-async function sendChat() {
-  const input = document.getElementById('chatInput');
-  const messages = document.getElementById('chatMessages');
-  const text = input.value.trim();
-  if (!text) return;
+// ========== GAMES ==========
+function startGame(game){
+  gameSelect.style.display = 'none';
+  tictactoeGame.style.display = 'none';
+  connect4Game.style.display = 'none';
+  if(game === 'tictactoe'){ tictactoeGame.style.display = 'block'; resetTicTacToe(); }
+  if(game === 'connect4'){ connect4Game.style.display = 'block'; resetConnect4(); }
+}
+function backToGames(){
+  tictactoeGame.style.display = 'none';
+  connect4Game.style.display = 'none';
+  gameSelect.style.display = 'block';
+}
 
-  messages.innerHTML += `<div style="margin-top:8px"><b style="color:var(--green)">You:</b> ${escapeHtml(text)}</div>`;
-  input.value = '';
-  messages.innerHTML += `<div id="typing" style="color:#718b76;margin-top:8px">Foxie is thinking...</div>`;
-  messages.scrollTop = messages.scrollHeight;
+// ----- TIC TAC TOE -----
+let tttBoard = Array(9).fill(null);
+let tttActive = true;
 
-  try {
-    const response = await fetch("https://foxie-ai-backend.onrender.com/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text })
-    });
-    const data = await response.json();
-    document.getElementById('typing')?.remove();
-    messages.innerHTML += `<div style="margin-top:8px"><b style="color:var(--green)">Foxie:</b> ${escapeHtml(data.reply || "I'm here 🦊")}</div>`;
-  } catch (err) {
-    document.getElementById('typing')?.remove();
-    messages.innerHTML += `<div style="color:#ff7190;margin-top:8px">Foxie AI is temporarily unavailable.</div>`;
+function resetTicTacToe(){
+  tttBoard = Array(9).fill(null);
+  tttActive = true;
+  tttStatus.textContent = 'Your turn (X)';
+  renderTTT();
+}
+function renderTTT(){
+  tttBoardEl.innerHTML = '';
+  tttBoard.forEach((val, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'cell' + (val ? ' taken' : '');
+    cell.textContent = val || '';
+    cell.onclick = () => tttMove(i);
+    tttBoardEl.appendChild(cell);
+  });
+}
+function tttMove(i){
+  if(!tttActive || tttBoard[i]) return;
+  tttBoard[i] = 'X';
+  renderTTT();
+  if(checkTTT('X')){ tttStatus.textContent = 'You win! +25 XP'; tttActive=false; addWin(25); return; }
+  if(tttBoard.every(c => c)){ tttStatus.textContent = 'Draw!'; tttActive=false; return; }
+  tttStatus.textContent = 'Computer thinking...';
+  setTimeout(computerTTT, 400);
+}
+function computerTTT(){
+  // Easy AI: random empty cell
+  const empty = tttBoard.map((v,i) => v===null?i:null).filter(v=>v!==null);
+  if(!empty.length) return;
+  const move = empty[Math.floor(Math.random()*empty.length)];
+  tttBoard[move] = 'O';
+  renderTTT();
+  if(checkTTT('O')){ tttStatus.textContent = 'Computer wins!'; tttActive=false; addLoss(); return; }
+  if(tttBoard.every(c => c)){ tttStatus.textContent = 'Draw!'; tttActive=false; return; }
+  tttStatus.textContent = 'Your turn (X)';
+}
+function checkTTT(p){
+  const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  return wins.some(([a,b,c]) => tttBoard[a]===p && tttBoard[b]===p && tttBoard[c]===p);
+}
+
+// ----- CONNECT 4 -----
+let c4Board = Array(6).fill().map(() => Array(7).fill(null));
+let c4Active = true;
+let c4Player = 'red';
+
+function resetConnect4(){
+  c4Board = Array(6).fill().map(() => Array(7).fill(null));
+  c4Active = true;
+  c4Player = 'red';
+  c4Status.textContent = 'Your turn (Red)';
+  renderC4();
+}
+function renderC4(){
+  c4BoardEl.innerHTML = '';
+  for(let r=0; r<6; r++){
+    for(let c=0; c<7; c++){
+      const cell = document.createElement('div');
+      cell.className = 'c4-cell';
+      if(c4Board[r][c] === 'red') cell.classList.add('c4-red');
+      if(c4Board[r][c] === 'yellow') cell.classList.add('c4-yellow');
+      cell.onclick = () => c4Click(c);
+      c4BoardEl.appendChild(cell);
+    }
   }
-  messages.scrollTop = messages.scrollHeight;
+}
+function c4Click(col){
+  if(!c4Active || c4Player !== 'red') return;
+  const row = dropC4(col, 'red');
+  if(row === -1) return;
+  renderC4();
+  if(checkC4('red')){ c4Status.textContent = 'You win! +30 XP'; c4Active=false; addWin(30); return; }
+  if(c4Board[0].every(c => c)){ c4Status.textContent = 'Draw!'; c4Active=false; return; }
+  c4Player = 'yellow';
+  c4Status.textContent = 'Computer thinking...';
+  setTimeout(computerC4, 500);
+}
+function dropC4(col, color){
+  for(let r=5; r>=0; r--){
+    if(!c4Board[r][col]){ c4Board[r][col] = color; return r; }
+  }
+  return -1;
+}
+function computerC4(){
+  const cols = [0,1,2,3,4,5,6].filter(c => !c4Board[0][c]);
+  if(!cols.length) return;
+  const col = cols[Math.floor(Math.random()*cols.length)];
+  dropC4(col, 'yellow');
+  renderC4();
+  if(checkC4('yellow')){ c4Status.textContent = 'Computer wins!'; c4Active=false; addLoss(); return; }
+  if(c4Board[0].every(c => c)){ c4Status.textContent = 'Draw!'; c4Active=false; return; }
+  c4Player = 'red';
+  c4Status.textContent = 'Your turn (Red)';
+}
+function checkC4(color){
+  // horizontal, vertical, diagonal
+  for(let r=0;r<6;r++) for(let c=0;c<7;c++){
+    if(c4Board[r][c] !== color) continue;
+    // horiz
+    if(c<=3 && c4Board[r][c+1]===color && c4Board[r][c+2]===color && c4Board[r][c+3]===color) return true;
+    // vert
+    if(r<=2 && c4Board[r+1][c]===color && c4Board[r+2][c]===color && c4Board[r+3][c]===color) return true;
+    // diag down-right
+    if(r<=2 && c<=3 && c4Board[r+1][c+1]===color && c4Board[r+2][c+2]===color && c4Board[r+3][c+3]===color) return true;
+    // diag down-left
+    if(r<=2 && c>=3 && c4Board[r+1][c-1]===color && c4Board[r+2][c-2]===color && c4Board[r+3][c-3]===color) return true;
+  }
+  return false;
 }
 
-function escapeHtml(text) {
-  return text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+// ========== LEADERBOARD ==========
+function updateLeaderboard(){
+  // Simple local leaderboard (just current user for now + fake entries for feel)
+  const list = document.getElementById('leaderboardList');
+  const entries = [
+    { name: currentUser?.username || 'You', xp: stats.xp, wins: stats.wins },
+    { name: 'ShadowFox', xp: 340, wins: 18 },
+    { name: 'NeonPaw', xp: 290, wins: 14 },
+    { name: 'PixelTail', xp: 210, wins: 11 },
+    { name: 'CyberKitsune', xp: 180, wins: 9 }
+  ].sort((a,b) => b.xp - a.xp);
+
+  list.innerHTML = entries.map((e,i) => `
+    <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1a3324">
+      <span>#${i+1} ${e.name}</span>
+      <span style="color:var(--green)">${e.xp} XP • ${e.wins} wins</span>
+    </div>
+  `).join('');
 }
 
-document.getElementById('chatInput')?.addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendChat();
-});
-
-// Init
+// ========== INIT ==========
 loadTheme();
+const tttBoardEl = document.getElementById('tttBoard');
+const c4BoardEl = document.getElementById('c4Board');
+const gameSelect = document.getElementById('gameSelect');
+const tictactoeGame = document.getElementById('tictactoeGame');
+const connect4Game = document.getElementById('connect4Game');
+const tttStatus = document.getElementById('tttStatus');
+const c4Status = document.getElementById('c4Status');
+const loginOverlay = document.getElementById('loginOverlay');
+const app = document.getElementById('app');
+const currentUserSpan = document.getElementById('currentUser');
+const guestLearnLock = document.getElementById('guestLearnLock');
+const lessonArea = document.getElementById('lessonArea');
+const clock = document.getElementById('clock');
+const usernameInput = document.getElementById('usernameInput');
 </script>
 </body>
 </html>

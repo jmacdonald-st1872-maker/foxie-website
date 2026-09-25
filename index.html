@@ -10,7 +10,6 @@
   --bg: #020604;
   --text: #eaffea;
   --muted: #8ba98f;
-  --panel: #07120b;
   --danger: #ff496c;
   --rain-color: #39ff14;
 }
@@ -26,7 +25,7 @@ body {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   z-index: 0; opacity: 0.18; pointer-events: none;
 }
-#app { display: flex; height: 100vh; position: relative; z-index: 1; }
+#app { display: none; height: 100vh; position: relative; z-index: 1; }
 
 /* Sidebar */
 .sidebar {
@@ -58,7 +57,7 @@ body {
 .creatorName { color: var(--green); }
 
 /* Main */
-.main { flex: 1; min-width: 0; position: relative; overflow: hidden; }
+.main { flex: 1; min-width: 0; position: relative; overflow: hidden; display: flex; flex-direction: column; }
 .topbar {
   height: 62px; border-bottom: 1px solid rgba(57, 255, 20, 0.12);
   background: rgba(2, 8, 4, 0.82); backdrop-filter: blur(12px);
@@ -74,7 +73,7 @@ body {
 }
 
 /* Pages */
-.pages { height: calc(100vh - 62px); overflow: auto; }
+.pages { flex: 1; overflow: auto; }
 .page { display: none; min-height: 100%; padding: 22px; }
 .page.active { display: block; }
 
@@ -103,7 +102,7 @@ body {
 
 /* Login */
 #loginOverlay {
-  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92);
   z-index: 1000; display: flex; align-items: center; justify-content: center;
 }
 .loginBox {
@@ -131,15 +130,13 @@ body {
 .colorRow input[type="color"] { width: 42px; height: 32px; border: none; background: none; cursor: pointer; }
 
 /* Games */
-.gameArea { max-width: 500px; margin: 0 auto; }
-.board {
-  display: grid; gap: 8px; margin: 20px auto; justify-content: center;
-}
+.gameArea { max-width: 520px; margin: 0 auto; }
+.board { display: grid; gap: 8px; margin: 20px auto; justify-content: center; }
 .cell {
   width: 80px; height: 80px; background: #0a1a0f;
   border: 2px solid #1a3324; border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 36px; cursor: pointer; transition: 0.15s;
+  font-size: 36px; cursor: pointer; transition: 0.15s; user-select: none;
 }
 .cell:hover { background: #0f2418; border-color: var(--green); }
 .cell.taken { cursor: default; }
@@ -147,11 +144,11 @@ body {
 
 /* Connect 4 */
 .c4-board {
-  display: grid; grid-template-columns: repeat(7, 50px); gap: 6px;
+  display: grid; grid-template-columns: repeat(7, 52px); gap: 6px;
   justify-content: center; margin: 20px auto;
 }
 .c4-cell {
-  width: 50px; height: 50px; background: #0a1a0f;
+  width: 52px; height: 52px; background: #0a1a0f;
   border: 2px solid #1a3324; border-radius: 50%;
   cursor: pointer; transition: 0.15s;
 }
@@ -177,7 +174,7 @@ body {
 
 <canvas id="matrix"></canvas>
 
-<!-- Login -->
+<!-- LOGIN SCREEN -->
 <div id="loginOverlay">
   <div class="loginBox">
     <div style="font-size: 48px; margin-bottom: 10px;">🦊</div>
@@ -193,7 +190,8 @@ body {
   </div>
 </div>
 
-<div id="app" style="display: none;">
+<!-- MAIN APP -->
+<div id="app">
   <aside class="sidebar">
     <div class="logo">🦊 FOXIE</div>
     <div class="tag">Your world. Your people. Your games.</div>
@@ -228,22 +226,22 @@ body {
       </div>
     </header>
 
+    <!-- Customize Panel -->
     <div id="customizePanel">
       <h3>🎨 Customize Foxie</h3>
       <div class="colorRow"><span>Background</span><input type="color" id="bgColor" value="#020604" onchange="updateTheme()"></div>
       <div class="colorRow"><span>Matrix Rain</span><input type="color" id="rainColor" value="#39ff14" onchange="updateTheme()"></div>
-      <div class="colorRow"><span>Accent Green</span><input type="color" id="accentColor" value="#39ff14" onchange="updateTheme()"></div>
+      <div class="colorRow"><span>Accent</span><input type="color" id="accentColor" value="#39ff14" onchange="updateTheme()"></div>
       <button class="btn" style="width:100%; margin-top:15px;" onclick="resetTheme()">Reset to Default</button>
     </div>
 
     <div class="pages">
-
       <!-- HOME -->
       <section class="page active" id="home">
         <div class="bigHero">
           <div style="font-size:12px;color:#83a88b">WELCOME TO</div>
           <h1>FOXIE <span style="color:var(--green)">🦊</span></h1>
-          <p style="color:#9eb5a2; margin: 12px 0 20px;">One place for your friends, avatar, games, learning and creators.</p>
+          <p style="color:#9eb5a2; margin: 12px 0 20px;">One place for friends, games, learning and creators.</p>
           <div class="row">
             <button class="btn" onclick="showPage('games')">Play Games</button>
             <button class="btn secondary" onclick="showPage('learn')">Start Learning</button>
@@ -254,11 +252,11 @@ body {
           <div class="card"><h3>🎮 Games</h3><p style="color:#91a895">Tic Tac Toe, Connect 4 and more.</p></div>
           <div class="card"><h3>🏆 Leaderboard</h3><p style="color:#91a895">Compete and climb the ranks.</p></div>
           <div class="card"><h3>📚 Learn</h3><p style="color:#91a895">Foxie can teach you almost anything.</p></div>
-          <div class="card"><h3>🧍 Avatar</h3><p style="color:#91a895">Customize your Foxie character.</p></div>
+          <div class="card"><h3>🧍 Avatar</h3><p style="color:#91a895">Customize your character.</p></div>
         </div>
       </section>
 
-      <!-- GAMES HUB -->
+      <!-- GAMES -->
       <section class="page" id="games">
         <div class="bigHero">
           <h1>🎮 Foxie <span style="color:var(--green)">Games</span></h1>
@@ -274,7 +272,7 @@ body {
             </div>
             <div class="card" style="cursor:pointer" onclick="startGame('connect4')">
               <h3>🔴 Connect 4</h3>
-              <p style="color:#91a895">Drop discs. Get 4 in a row.</p>
+              <p style="color:#91a895">Get 4 in a row.</p>
               <button class="btn" style="margin-top:12px">Play</button>
             </div>
             <div class="card">
@@ -322,9 +320,7 @@ body {
           <p style="color:#91a895">Top Foxie players</p>
         </div>
         <div class="card">
-          <div id="leaderboardList" style="min-height:200px">
-            <!-- filled by JS -->
-          </div>
+          <div id="leaderboardList"></div>
         </div>
       </section>
 
@@ -351,7 +347,7 @@ body {
 
       <!-- Other pages -->
       <section class="page" id="social"><div class="bigHero"><h1>🎬 Social</h1></div></section>
-      <section class="page" id="avatar"><div class="bigHero"><h1>🧍 Avatar Studio</h1><p style="color:#91a895">Coming back soon in stronger form.</p></div></section>
+      <section class="page" id="avatar"><div class="bigHero"><h1>🧍 Avatar Studio</h1><p style="color:#91a895">Coming back soon.</p></div></section>
       <section class="page" id="world"><div class="bigHero"><h1>🌎 Foxie World</h1></div></section>
       <section class="page" id="messages"><div class="bigHero"><h1>💬 Messages</h1></div></section>
       <section class="page" id="search"><div class="bigHero"><h1>🔎 Search</h1></div></section>
@@ -362,294 +358,424 @@ body {
 </div>
 
 <script>
-// ========== MATRIX ==========
+// ====================== MATRIX RAIN ======================
 const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
 let rainColor = '#39ff14';
-function resizeMatrix(){ canvas.width = innerWidth; canvas.height = innerHeight; }
-resizeMatrix(); addEventListener('resize', resizeMatrix);
+
+function resizeMatrix() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeMatrix();
+window.addEventListener('resize', resizeMatrix);
+
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
 const fontSize = 14;
 let drops = [];
-function initDrops(){ drops = Array(Math.floor(canvas.width/fontSize)).fill(1); }
+
+function initDrops() {
+  drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+}
 initDrops();
-function drawMatrix(){
-  ctx.fillStyle = 'rgba(2,6,4,0.08)';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(2, 6, 4, 0.08)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = rainColor;
   ctx.font = fontSize + 'px monospace';
-  drops.forEach((y,i)=>{
-    ctx.fillText(letters[Math.floor(Math.random()*letters.length)], i*fontSize, y*fontSize);
-    if(y*fontSize > canvas.height && Math.random()>0.975) drops[i]=0;
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
     drops[i]++;
-  });
+  }
 }
 setInterval(drawMatrix, 50);
 
-// ========== THEME ==========
-function updateTheme(){
-  const bg = bgColor.value, rain = rainColorPicker.value, accent = accentColor.value;
+// ====================== THEME ======================
+function updateTheme() {
+  const bg = document.getElementById('bgColor').value;
+  const rain = document.getElementById('rainColor').value;
+  const accent = document.getElementById('accentColor').value;
   document.documentElement.style.setProperty('--bg', bg);
   document.documentElement.style.setProperty('--green', accent);
   document.body.style.background = bg;
   rainColor = rain;
-  localStorage.setItem('foxieTheme', JSON.stringify({bg, rain, accent}));
+  localStorage.setItem('foxieTheme', JSON.stringify({ bg, rain, accent }));
 }
-function resetTheme(){
-  bgColor.value = '#020604'; rainColorPicker.value = '#39ff14'; accentColor.value = '#39ff14';
+
+function resetTheme() {
+  document.getElementById('bgColor').value = '#020604';
+  document.getElementById('rainColor').value = '#39ff14';
+  document.getElementById('accentColor').value = '#39ff14';
   updateTheme();
 }
-function loadTheme(){
-  const s = localStorage.getItem('foxieTheme');
-  if(s){ const t = JSON.parse(s); bgColor.value=t.bg||'#020604'; rainColorPicker.value=t.rain||'#39ff14'; accentColor.value=t.accent||'#39ff14'; updateTheme(); }
-}
-function toggleCustomize(){ customizePanel.style.display = customizePanel.style.display==='block'?'none':'block'; }
-const bgColor = document.getElementById('bgColor');
-const rainColorPicker = document.getElementById('rainColor');
-const accentColor = document.getElementById('accentColor');
-const customizePanel = document.getElementById('customizePanel');
 
-// ========== AUTH + STATS ==========
+function loadTheme() {
+  const saved = localStorage.getItem('foxieTheme');
+  if (saved) {
+    const t = JSON.parse(saved);
+    document.getElementById('bgColor').value = t.bg || '#020604';
+    document.getElementById('rainColor').value = t.rain || '#39ff14';
+    document.getElementById('accentColor').value = t.accent || '#39ff14';
+    updateTheme();
+  }
+}
+
+function toggleCustomize() {
+  const panel = document.getElementById('customizePanel');
+  panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+}
+
+// ====================== AUTH + STATS ======================
 let currentUser = null;
 let stats = { xp: 0, wins: 0, losses: 0 };
 
-function loadStats(){
-  const s = localStorage.getItem('foxieStats_' + (currentUser?.username || 'Guest'));
-  stats = s ? JSON.parse(s) : { xp: 0, wins: 0, losses: 0 };
+function loadStats() {
+  const key = 'foxieStats_' + (currentUser ? currentUser.username : 'Guest');
+  const saved = localStorage.getItem(key);
+  stats = saved ? JSON.parse(saved) : { xp: 0, wins: 0, losses: 0 };
   updateXPDisplay();
 }
-function saveStats(){
-  localStorage.setItem('foxieStats_' + (currentUser?.username || 'Guest'), JSON.stringify(stats));
+
+function saveStats() {
+  const key = 'foxieStats_' + (currentUser ? currentUser.username : 'Guest');
+  localStorage.setItem(key, JSON.stringify(stats));
   updateXPDisplay();
   updateLeaderboard();
 }
-function updateXPDisplay(){
-  document.getElementById('xpDisplay').textContent = `XP: ${stats.xp} | Wins: ${stats.wins}`;
+
+function updateXPDisplay() {
+  const el = document.getElementById('xpDisplay');
+  if (el) el.textContent = 'XP: ' + stats.xp + ' | Wins: ' + stats.wins;
 }
-function addWin(points = 25){
-  stats.xp += points;
+
+function addWin(points) {
+  stats.xp += points || 25;
   stats.wins += 1;
   saveStats();
 }
-function addLoss(){
+
+function addLoss() {
   stats.losses += 1;
   saveStats();
 }
 
-function createAccount(){
-  const username = usernameInput.value.trim();
-  if(!username) return alert('Enter a username');
-  currentUser = { username, isGuest: false };
+function createAccount() {
+  const username = document.getElementById('usernameInput').value.trim();
+  if (!username) {
+    alert('Please enter a username');
+    return;
+  }
+  currentUser = { username: username, isGuest: false };
   localStorage.setItem('foxieUser', JSON.stringify(currentUser));
   enterApp();
 }
-function continueAsGuest(){
+
+function continueAsGuest() {
   currentUser = { username: 'Guest', isGuest: true };
   localStorage.setItem('foxieUser', JSON.stringify(currentUser));
   enterApp();
 }
-function logout(){ localStorage.removeItem('foxieUser'); location.reload(); }
-function enterApp(){
-  loginOverlay.style.display = 'none';
-  app.style.display = 'flex';
-  currentUserSpan.textContent = currentUser.username + (currentUser.isGuest ? ' (Guest)' : '');
+
+function logout() {
+  localStorage.removeItem('foxieUser');
+  location.reload();
+}
+
+function enterApp() {
+  document.getElementById('loginOverlay').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  const userSpan = document.getElementById('currentUser');
+  if (userSpan) {
+    userSpan.textContent = currentUser.username + (currentUser.isGuest ? ' (Guest)' : '');
+  }
+
   loadStats();
-  if(currentUser.isGuest) guestLearnLock.style.display = 'block';
+
+  const lock = document.getElementById('guestLearnLock');
+  if (lock) {
+    lock.style.display = currentUser.isGuest ? 'block' : 'none';
+  }
+
   updateLeaderboard();
 }
-const savedUser = localStorage.getItem('foxieUser');
-if(savedUser){ currentUser = JSON.parse(savedUser); enterApp(); }
 
-// ========== NAV ==========
-function showPage(page){
+// Auto-login
+const savedUser = localStorage.getItem('foxieUser');
+if (savedUser) {
+  try {
+    currentUser = JSON.parse(savedUser);
+    enterApp();
+  } catch (e) {
+    localStorage.removeItem('foxieUser');
+  }
+}
+
+// ====================== NAVIGATION ======================
+function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById(page)?.classList.add('active');
-  document.querySelector(`.nav button[data-page="${page}"]`)?.classList.add('active');
-  if(page === 'leaderboard') updateLeaderboard();
+
+  const target = document.getElementById(page);
+  if (target) target.classList.add('active');
+
+  const btn = document.querySelector('.nav button[data-page="' + page + '"]');
+  if (btn) btn.classList.add('active');
+
+  if (page === 'leaderboard') updateLeaderboard();
 }
-document.querySelectorAll('.nav button').forEach(btn => {
-  btn.addEventListener('click', () => showPage(btn.dataset.page));
+
+document.querySelectorAll('.nav button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    showPage(btn.getAttribute('data-page'));
+  });
 });
 
-// ========== CLOCK ==========
-setInterval(() => clock.textContent = new Date().toLocaleTimeString(), 1000);
+// ====================== CLOCK ======================
+setInterval(function() {
+  const el = document.getElementById('clock');
+  if (el) el.textContent = new Date().toLocaleTimeString();
+}, 1000);
 
-// ========== LEARN ==========
-function startLesson(topic){
-  const msgs = {
-    chess: "Let's learn chess. Openings, tactics or endgames?",
+// ====================== LEARN ======================
+function startLesson(topic) {
+  const messages = {
+    chess: "Let's learn chess. Do you want openings, tactics, or endgames?",
     coding: "What do you want to learn? HTML, Python, JavaScript...",
     productivity: "What's your biggest focus problem right now?",
-    custom: "Tell me exactly what you want to learn."
+    custom: "Tell me exactly what you want to learn and I'll teach you step by step."
   };
-  lessonArea.innerHTML = `<strong style="color:var(--green)">Foxie:</strong> ${msgs[topic] || msgs.custom}`;
+  const area = document.getElementById('lessonArea');
+  if (area) {
+    area.innerHTML = '<strong style="color:var(--green)">Foxie:</strong> ' + (messages[topic] || messages.custom);
+  }
 }
 
-// ========== GAMES ==========
-function startGame(game){
-  gameSelect.style.display = 'none';
-  tictactoeGame.style.display = 'none';
-  connect4Game.style.display = 'none';
-  if(game === 'tictactoe'){ tictactoeGame.style.display = 'block'; resetTicTacToe(); }
-  if(game === 'connect4'){ connect4Game.style.display = 'block'; resetConnect4(); }
+// ====================== GAMES ======================
+function startGame(game) {
+  document.getElementById('gameSelect').style.display = 'none';
+  document.getElementById('tictactoeGame').style.display = 'none';
+  document.getElementById('connect4Game').style.display = 'none';
+
+  if (game === 'tictactoe') {
+    document.getElementById('tictactoeGame').style.display = 'block';
+    resetTicTacToe();
+  }
+  if (game === 'connect4') {
+    document.getElementById('connect4Game').style.display = 'block';
+    resetConnect4();
+  }
 }
-function backToGames(){
-  tictactoeGame.style.display = 'none';
-  connect4Game.style.display = 'none';
-  gameSelect.style.display = 'block';
+
+function backToGames() {
+  document.getElementById('tictactoeGame').style.display = 'none';
+  document.getElementById('connect4Game').style.display = 'none';
+  document.getElementById('gameSelect').style.display = 'block';
 }
 
 // ----- TIC TAC TOE -----
 let tttBoard = Array(9).fill(null);
 let tttActive = true;
 
-function resetTicTacToe(){
+function resetTicTacToe() {
   tttBoard = Array(9).fill(null);
   tttActive = true;
-  tttStatus.textContent = 'Your turn (X)';
+  document.getElementById('tttStatus').textContent = 'Your turn (X)';
   renderTTT();
 }
-function renderTTT(){
-  tttBoardEl.innerHTML = '';
-  tttBoard.forEach((val, i) => {
+
+function renderTTT() {
+  const board = document.getElementById('tttBoard');
+  board.innerHTML = '';
+  tttBoard.forEach(function(val, i) {
     const cell = document.createElement('div');
     cell.className = 'cell' + (val ? ' taken' : '');
     cell.textContent = val || '';
-    cell.onclick = () => tttMove(i);
-    tttBoardEl.appendChild(cell);
+    cell.onclick = function() { tttMove(i); };
+    board.appendChild(cell);
   });
 }
-function tttMove(i){
-  if(!tttActive || tttBoard[i]) return;
+
+function tttMove(i) {
+  if (!tttActive || tttBoard[i]) return;
   tttBoard[i] = 'X';
   renderTTT();
-  if(checkTTT('X')){ tttStatus.textContent = 'You win! +25 XP'; tttActive=false; addWin(25); return; }
-  if(tttBoard.every(c => c)){ tttStatus.textContent = 'Draw!'; tttActive=false; return; }
-  tttStatus.textContent = 'Computer thinking...';
+  if (checkTTT('X')) {
+    document.getElementById('tttStatus').textContent = 'You win! +25 XP';
+    tttActive = false;
+    addWin(25);
+    return;
+  }
+  if (tttBoard.every(function(c) { return c; })) {
+    document.getElementById('tttStatus').textContent = 'Draw!';
+    tttActive = false;
+    return;
+  }
+  document.getElementById('tttStatus').textContent = 'Computer thinking...';
   setTimeout(computerTTT, 400);
 }
-function computerTTT(){
-  // Easy AI: random empty cell
-  const empty = tttBoard.map((v,i) => v===null?i:null).filter(v=>v!==null);
-  if(!empty.length) return;
-  const move = empty[Math.floor(Math.random()*empty.length)];
+
+function computerTTT() {
+  const empty = [];
+  tttBoard.forEach(function(v, i) { if (!v) empty.push(i); });
+  if (empty.length === 0) return;
+  const move = empty[Math.floor(Math.random() * empty.length)];
   tttBoard[move] = 'O';
   renderTTT();
-  if(checkTTT('O')){ tttStatus.textContent = 'Computer wins!'; tttActive=false; addLoss(); return; }
-  if(tttBoard.every(c => c)){ tttStatus.textContent = 'Draw!'; tttActive=false; return; }
-  tttStatus.textContent = 'Your turn (X)';
+  if (checkTTT('O')) {
+    document.getElementById('tttStatus').textContent = 'Computer wins!';
+    tttActive = false;
+    addLoss();
+    return;
+  }
+  if (tttBoard.every(function(c) { return c; })) {
+    document.getElementById('tttStatus').textContent = 'Draw!';
+    tttActive = false;
+    return;
+  }
+  document.getElementById('tttStatus').textContent = 'Your turn (X)';
 }
-function checkTTT(p){
+
+function checkTTT(p) {
   const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  return wins.some(([a,b,c]) => tttBoard[a]===p && tttBoard[b]===p && tttBoard[c]===p);
+  return wins.some(function(line) {
+    return tttBoard[line[0]] === p && tttBoard[line[1]] === p && tttBoard[line[2]] === p;
+  });
 }
 
 // ----- CONNECT 4 -----
-let c4Board = Array(6).fill().map(() => Array(7).fill(null));
+let c4Board = [];
 let c4Active = true;
 let c4Player = 'red';
 
-function resetConnect4(){
-  c4Board = Array(6).fill().map(() => Array(7).fill(null));
+function resetConnect4() {
+  c4Board = [];
+  for (let r = 0; r < 6; r++) {
+    c4Board[r] = [];
+    for (let c = 0; c < 7; c++) c4Board[r][c] = null;
+  }
   c4Active = true;
   c4Player = 'red';
-  c4Status.textContent = 'Your turn (Red)';
+  document.getElementById('c4Status').textContent = 'Your turn (Red)';
   renderC4();
 }
-function renderC4(){
-  c4BoardEl.innerHTML = '';
-  for(let r=0; r<6; r++){
-    for(let c=0; c<7; c++){
+
+function renderC4() {
+  const board = document.getElementById('c4Board');
+  board.innerHTML = '';
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 7; c++) {
       const cell = document.createElement('div');
       cell.className = 'c4-cell';
-      if(c4Board[r][c] === 'red') cell.classList.add('c4-red');
-      if(c4Board[r][c] === 'yellow') cell.classList.add('c4-yellow');
-      cell.onclick = () => c4Click(c);
-      c4BoardEl.appendChild(cell);
+      if (c4Board[r][c] === 'red') cell.classList.add('c4-red');
+      if (c4Board[r][c] === 'yellow') cell.classList.add('c4-yellow');
+      cell.onclick = (function(col) { return function() { c4Click(col); }; })(c);
+      board.appendChild(cell);
     }
   }
 }
-function c4Click(col){
-  if(!c4Active || c4Player !== 'red') return;
+
+function c4Click(col) {
+  if (!c4Active || c4Player !== 'red') return;
   const row = dropC4(col, 'red');
-  if(row === -1) return;
+  if (row === -1) return;
   renderC4();
-  if(checkC4('red')){ c4Status.textContent = 'You win! +30 XP'; c4Active=false; addWin(30); return; }
-  if(c4Board[0].every(c => c)){ c4Status.textContent = 'Draw!'; c4Active=false; return; }
+  if (checkC4('red')) {
+    document.getElementById('c4Status').textContent = 'You win! +30 XP';
+    c4Active = false;
+    addWin(30);
+    return;
+  }
+  if (c4Board[0].every(function(c) { return c; })) {
+    document.getElementById('c4Status').textContent = 'Draw!';
+    c4Active = false;
+    return;
+  }
   c4Player = 'yellow';
-  c4Status.textContent = 'Computer thinking...';
-  setTimeout(computerC4, 500);
+  document.getElementById('c4Status').textContent = 'Computer thinking...';
+  setTimeout(computerC4, 450);
 }
-function dropC4(col, color){
-  for(let r=5; r>=0; r--){
-    if(!c4Board[r][col]){ c4Board[r][col] = color; return r; }
+
+function dropC4(col, color) {
+  for (let r = 5; r >= 0; r--) {
+    if (!c4Board[r][col]) {
+      c4Board[r][col] = color;
+      return r;
+    }
   }
   return -1;
 }
-function computerC4(){
-  const cols = [0,1,2,3,4,5,6].filter(c => !c4Board[0][c]);
-  if(!cols.length) return;
-  const col = cols[Math.floor(Math.random()*cols.length)];
+
+function computerC4() {
+  const cols = [];
+  for (let c = 0; c < 7; c++) if (!c4Board[0][c]) cols.push(c);
+  if (cols.length === 0) return;
+  const col = cols[Math.floor(Math.random() * cols.length)];
   dropC4(col, 'yellow');
   renderC4();
-  if(checkC4('yellow')){ c4Status.textContent = 'Computer wins!'; c4Active=false; addLoss(); return; }
-  if(c4Board[0].every(c => c)){ c4Status.textContent = 'Draw!'; c4Active=false; return; }
+  if (checkC4('yellow')) {
+    document.getElementById('c4Status').textContent = 'Computer wins!';
+    c4Active = false;
+    addLoss();
+    return;
+  }
+  if (c4Board[0].every(function(c) { return c; })) {
+    document.getElementById('c4Status').textContent = 'Draw!';
+    c4Active = false;
+    return;
+  }
   c4Player = 'red';
-  c4Status.textContent = 'Your turn (Red)';
+  document.getElementById('c4Status').textContent = 'Your turn (Red)';
 }
-function checkC4(color){
-  // horizontal, vertical, diagonal
-  for(let r=0;r<6;r++) for(let c=0;c<7;c++){
-    if(c4Board[r][c] !== color) continue;
-    // horiz
-    if(c<=3 && c4Board[r][c+1]===color && c4Board[r][c+2]===color && c4Board[r][c+3]===color) return true;
-    // vert
-    if(r<=2 && c4Board[r+1][c]===color && c4Board[r+2][c]===color && c4Board[r+3][c]===color) return true;
-    // diag down-right
-    if(r<=2 && c<=3 && c4Board[r+1][c+1]===color && c4Board[r+2][c+2]===color && c4Board[r+3][c+3]===color) return true;
-    // diag down-left
-    if(r<=2 && c>=3 && c4Board[r+1][c-1]===color && c4Board[r+2][c-2]===color && c4Board[r+3][c-3]===color) return true;
+
+function checkC4(color) {
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 7; c++) {
+      if (c4Board[r][c] !== color) continue;
+      // horizontal
+      if (c <= 3 && c4Board[r][c+1] === color && c4Board[r][c+2] === color && c4Board[r][c+3] === color) return true;
+      // vertical
+      if (r <= 2 && c4Board[r+1][c] === color && c4Board[r+2][c] === color && c4Board[r+3][c] === color) return true;
+      // diagonal down-right
+      if (r <= 2 && c <= 3 && c4Board[r+1][c+1] === color && c4Board[r+2][c+2] === color && c4Board[r+3][c+3] === color) return true;
+      // diagonal down-left
+      if (r <= 2 && c >= 3 && c4Board[r+1][c-1] === color && c4Board[r+2][c-2] === color && c4Board[r+3][c-3] === color) return true;
+    }
   }
   return false;
 }
 
-// ========== LEADERBOARD ==========
-function updateLeaderboard(){
-  // Simple local leaderboard (just current user for now + fake entries for feel)
+// ====================== LEADERBOARD ======================
+function updateLeaderboard() {
   const list = document.getElementById('leaderboardList');
+  if (!list) return;
+
   const entries = [
-    { name: currentUser?.username || 'You', xp: stats.xp, wins: stats.wins },
+    { name: currentUser ? currentUser.username : 'You', xp: stats.xp, wins: stats.wins },
     { name: 'ShadowFox', xp: 340, wins: 18 },
     { name: 'NeonPaw', xp: 290, wins: 14 },
     { name: 'PixelTail', xp: 210, wins: 11 },
     { name: 'CyberKitsune', xp: 180, wins: 9 }
-  ].sort((a,b) => b.xp - a.xp);
+  ];
 
-  list.innerHTML = entries.map((e,i) => `
-    <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1a3324">
-      <span>#${i+1} ${e.name}</span>
-      <span style="color:var(--green)">${e.xp} XP • ${e.wins} wins</span>
-    </div>
-  `).join('');
+  entries.sort(function(a, b) { return b.xp - a.xp; });
+
+  let html = '';
+  entries.forEach(function(e, i) {
+    html += '<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1a3324">' +
+            '<span>#' + (i+1) + ' ' + e.name + '</span>' +
+            '<span style="color:var(--green)">' + e.xp + ' XP • ' + e.wins + ' wins</span></div>';
+  });
+  list.innerHTML = html;
 }
 
-// ========== INIT ==========
+// ====================== INIT ======================
 loadTheme();
-const tttBoardEl = document.getElementById('tttBoard');
-const c4BoardEl = document.getElementById('c4Board');
-const gameSelect = document.getElementById('gameSelect');
-const tictactoeGame = document.getElementById('tictactoeGame');
-const connect4Game = document.getElementById('connect4Game');
-const tttStatus = document.getElementById('tttStatus');
-const c4Status = document.getElementById('c4Status');
-const loginOverlay = document.getElementById('loginOverlay');
-const app = document.getElementById('app');
-const currentUserSpan = document.getElementById('currentUser');
-const guestLearnLock = document.getElementById('guestLearnLock');
-const lessonArea = document.getElementById('lessonArea');
-const clock = document.getElementById('clock');
-const usernameInput = document.getElementById('usernameInput');
 </script>
 </body>
 </html>

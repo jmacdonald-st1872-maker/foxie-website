@@ -5,19 +5,26 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Foxie 🦊</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chess.js@1.4.0/dist/chess.min.js"></script>
+
 <style>
 :root{
   --green:#39ff14;
-  --green2:#16c784;
+  --green2:#1bbd12;
   --bg:#020604;
   --panel:#07120b;
-  --panel2:#0b1b10;
-  --border:#183b23;
-  --text:#eaffee;
-  --muted:#82a98d;
-  --danger:#ff405c;
+  --panel2:#0a180e;
+  --border:#173b21;
+  --text:#ecfff0;
+  --muted:#83a58c;
+
+  --light:#e8c99b;
+  --dark:#769656;
+  --light2:#f0d9b5;
+  --dark2:#b58863;
+
+  --danger:#ff4d5e;
   --gold:#ffd84d;
-  --blue:#5da9ff;
 }
 
 *{
@@ -26,9 +33,10 @@
 
 html,body{
   margin:0;
+  width:100%;
   min-height:100%;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:#020604;
   color:var(--text);
 }
 
@@ -36,28 +44,30 @@ body{
   overflow-x:hidden;
 }
 
-button,
-input,
-select,
-textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
+/* MATRIX */
 
 #matrix{
   position:fixed;
   inset:0;
+  z-index:-5;
+  opacity:.12;
   pointer-events:none;
-  opacity:.08;
-  z-index:0;
 }
 
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(57,255,20,.08),transparent 35%),
+    linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.7));
+  z-index:-4;
+  pointer-events:none;
+}
+
+/* APP */
+
 .app{
-  position:relative;
-  z-index:1;
   min-height:100vh;
   display:flex;
 }
@@ -65,280 +75,384 @@ button{
 /* SIDEBAR */
 
 .sidebar{
-  width:270px;
+  width:250px;
   min-height:100vh;
-  background:rgba(3,10,6,.97);
-  border-right:1px solid var(--border);
-  padding:18px 12px;
   position:fixed;
   left:0;
   top:0;
   bottom:0;
-  overflow-y:auto;
+  background:rgba(3,10,6,.96);
+  border-right:1px solid #15341d;
+  padding:18px 12px;
   z-index:20;
+  overflow-y:auto;
 }
 
-.logo{
-  font-size:25px;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px 20px;
+}
+
+.brandIcon{
+  font-size:32px;
+  filter:drop-shadow(0 0 10px rgba(57,255,20,.5));
+}
+
+.brandName{
+  font-size:23px;
   font-weight:900;
+  letter-spacing:.5px;
   color:var(--green);
-  padding:8px 12px 20px;
-  letter-spacing:1px;
 }
 
-.nav-section{
-  color:#4e7659;
-  font-size:11px;
+.brandSub{
+  font-size:10px;
+  color:#71917a;
+  margin-top:2px;
+}
+
+.navSection{
+  margin-top:12px;
+}
+
+.navTitle{
+  font-size:10px;
+  color:#496951;
   text-transform:uppercase;
   letter-spacing:1.5px;
-  padding:13px 12px 6px;
+  padding:10px 13px 6px;
 }
 
-.nav-btn{
+.navBtn{
   width:100%;
   border:0;
   background:transparent;
-  color:#b9d5c1;
-  text-align:left;
-  padding:10px 12px;
+  color:#b8d6bf;
+  padding:11px 13px;
   border-radius:10px;
-  margin:2px 0;
-  transition:.15s;
+  text-align:left;
+  font-size:14px;
+  cursor:pointer;
+  transition:.18s;
+  display:flex;
+  align-items:center;
+  gap:11px;
 }
 
-.nav-btn:hover,
-.nav-btn.active{
-  background:#0b2412;
+.navBtn:hover{
+  background:#0b2111;
+  color:white;
+}
+
+.navBtn.active{
+  background:linear-gradient(90deg,#123e18,#0b2410);
   color:var(--green);
+  box-shadow:inset 3px 0 var(--green);
 }
 
-.nav-child{
-  padding-left:30px;
-  font-size:13px;
+.navIcon{
+  width:22px;
+  text-align:center;
 }
 
 /* MAIN */
 
 .main{
-  margin-left:270px;
-  width:calc(100% - 270px);
+  margin-left:250px;
+  width:calc(100% - 250px);
   min-height:100vh;
 }
 
 .topbar{
-  height:62px;
-  border-bottom:1px solid var(--border);
-  background:rgba(2,8,4,.88);
-  backdrop-filter:blur(12px);
+  height:64px;
+  border-bottom:1px solid #15341d;
+  background:rgba(2,8,4,.82);
+  backdrop-filter:blur(15px);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 25px;
+  padding:0 24px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:15;
+}
+
+.topTitle{
+  font-size:14px;
+  color:#91af98;
+}
+
+.topRight{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.creator{
+  color:#80a68a;
+  font-size:12px;
 }
 
 .clock{
   color:var(--green);
-  font-weight:bold;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
 }
 
-.creator{
-  color:#79a687;
-  font-size:12px;
-}
-
-.content{
-  padding:28px;
-  max-width:1500px;
-  margin:auto;
-}
+/* PAGE */
 
 .page{
   display:none;
+  padding:24px;
 }
 
 .page.active{
   display:block;
 }
 
-h1{
-  margin-top:0;
-  font-size:32px;
+.pageHeader{
+  margin-bottom:20px;
 }
 
-h2{
-  margin-top:0;
+.pageHeader h1{
+  margin:0;
+  font-size:28px;
 }
 
-.subtitle{
+.pageHeader p{
   color:var(--muted);
-}
-
-.hero{
-  background:
-    radial-gradient(circle at top right,#123b1e 0,transparent 40%),
-    linear-gradient(135deg,#07170c,#030a05);
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:35px;
-  margin-bottom:22px;
-}
-
-.hero h1{
-  font-size:44px;
-  margin-bottom:8px;
-}
-
-.green{
-  color:var(--green);
+  margin:6px 0 0;
 }
 
 /* CARDS */
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:15px;
-}
-
 .card{
-  background:rgba(7,18,11,.92);
-  border:1px solid var(--border);
+  background:linear-gradient(180deg,#08150c,#061009);
+  border:1px solid #173a20;
   border-radius:16px;
-  padding:19px;
-  transition:.18s;
+  padding:18px;
+  box-shadow:0 12px 35px rgba(0,0,0,.25);
 }
 
-.card:hover{
-  transform:translateY(-2px);
-  border-color:#27683a;
-}
-
-.card h3{
-  margin:0 0 8px;
-}
-
-.card p{
-  color:var(--muted);
-  line-height:1.5;
-}
-
-.card button,
-.action{
-  background:#0c2814;
-  color:var(--green);
-  border:1px solid #215c31;
-  padding:9px 13px;
+.btn{
+  border:1px solid #285c32;
+  background:#0c2311;
+  color:#dffff0;
   border-radius:9px;
+  padding:9px 13px;
+  cursor:pointer;
+  font-weight:700;
 }
 
-.card button:hover,
-.action:hover{
-  background:#123b1c;
+.btn:hover{
+  border-color:var(--green);
+  background:#103217;
 }
 
-.big-action{
-  padding:14px 20px;
-  font-weight:bold;
-}
-
-.danger{
-  color:#ff7082;
-  border-color:#74303c;
-}
-
-.gold{
-  color:var(--gold);
-}
-
-/* CHAT */
-
-.chat{
-  height:650px;
-  display:flex;
-  flex-direction:column;
-  background:#050d07;
-  border:1px solid var(--border);
-  border-radius:18px;
-  overflow:hidden;
-}
-
-.chat-messages{
-  flex:1;
-  overflow-y:auto;
-  padding:20px;
-}
-
-.msg{
-  max-width:80%;
-  padding:12px 15px;
-  border-radius:13px;
-  margin-bottom:10px;
-  line-height:1.5;
-}
-
-.msg.user{
-  background:#12391d;
-  margin-left:auto;
-}
-
-.msg.foxie{
-  background:#0a1c10;
-  border:1px solid #173b22;
-}
-
-.chat-input{
-  display:flex;
-  gap:10px;
-  padding:12px;
-  border-top:1px solid var(--border);
-}
-
-.chat-input input{
-  flex:1;
-  background:#07140b;
-  color:white;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:13px;
-  outline:none;
-}
-
-.chat-input button{
+.btn.primary{
   background:var(--green);
-  color:#001604;
-  border:0;
-  border-radius:10px;
-  padding:0 20px;
-  font-weight:bold;
+  color:#031004;
+  border-color:var(--green);
+}
+
+.btn.danger{
+  background:#361017;
+  border-color:#70232e;
+  color:#ffb8c0;
+}
+
+.btn.gold{
+  background:#4b3a0a;
+  border-color:#8e731b;
+  color:#ffe98b;
 }
 
 /* CHESS */
 
-.chess-layout{
-  display:grid;
-  grid-template-columns:minmax(420px,700px) minmax(280px,420px);
-  gap:22px;
-  align-items:start;
-}
-
-.chess-board-wrap{
-  background:#050c07;
-  border:1px solid var(--border);
-  border-radius:18px;
+.chessPage{
   padding:18px;
 }
 
-.chess-board{
-  width:min(100%,680px);
-  aspect-ratio:1;
+.chessShell{
+  max-width:1500px;
   margin:auto;
+}
+
+.chessTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:15px;
+  flex-wrap:wrap;
+}
+
+.chessTitle{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.chessTitle h1{
+  margin:0;
+  font-size:25px;
+}
+
+.chessTitle small{
+  display:block;
+  color:#78927e;
+  margin-top:3px;
+}
+
+.chessActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* TABS */
+
+.chessTabs{
+  display:flex;
+  gap:5px;
+  background:#061009;
+  border:1px solid #173820;
+  padding:5px;
+  border-radius:12px;
+  margin-bottom:18px;
+  overflow-x:auto;
+}
+
+.chessTab{
+  background:transparent;
+  border:0;
+  color:#79947f;
+  padding:9px 13px;
+  border-radius:8px;
+  cursor:pointer;
+  white-space:nowrap;
+  font-weight:700;
+}
+
+.chessTab:hover{
+  color:white;
+}
+
+.chessTab.active{
+  background:#12341a;
+  color:var(--green);
+}
+
+/* GAME LAYOUT */
+
+.gameLayout{
+  display:grid;
+  grid-template-columns:minmax(500px,780px) minmax(300px,390px);
+  gap:18px;
+  align-items:start;
+}
+
+/* BOARD COLUMN */
+
+.boardColumn{
+  min-width:0;
+}
+
+.playerCard{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:8px;
+}
+
+.playerInfo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:#102719;
+  border:1px solid #265b31;
+  display:grid;
+  place-items:center;
+  font-size:21px;
+}
+
+.playerName{
+  font-weight:800;
+}
+
+.playerRating{
+  color:#75907c;
+  font-size:12px;
+  margin-top:2px;
+}
+
+.clockBox{
+  min-width:110px;
+  padding:9px 14px;
+  border-radius:8px;
+  background:#071009;
+  border:1px solid #1d3922;
+  text-align:center;
+  font-size:25px;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:1px;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.2);
+}
+
+.clockBox.active{
+  background:#14351b;
+  border-color:#398348;
+  color:white;
+  box-shadow:0 0 16px rgba(57,255,20,.13);
+}
+
+.clockBox.low{
+  background:#3b1017;
+  border-color:#8d2837;
+  color:#ff8895;
+}
+
+/* BOARD FRAME */
+
+.boardFrame{
+  width:100%;
+  position:relative;
+  padding:0;
+}
+
+.boardWrap{
+  width:100%;
+  max-width:780px;
+  aspect-ratio:1;
+  position:relative;
+  margin:auto;
+  border-radius:5px;
+  overflow:hidden;
+  box-shadow:
+    0 25px 55px rgba(0,0,0,.5),
+    0 0 0 1px rgba(255,255,255,.06);
+}
+
+/* CHESS BOARD */
+
+.board{
+  width:100%;
+  height:100%;
   display:grid;
   grid-template-columns:repeat(8,1fr);
-  border:4px solid #111;
-  box-shadow:0 15px 50px rgba(0,0,0,.5);
+  grid-template-rows:repeat(8,1fr);
+  user-select:none;
+  touch-action:none;
 }
 
 .square{
@@ -346,272 +460,743 @@ h2{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:clamp(27px,6vw,60px);
-  user-select:none;
   cursor:pointer;
+  overflow:hidden;
 }
 
 .square.light{
-  background:#d8d2b7;
+  background:var(--light);
 }
 
 .square.dark{
-  background:#72936d;
+  background:var(--dark);
+}
+
+.square.lastMove{
+  box-shadow:inset 0 0 0 999px rgba(255,221,64,.25);
 }
 
 .square.selected{
-  outline:4px solid var(--green);
-  outline-offset:-4px;
-}
-
-.square.legal::after{
-  content:"";
-  position:absolute;
-  width:22%;
-  height:22%;
-  border-radius:50%;
-  background:rgba(20,30,20,.55);
-}
-
-.square.capture::after{
-  content:"";
-  position:absolute;
-  inset:7%;
-  border:5px solid rgba(190,50,50,.8);
-  border-radius:50%;
-}
-
-.square.last{
-  box-shadow:inset 0 0 0 999px rgba(255,230,70,.20);
+  box-shadow:inset 0 0 0 999px rgba(255,234,86,.34);
 }
 
 .square.check{
-  box-shadow:inset 0 0 0 999px rgba(255,50,70,.42);
+  box-shadow:
+    inset 0 0 0 999px rgba(255,35,54,.42),
+    inset 0 0 30px rgba(255,35,54,.85);
+}
+
+.square.captureTarget:after{
+  content:"";
+  position:absolute;
+  width:72%;
+  height:72%;
+  border-radius:50%;
+  border:6px solid rgba(70,20,15,.48);
+  pointer-events:none;
+}
+
+.moveDot{
+  position:absolute;
+  width:25%;
+  height:25%;
+  border-radius:50%;
+  background:rgba(30,40,25,.45);
+  z-index:3;
+  pointer-events:none;
 }
 
 .piece{
   position:relative;
-  z-index:2;
-  filter:drop-shadow(1px 2px 1px rgba(0,0,0,.45));
+  z-index:4;
+  font-family:"Arial Unicode MS","DejaVu Sans",serif;
+  font-size:clamp(35px,6.2vw,76px);
+  line-height:1;
+  cursor:grab;
+  filter:drop-shadow(0 3px 2px rgba(0,0,0,.48));
+  transition:transform .12s ease;
 }
 
-.white-piece{
-  color:#fff;
+.piece:hover{
+  transform:translateY(-2px) scale(1.03);
+}
+
+.piece.white{
+  color:#fffaf0;
   text-shadow:
-    -1px -1px 0 #222,
-    1px -1px 0 #222,
-    -1px 1px 0 #222,
-    1px 1px 0 #222;
+    -1px -1px 0 #6d604f,
+    1px -1px 0 #6d604f,
+    -1px 1px 0 #6d604f,
+    1px 1px 0 #6d604f,
+    0 3px 3px rgba(0,0,0,.55);
 }
 
-.black-piece{
-  color:#171717;
+.piece.black{
+  color:#242820;
   text-shadow:
-    1px 1px 1px #999;
+    0 1px 1px rgba(255,255,255,.15),
+    0 3px 4px rgba(0,0,0,.6);
 }
 
-.chess-controls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:15px;
+/* COORDINATES */
+
+.coord{
+  position:absolute;
+  z-index:5;
+  font-size:11px;
+  font-weight:900;
+  opacity:.82;
+  pointer-events:none;
 }
 
-.chess-controls button{
-  background:#0b2412;
-  color:#b9ffc4;
-  border:1px solid #1d5730;
-  border-radius:9px;
-  padding:9px 12px;
+.coord.file{
+  bottom:3px;
+  right:4px;
 }
 
-.chess-controls button:hover{
-  border-color:var(--green);
-  color:var(--green);
+.coord.rank{
+  top:3px;
+  left:4px;
 }
 
-.chess-side{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
+.light .coord{
+  color:#769656;
 }
 
-.chess-panel{
-  background:#07120b;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px;
+.dark .coord{
+  color:#e8c99b;
 }
 
-.clock-box{
-  display:flex;
-  gap:10px;
-}
-
-.clock-player{
-  flex:1;
-  background:#030904;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:15px;
-  text-align:center;
-}
-
-.clock-time{
-  font-size:30px;
-  font-weight:bold;
-  font-family:monospace;
-  color:var(--green);
-}
-
-.clock-player.active{
-  border-color:var(--green);
-  box-shadow:0 0 15px rgba(57,255,20,.12);
-}
-
-.move-list{
-  max-height:240px;
-  overflow-y:auto;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:4px;
-  font-family:monospace;
-}
-
-.move{
-  padding:7px;
-  background:#0a1b0f;
-  border-radius:5px;
-}
-
-.chess-tabs{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  margin:20px 0;
-}
-
-.chess-tab{
-  background:#08170c;
-  color:#9fc5a8;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:10px 13px;
-}
-
-.chess-tab.active{
-  color:var(--green);
-  border-color:var(--green);
-}
-
-.chess-tool{
-  display:none;
-}
-
-.chess-tool.active{
+.coordsInside .coord{
   display:block;
 }
 
-.stat-row{
-  display:flex;
-  justify-content:space-between;
-  border-bottom:1px solid #102517;
-  padding:9px 0;
+.coordsNone .coord{
+  display:none;
 }
 
-/* LOGIN */
+/* BOARD THEMES */
 
-.login-overlay{
+.theme-green{
+  --light:#e7d6ae;
+  --dark:#719653;
+}
+
+.theme-classic{
+  --light:#f0d9b5;
+  --dark:#b58863;
+}
+
+.theme-blue{
+  --light:#d9e8ed;
+  --dark:#4f7c8b;
+}
+
+.theme-purple{
+  --light:#eadcf0;
+  --dark:#82669b;
+}
+
+.theme-neon{
+  --light:#c9ffc4;
+  --dark:#237a31;
+}
+
+.theme-dark{
+  --light:#aab2a4;
+  --dark:#4c554d;
+}
+
+/* BOARD FOOTER */
+
+.boardFooter{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+/* RIGHT PANEL */
+
+.sidePanel{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.gamePanel{
+  background:linear-gradient(180deg,#09150c,#061009);
+  border:1px solid #173820;
+  border-radius:14px;
+  overflow:hidden;
+  min-height:540px;
+  display:flex;
+  flex-direction:column;
+}
+
+.panelHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px 15px;
+  border-bottom:1px solid #173820;
+}
+
+.panelHeader h3{
+  margin:0;
+  font-size:14px;
+}
+
+.panelHeader span{
+  color:#66816d;
+  font-size:11px;
+}
+
+.moveList{
+  padding:8px;
+  overflow:auto;
+  flex:1;
+  max-height:510px;
+}
+
+.moveRow{
+  display:grid;
+  grid-template-columns:42px 1fr 1fr;
+  padding:7px 8px;
+  border-radius:7px;
+  font-size:14px;
+}
+
+.moveRow:nth-child(even){
+  background:#09170d;
+}
+
+.moveNum{
+  color:#55705d;
+}
+
+.moveCell{
+  color:#d9e8dc;
+  font-weight:700;
+}
+
+.moveCell.current{
+  background:#194421;
+  color:var(--green);
+  border-radius:5px;
+  padding:3px 5px;
+  margin:-3px -5px;
+}
+
+.captured{
+  padding:8px 14px;
+  color:#829b88;
+  min-height:28px;
+  border-top:1px solid #132e1a;
+  font-size:12px;
+}
+
+.gameButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:6px;
+  padding:10px;
+  border-top:1px solid #173820;
+}
+
+.gameButtons button{
+  min-height:38px;
+}
+
+/* STATS */
+
+.quickStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  padding:10px;
+  border-top:1px solid #173820;
+}
+
+.stat{
+  text-align:center;
+  background:#08150b;
+  border:1px solid #14301a;
+  border-radius:8px;
+  padding:8px 4px;
+}
+
+.stat strong{
+  display:block;
+  font-size:17px;
+}
+
+.stat span{
+  color:#637c69;
+  font-size:10px;
+}
+
+/* SETTINGS */
+
+.settingsOverlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.88);
+  background:rgba(0,0,0,.68);
+  backdrop-filter:blur(8px);
   z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.settingsOverlay.open{
+  display:flex;
+}
+
+.settingsModal{
+  width:min(600px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#08130b;
+  border:1px solid #285a31;
+  border-radius:18px;
+  box-shadow:0 30px 100px rgba(0,0,0,.65);
+}
+
+.settingsHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px;
+  border-bottom:1px solid #183a20;
+}
+
+.settingsHead h2{
+  margin:0;
+}
+
+.closeBtn{
+  border:0;
+  background:#102116;
+  color:white;
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.settingsBody{
+  padding:18px;
+}
+
+.setting{
+  padding:14px 0;
+  border-bottom:1px solid #123019;
+}
+
+.setting:last-child{
+  border-bottom:0;
+}
+
+.settingLabel{
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.settingDesc{
+  color:#718d78;
+  font-size:12px;
+  margin-bottom:9px;
+}
+
+.setting select{
+  width:100%;
+  padding:10px;
+  background:#061009;
+  border:1px solid #204628;
+  border-radius:8px;
+  color:white;
+}
+
+.toggle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.switch{
+  width:48px;
+  height:26px;
+  background:#1a2a1d;
+  border-radius:20px;
+  padding:3px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.switch span{
+  display:block;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#728378;
+  transition:.2s;
+}
+
+.switch.on{
+  background:#174d20;
+}
+
+.switch.on span{
+  transform:translateX(22px);
+  background:var(--green);
+}
+
+/* RESULT */
+
+.resultOverlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.48);
+  backdrop-filter:blur(3px);
+  z-index:30;
   display:none;
   align-items:center;
   justify-content:center;
 }
 
-.login-box{
-  width:min(420px,90%);
-  background:#07120b;
-  border:1px solid var(--green);
-  border-radius:20px;
-  padding:30px;
+.resultOverlay.show{
+  display:flex;
+}
+
+.resultCard{
+  background:rgba(4,14,7,.96);
+  border:1px solid #397746;
+  border-radius:17px;
+  padding:26px 32px;
   text-align:center;
+  box-shadow:0 20px 80px rgba(0,0,0,.7);
 }
 
-.login-box input{
-  width:100%;
-  background:#020604;
-  color:white;
-  border:1px solid var(--border);
-  padding:12px;
-  border-radius:9px;
+.resultIcon{
+  font-size:46px;
+}
+
+.resultCard h2{
+  margin:10px 0 4px;
+}
+
+.resultCard p{
+  color:#87a38c;
+  margin:0 0 16px;
+}
+
+/* CONFETTI */
+
+.confetti{
+  position:fixed;
+  width:8px;
+  height:14px;
+  z-index:200;
+  pointer-events:none;
+  animation:fall 2.2s linear forwards;
+}
+
+@keyframes fall{
+  from{
+    transform:translateY(-20px) rotate(0);
+    opacity:1;
+  }
+  to{
+    transform:translateY(100vh) rotate(720deg);
+    opacity:0;
+  }
+}
+
+/* OTHER PAGES */
+
+.placeholderGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+}
+
+.placeholder{
+  min-height:150px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:#76927d;
+}
+
+.placeholder .big{
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.chatBox{
+  max-width:900px;
+  margin:auto;
+}
+
+.chatMessages{
+  height:450px;
+  overflow:auto;
+  background:#040a06;
+  border:1px solid #173820;
+  border-radius:12px;
+  padding:14px;
+}
+
+.msg{
   margin:8px 0;
+  max-width:80%;
+  padding:10px 13px;
+  border-radius:11px;
+  line-height:1.45;
 }
 
-.login-box button{
-  width:100%;
+.msg.user{
+  margin-left:auto;
+  background:#153a1a;
+}
+
+.msg.ai{
+  background:#0a180e;
+  border:1px solid #173820;
+}
+
+.chatInput{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.chatInput input{
+  flex:1;
+  background:#061009;
+  border:1px solid #204628;
+  color:white;
   padding:12px;
-  background:var(--green);
-  border:0;
   border-radius:9px;
-  font-weight:bold;
 }
 
-/* RESPONSIVE */
+/* MOBILE */
 
-@media(max-width:950px){
-  .sidebar{
-    width:220px;
-  }
-
-  .main{
-    margin-left:220px;
-    width:calc(100% - 220px);
-  }
-
-  .chess-layout{
+@media(max-width:1100px){
+  .gameLayout{
     grid-template-columns:1fr;
   }
+
+  .boardWrap{
+    max-width:760px;
+  }
+
+  .sidePanel{
+    max-width:760px;
+    margin:auto;
+    width:100%;
+  }
+
+  .gamePanel{
+    min-height:400px;
+  }
 }
 
-@media(max-width:700px){
+@media(max-width:800px){
   .sidebar{
-    position:relative;
-    width:100%;
-    min-height:auto;
-    max-height:300px;
+    width:72px;
+    padding:12px 7px;
+  }
+
+  .brand{
+    justify-content:center;
+    padding-bottom:12px;
+  }
+
+  .brandName,
+  .brandSub,
+  .navTitle,
+  .navBtn span{
+    display:none;
+  }
+
+  .navBtn{
+    justify-content:center;
+    padding:12px 4px;
   }
 
   .main{
-    margin-left:0;
-    width:100%;
-  }
-
-  .app{
-    display:block;
+    margin-left:72px;
+    width:calc(100% - 72px);
   }
 
   .topbar{
-    position:relative;
+    padding:0 12px;
   }
 
-  .content{
-    padding:15px;
+  .creator{
+    display:none;
   }
 
-  .hero h1{
-    font-size:32px;
+  .page{
+    padding:12px;
   }
 
-  .chess-layout{
-    grid-template-columns:1fr;
+  .chessPage{
+    padding:8px;
   }
 
-  .chess-board{
+  .gameLayout{
+    gap:10px;
+  }
+
+  .clockBox{
+    min-width:90px;
+    font-size:21px;
+  }
+
+  .piece{
+    font-size:clamp(28px,9vw,58px);
+  }
+}
+
+@media(max-width:550px){
+  .chessTitle h1{
+    font-size:20px;
+  }
+
+  .chessTitle small{
+    display:none;
+  }
+
+  .chessActions{
     width:100%;
   }
+
+  .chessActions .btn{
+    flex:1;
+  }
+
+  .playerCard{
+    gap:5px;
+  }
+
+  .playerInfo{
+    gap:6px;
+  }
+
+  .avatar{
+    width:32px;
+    height:32px;
+    font-size:17px;
+  }
+
+  .playerName{
+    font-size:12px;
+  }
+
+  .playerRating{
+    font-size:10px;
+  }
+
+  .clockBox{
+    min-width:80px;
+    padding:7px 9px;
+    font-size:18px;
+  }
+
+  .boardWrap{
+    border-radius:2px;
+  }
+
+  .gameButtons{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+/* LOGIN */
+
+.login{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:#010402;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login.hidden{
+  display:none;
+}
+
+.loginBox{
+  width:min(430px,100%);
+  background:#061009;
+  border:1px solid #1e4c28;
+  border-radius:18px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,.7);
+}
+
+.loginFox{
+  font-size:65px;
+}
+
+.loginBox h1{
+  color:var(--green);
+  margin:8px 0;
+}
+
+.loginBox p{
+  color:#75917c;
+}
+
+.loginBox input{
+  width:100%;
+  padding:13px;
+  margin:8px 0;
+  background:#020805;
+  border:1px solid #1b4123;
+  color:white;
+  border-radius:9px;
+}
+
+.loginBox button{
+  width:100%;
+  margin-top:8px;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:600;
+  background:#09170c;
+  border:1px solid #285b31;
+  color:white;
+  padding:12px 15px;
+  border-radius:10px;
+  box-shadow:0 15px 40px rgba(0,0,0,.4);
+  transform:translateY(100px);
+  opacity:0;
+  transition:.25s;
+}
+
+.toast.show{
+  transform:translateY(0);
+  opacity:1;
 }
 </style>
 </head>
@@ -620,1807 +1205,3159 @@ h2{
 
 <canvas id="matrix"></canvas>
 
+<!-- LOGIN -->
+
+<div class="login" id="login">
+  <div class="loginBox">
+    <div class="loginFox">🦊</div>
+    <h1>FOXIE</h1>
+    <p>Your AI • Games • World • Social platform</p>
+
+    <input id="loginName" placeholder="Choose your display name">
+
+    <button class="btn primary" onclick="enterFoxie()">
+      Enter Foxie
+    </button>
+  </div>
+</div>
+
 <div class="app">
+
+<!-- SIDEBAR -->
 
 <aside class="sidebar">
 
-<div class="logo">🦊 FOXIE</div>
+  <div class="brand">
+    <div class="brandIcon">🦊</div>
+    <div>
+      <div class="brandName">FOXIE</div>
+      <div class="brandSub">AI • GAMES • WORLD</div>
+    </div>
+  </div>
 
-<div class="nav-section">Main</div>
+  <div class="navSection">
 
-<button class="nav-btn active" onclick="showPage('home',this)">🏠 Home</button>
-<button class="nav-btn" onclick="showPage('chat',this)">💬 Chat with Foxie</button>
+    <div class="navTitle">Main</div>
 
-<div class="nav-section">Foxie Adventure</div>
+    <button class="navBtn active" data-page="home">
+      <span class="navIcon">🏠</span>
+      <span>Home</span>
+    </button>
 
-<button class="nav-btn nav-child" onclick="showPage('adventure',this)">🌎 Explore</button>
-<button class="nav-btn nav-child" onclick="showPage('foxies',this)">🦊 Foxies</button>
-<button class="nav-btn nav-child" onclick="showPage('dex',this)">📖 FoxieDex</button>
-<button class="nav-btn nav-child" onclick="showPage('map',this)">🗺️ World Map</button>
-<button class="nav-btn nav-child" onclick="showPage('items',this)">🎒 Items</button>
-<button class="nav-btn nav-child" onclick="showPage('eggs',this)">🥚 Eggs</button>
-<button class="nav-btn nav-child" onclick="showPage('training',this)">⚡ Training</button>
-<button class="nav-btn nav-child" onclick="showPage('evolution',this)">✨ Evolution</button>
-<button class="nav-btn nav-child" onclick="showPage('battles',this)">⚔️ Battles</button>
-<button class="nav-btn nav-child" onclick="showPage('gyms',this)">🏟️ Gyms</button>
-<button class="nav-btn nav-child" onclick="showPage('raids',this)">👹 Raids</button>
-<button class="nav-btn nav-child" onclick="showPage('trading',this)">🤝 Trading</button>
-<button class="nav-btn nav-child" onclick="showPage('quests',this)">🎯 Quests</button>
-<button class="nav-btn nav-child" onclick="showPage('rewards',this)">🎁 Rewards</button>
-<button class="nav-btn nav-child" onclick="showPage('achievements',this)">🏅 Achievements</button>
-<button class="nav-btn nav-child" onclick="showPage('events',this)">🎉 Events</button>
-<button class="nav-btn nav-child" onclick="showPage('shop',this)">🏪 Shop</button>
-<button class="nav-btn nav-child" onclick="showPage('trainer',this)">👤 Trainer</button>
+    <button class="navBtn" data-page="chat">
+      <span class="navIcon">💬</span>
+      <span>Chat with Foxie</span>
+    </button>
 
-<div class="nav-section">Games</div>
+    <button class="navBtn" data-page="games">
+      <span class="navIcon">🎮</span>
+      <span>Games</span>
+    </button>
 
-<button class="nav-btn" onclick="showPage('games',this)">🎮 Game Hub</button>
-<button class="nav-btn" onclick="showPage('chess',this)">♟️ Chess</button>
-<button class="nav-btn" onclick="showPage('racing',this)">🏎️ Racing</button>
-<button class="nav-btn" onclick="showPage('arcade',this)">🕹️ Arcade</button>
-<button class="nav-btn" onclick="showPage('puzzles',this)">🧩 Puzzles</button>
-<button class="nav-btn" onclick="showPage('sports',this)">🏀 Sports</button>
-<button class="nav-btn" onclick="showPage('tournaments',this)">🏆 Tournaments</button>
+    <button class="navBtn" data-page="chess">
+      <span class="navIcon">♟️</span>
+      <span>Chess</span>
+    </button>
 
-<div class="nav-section">Connect</div>
+    <button class="navBtn" data-page="world">
+      <span class="navIcon">🌎</span>
+      <span>Foxie World</span>
+    </button>
 
-<button class="nav-btn" onclick="showPage('social',this)">🎬 Social</button>
-<button class="nav-btn" onclick="showPage('friends',this)">👥 Friends</button>
-<button class="nav-btn" onclick="showPage('messages',this)">💬 Messages</button>
-<button class="nav-btn" onclick="showPage('notifications',this)">🔔 Notifications</button>
+    <button class="navBtn" data-page="avatar">
+      <span class="navIcon">🧑</span>
+      <span>Avatar</span>
+    </button>
 
-<div class="nav-section">Create</div>
+    <div class="navTitle">Social</div>
 
-<button class="nav-btn" onclick="showPage('avatar',this)">🧍 Avatar</button>
-<button class="nav-btn" onclick="showPage('music',this)">🎵 Music</button>
-<button class="nav-btn" onclick="showPage('creator',this)">👑 Creator Mode</button>
+    <button class="navBtn" data-page="social">
+      <span class="navIcon">👥</span>
+      <span>Social</span>
+    </button>
 
-<div class="nav-section">Discover</div>
+    <button class="navBtn" data-page="messages">
+      <span class="navIcon">✉️</span>
+      <span>Messages</span>
+    </button>
 
-<button class="nav-btn" onclick="showPage('learn',this)">📚 Learn</button>
-<button class="nav-btn" onclick="showPage('search',this)">🔎 Search</button>
-<button class="nav-btn" onclick="showPage('weather',this)">🌦️ Weather</button>
-<button class="nav-btn" onclick="showPage('news',this)">📰 News</button>
-<button class="nav-btn" onclick="showPage('settings',this)">⚙️ Settings</button>
+    <button class="navBtn" data-page="leaderboard">
+      <span class="navIcon">🏆</span>
+      <span>Leaderboard</span>
+    </button>
+
+    <div class="navTitle">Learn</div>
+
+    <button class="navBtn" data-page="academy">
+      <span class="navIcon">🎓</span>
+      <span>Foxie Academy</span>
+    </button>
+
+    <button class="navBtn" data-page="maps">
+      <span class="navIcon">🗺️</span>
+      <span>Maps</span>
+    </button>
+
+    <button class="navBtn" data-page="events">
+      <span class="navIcon">🎉</span>
+      <span>Events</span>
+    </button>
+
+    <div class="navTitle">Creator</div>
+
+    <button class="navBtn" data-page="creator">
+      <span class="navIcon">⚙️</span>
+      <span>Creator Mode</span>
+    </button>
+
+  </div>
 
 </aside>
 
+<!-- MAIN -->
+
 <main class="main">
 
-<header class="topbar">
-<div class="clock" id="clock">--:--:--</div>
-<div class="creator">Created by Jayden Wayne Macdonald 🦊</div>
-</header>
+  <header class="topbar">
 
-<div class="content">
+    <div class="topTitle" id="topTitle">
+      Welcome to Foxie
+    </div>
 
-<!-- HOME -->
+    <div class="topRight">
+      <div class="creator">
+        Created by Jayden Wayne Macdonald
+      </div>
 
-<section id="home" class="page active">
+      <div class="clock" id="globalClock">
+        --:--:--
+      </div>
+    </div>
 
-<div class="hero">
-<h1>Welcome to <span class="green">Foxie</span> 🦊</h1>
-<p class="subtitle">
-Your gaming world, AI assistant, social platform and adventure universe.
-</p>
+  </header>
+
+  <!-- HOME -->
 
-<div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
-<button class="action big-action" onclick="showPageById('chat')">💬 Talk to Foxie</button>
-<button class="action big-action" onclick="showPageById('chess')">♟️ Play Chess</button>
-<button class="action big-action" onclick="showPageById('games')">🎮 Explore Games</button>
-</div>
-</div>
+  <section class="page active" id="page-home">
+
+    <div class="pageHeader">
+      <h1>Welcome to Foxie 🦊</h1>
+      <p>Your AI, gaming and virtual world platform.</p>
+    </div>
 
-<div class="grid">
+    <div class="placeholderGrid">
 
-<div class="card">
-<h3>💬 Foxie AI</h3>
-<p>Chat with your AI assistant and ask questions, get ideas and build things.</p>
-<button onclick="showPageById('chat')">Open Chat</button>
-</div>
+      <div class="card placeholder">
+        <div class="big">🦊</div>
+        <strong>Foxie AI</strong>
+        <p>Chat with your AI assistant.</p>
+      </div>
 
-<div class="card">
-<h3>♟️ Chess</h3>
-<p>Play chess, train tactics, explore openings and analyse your games.</p>
-<button onclick="showPageById('chess')">Open Chess</button>
-</div>
+      <div class="card placeholder">
+        <div class="big">♟️</div>
+        <strong>Foxie Chess</strong>
+        <p>Play chess with friends or Foxie.</p>
+      </div>
 
-<div class="card">
-<h3>🌎 Foxie World</h3>
-<p>Explore the growing Foxie universe.</p>
-<button onclick="showPageById('adventure')">Explore</button>
-</div>
+      <div class="card placeholder">
+        <div class="big">🎮</div>
+        <strong>Games</strong>
+        <p>Play games inside Foxie.</p>
+      </div>
 
-<div class="card">
-<h3>🏆 Tournaments</h3>
-<p>Compete for XP, titles, trophies and rewards.</p>
-<button onclick="showPageById('tournaments')">View</button>
-</div>
+      <div class="card placeholder">
+        <div class="big">🌎</div>
+        <strong>Foxie World</strong>
+        <p>Explore the Foxie universe.</p>
+      </div>
 
-</div>
+    </div>
 
-</section>
+  </section>
 
-<!-- CHAT -->
+  <!-- CHAT -->
 
-<section id="chat" class="page">
+  <section class="page" id="page-chat">
 
-<h1>💬 Chat with Foxie</h1>
-<p class="subtitle">Ask Foxie anything.</p>
+    <div class="pageHeader">
+      <h1>Chat with Foxie 🦊</h1>
+      <p>Ask Foxie anything.</p>
+    </div>
 
-<div class="chat">
+    <div class="chatBox">
 
-<div class="chat-messages" id="chatMessages">
+      <div class="chatMessages" id="chatMessages">
+        <div class="msg ai">
+          Hey! I'm Foxie 🦊 What are we building today?
+        </div>
+      </div>
 
-<div class="msg foxie">
-🦊 Hey! I'm Foxie. What are we building today?
-</div>
+      <div class="chatInput">
+        <input
+          id="chatInput"
+          placeholder="Message Foxie..."
+          onkeydown="if(event.key==='Enter')sendChat()"
+        >
+        <button class="btn primary" onclick="sendChat()">
+          Send
+        </button>
+      </div>
 
-</div>
+    </div>
 
-<div class="chat-input">
+  </section>
 
-<input
-id="chatInput"
-placeholder="Message Foxie..."
-onkeydown="if(event.key==='Enter')sendChat()"
->
+  <!-- GAMES -->
 
-<button onclick="sendChat()">Send</button>
+  <section class="page" id="page-games">
 
-</div>
+    <div class="pageHeader">
+      <h1>Games 🎮</h1>
+      <p>Foxie's gaming hub.</p>
+    </div>
 
-</div>
+    <div class="placeholderGrid">
 
-</section>
+      <div class="card placeholder">
+        <div class="big">♟️</div>
+        <strong>Chess</strong>
+        <p>Full chess experience.</p>
+      </div>
 
-<!-- CHESS -->
+      <div class="card placeholder">
+        <div class="big">🐍</div>
+        <strong>Snake</strong>
+        <p>Classic arcade action.</p>
+      </div>
 
-<section id="chess" class="page">
+      <div class="card placeholder">
+        <div class="big">🏎️</div>
+        <strong>Foxie Racing</strong>
+        <p>Drive around Foxie City.</p>
+      </div>
 
-<div style="display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap;">
+      <div class="card placeholder">
+        <div class="big">🦊</div>
+        <strong>Foxie World</strong>
+        <p>Explore and collect Foxies.</p>
+      </div>
 
-<div>
-<h1>♟️ Foxie Chess</h1>
-<p class="subtitle">
-A growing chess platform inside Foxie.
-</p>
-</div>
+    </div>
 
-<div>
-<span id="chessStatus" class="green">White to move</span>
-</div>
+  </section>
 
-</div>
+  <!-- CHESS -->
 
-<div class="chess-tabs">
+  <section class="page chessPage" id="page-chess">
 
-<button class="chess-tab active" onclick="chessTab('play',this)">🎮 Play</button>
-<button class="chess-tab" onclick="chessTab('openings',this)">📖 Openings</button>
-<button class="chess-tab" onclick="chessTab('training',this)">🧠 Training</button>
-<button class="chess-tab" onclick="chessTab('analysis',this)">🔬 Analysis</button>
-<button class="chess-tab" onclick="chessTab('coach',this)">🤖 Foxie Coach</button>
-<button class="chess-tab" onclick="chessTab('stats',this)">📊 Stats</button>
+    <div class="chessShell">
 
-</div>
+      <div class="chessTop">
 
-<div id="chess-play" class="chess-tool active">
+        <div class="chessTitle">
+          <div style="font-size:36px">♟️</div>
 
-<div class="chess-layout">
+          <div>
+            <h1>Foxie Chess</h1>
+            <small>Play • Train • Analyse • Improve</small>
+          </div>
+        </div>
 
-<div class="chess-board-wrap">
+        <div class="chessActions">
 
-<div class="clock-box">
+          <button class="btn" onclick="newGame()">
+            ＋ New Game
+          </button>
 
-<div class="clock-player active" id="whiteClockBox">
+          <button class="btn" onclick="flipBoard()">
+            ⇄ Flip
+          </button>
 
-<div>♔ WHITE</div>
-<div class="clock-time" id="whiteClock">10:00</div>
+          <button class="btn" onclick="openSettings()">
+            ⚙ Settings
+          </button>
 
-</div>
+        </div>
 
-<div class="clock-player" id="blackClockBox">
+      </div>
 
-<div>♚ BLACK</div>
-<div class="clock-time" id="blackClock">10:00</div>
+      <div class="chessTabs">
 
-</div>
+        <button class="chessTab active">
+          Play
+        </button>
 
-</div>
+        <button class="chessTab">
+          Openings
+        </button>
 
-<div id="chessBoard" class="chess-board"></div>
+        <button class="chessTab">
+          Training
+        </button>
 
-<div class="chess-controls">
+        <button class="chessTab">
+          Analysis
+        </button>
 
-<button onclick="newChessGame()">🆕 New Game</button>
-<button onclick="undoChess()">↩️ Undo</button>
-<button onclick="flipBoard()">🔀 Flip</button>
-<button onclick="resignChess()" class="danger">🏳️ Resign</button>
-<button onclick="offerDraw()">🤝 Draw</button>
+        <button class="chessTab">
+          Foxie Coach
+        </button>
 
-</div>
+        <button class="chessTab">
+          Stats
+        </button>
 
-</div>
+      </div>
 
-<div class="chess-side">
+      <div class="gameLayout">
 
-<div class="chess-panel">
+        <!-- BOARD -->
 
-<h3>🎮 Game Mode</h3>
+        <div class="boardColumn">
 
-<select id="chessMode" onchange="changeChessMode()" style="width:100%;padding:10px;background:#030904;color:white;border:1px solid #183b23;border-radius:8px;">
+          <!-- BLACK PLAYER -->
 
-<option value="friend">2 Player</option>
-<option value="bot">Foxie Bot</option>
+          <div class="playerCard">
 
-</select>
+            <div class="playerInfo">
 
-<p class="subtitle" id="botLevelText">
-Foxie Bot will make legal random moves for now. The engine layer can be added later.
-</p>
+              <div class="avatar">
+                🦊
+              </div>
 
-</div>
+              <div>
+                <div class="playerName">
+                  Foxie Bot
+                </div>
 
-<div class="chess-panel">
+                <div class="playerRating">
+                  1200 • Level 3
+                </div>
+              </div>
 
-<h3>📜 Moves</h3>
+            </div>
 
-<div id="moveList" class="move-list"></div>
+            <div
+              class="clockBox"
+              id="blackClock"
+            >
+              10:00
+            </div>
 
-</div>
+          </div>
 
-<div class="chess-panel">
+          <div class="boardFrame">
 
-<h3>📈 Position</h3>
+            <div
+              class="boardWrap theme-green"
+              id="boardWrap"
+            >
 
-<div class="stat-row">
-<span>Turn</span>
-<b id="positionTurn">White</b>
-</div>
+              <div
+                class="board coordsInside"
+                id="chessBoard"
+              ></div>
 
-<div class="stat-row">
-<span>Moves</span>
-<b id="positionMoves">0</b>
-</div>
+              <div
+                class="resultOverlay"
+                id="resultOverlay"
+              >
 
-<div class="stat-row">
-<span>Status</span>
-<b id="positionStatus">Playing</b>
-</div>
+                <div class="resultCard">
 
-</div>
+                  <div
+                    class="resultIcon"
+                    id="resultIcon"
+                  >
+                    🦊
+                  </div>
 
-</div>
+                  <h2 id="resultTitle">
+                    Game Over
+                  </h2>
 
-</div>
+                  <p id="resultText">
+                    Well played!
+                  </p>
 
-</div>
+                  <button
+                    class="btn primary"
+                    onclick="newGame()"
+                  >
+                    Play Again
+                  </button>
 
-<!-- OPENINGS -->
+                </div>
 
-<div id="chess-openings" class="chess-tool">
+              </div>
 
-<div class="hero">
+            </div>
 
-<h2>📖 Opening Explorer</h2>
+          </div>
 
-<p>
-Build a huge expandable opening library. Search openings, study variations,
-learn traps and build your repertoire.
-</p>
+          <!-- WHITE PLAYER -->
 
-<input
-id="openingSearch"
-oninput="filterOpenings()"
-placeholder="Search openings..."
-style="width:100%;padding:13px;background:#020604;border:1px solid #183b23;color:white;border-radius:9px;"
->
+          <div class="playerCard" style="margin-top:8px">
 
-</div>
+            <div class="playerInfo">
 
-<div id="openingGrid" class="grid"></div>
+              <div class="avatar">
+                👤
+              </div>
 
-</div>
+              <div>
+                <div class="playerName" id="playerDisplay">
+                  Player
+                </div>
 
-<!-- TRAINING -->
+                <div class="playerRating">
+                  <span id="ratingDisplay">1000</span> • Foxie Player
+                </div>
+              </div>
 
-<div id="chess-training" class="chess-tool">
+            </div>
 
-<h2>🧠 Chess Training</h2>
+            <div
+              class="clockBox active"
+              id="whiteClock"
+            >
+              10:00
+            </div>
 
-<div class="grid">
+          </div>
 
-<div class="card">
-<h3>🧩 Puzzles</h3>
-<p>Train your tactical vision with generated positions.</p>
-<button onclick="startTraining('puzzles')">Start</button>
-</div>
+          <div class="boardFooter">
 
-<div class="card">
-<h3>⚡ Tactics</h3>
-<p>Forks, pins, skewers, discoveries, sacrifices and more.</p>
-<button onclick="startTraining('tactics')">Train</button>
-</div>
+            <button
+              class="btn"
+              onclick="undoMove()"
+            >
+              ↶ Undo
+            </button>
 
-<div class="card">
-<h3>👑 Checkmates</h3>
-<p>Practice common mating patterns.</p>
-<button onclick="startTraining('mates')">Train</button>
-</div>
+            <button
+              class="btn danger"
+              onclick="resignGame()"
+            >
+              ⚑ Resign
+            </button>
 
-<div class="card">
-<h3>🏁 Endgames</h3>
-<p>King and pawn, rook, queen and practical endgames.</p>
-<button onclick="startTraining('endgames')">Train</button>
-</div>
+            <button
+              class="btn"
+              onclick="newGame()"
+            >
+              ⟳ Restart
+            </button>
 
-<div class="card">
-<h3>🧮 Calculation</h3>
-<p>Calculate candidate moves and variations.</p>
-<button onclick="startTraining('calculation')">Train</button>
-</div>
+          </div>
 
-<div class="card">
-<h3>🪤 Traps</h3>
-<p>Learn common opening traps and how to avoid them.</p>
-<button onclick="startTraining('traps')">Train</button>
-</div>
+        </div>
 
-</div>
+        <!-- RIGHT PANEL -->
 
-<div id="trainingOutput" class="card" style="margin-top:20px;">
-Choose a training category.
-</div>
+        <div class="sidePanel">
 
-</div>
+          <div class="gamePanel">
 
-<!-- ANALYSIS -->
+            <div class="panelHeader">
 
-<div id="chess-analysis" class="chess-tool">
+              <h3>Game</h3>
 
-<h2>🔬 Analysis Board</h2>
+              <span id="gameStatus">
+                Your move
+              </span>
 
-<div class="grid">
+            </div>
 
-<div class="card">
-<h3>🔎 Game Review</h3>
-<p>Review the moves from your current game.</p>
-<button onclick="analyseGame()">Analyse Game</button>
-</div>
+            <div
+              class="moveList"
+              id="moveList"
+            >
+            </div>
 
-<div class="card">
-<h3>🚨 Mistakes</h3>
-<p>Find moves that could have been improved.</p>
-<button onclick="analyseGame()">Find Mistakes</button>
-</div>
+            <div
+              class="captured"
+              id="capturedPieces"
+            >
+              Captured: —
+            </div>
 
-<div class="card">
-<h3>🎯 Candidate Moves</h3>
-<p>Think about possible moves before asking Foxie.</p>
-<button onclick="analysePosition()">Analyse Position</button>
-</div>
+            <div class="gameButtons">
 
-<div class="card">
-<h3>🔀 What If?</h3>
-<p>Explore alternative lines from the current position.</p>
-<button onclick="analysePosition()">Explore</button>
-</div>
+              <button
+                class="btn"
+                onclick="undoMove()"
+              >
+                ↶ Undo
+              </button>
 
-</div>
+              <button
+                class="btn"
+                onclick="flipBoard()"
+              >
+                ⇄ Flip
+              </button>
 
-<div id="analysisOutput" class="card" style="margin-top:20px;">
-Your analysis will appear here.
-</div>
+              <button
+                class="btn"
+                onclick="openSettings()"
+              >
+                ⚙
+              </button>
 
-</div>
+            </div>
 
-<!-- COACH -->
+            <div class="quickStats">
 
-<div id="chess-coach" class="chess-tool">
+              <div class="stat">
+                <strong id="winsStat">0</strong>
+                <span>Wins</span>
+              </div>
 
-<div class="hero">
+              <div class="stat">
+                <strong id="drawsStat">0</strong>
+                <span>Draws</span>
+              </div>
 
-<h2>🤖 Foxie Chess Coach</h2>
+              <div class="stat">
+                <strong id="lossesStat">0</strong>
+                <span>Losses</span>
+              </div>
 
-<p>
-Ask Foxie about the current chess position or your game.
-</p>
+            </div>
 
-<div style="display:flex;gap:10px;flex-wrap:wrap;">
+          </div>
 
-<button class="action" onclick="coachQuestion('position')">
-Explain Position
-</button>
+          <div class="card">
 
-<button class="action" onclick="coachQuestion('move')">
-Explain My Move
-</button>
+            <h3 style="margin-top:0">
+              Foxie Chess
+            </h3>
 
-<button class="action" onclick="coachQuestion('opening')">
-Explain Opening
-</button>
+            <p style="color:#79917e;font-size:13px;line-height:1.6">
+              Play a full game against Foxie.
+              Use the board settings to change
+              themes, coordinates, sounds,
+              animations and legal move hints.
+            </p>
 
-<button class="action" onclick="coachQuestion('mistake')">
-Find My Mistake
-</button>
+            <div
+              style="
+                display:grid;
+                grid-template-columns:1fr 1fr;
+                gap:7px;
+              "
+            >
 
-</div>
+              <button class="btn">
+                ⚡ Blitz
+              </button>
 
-</div>
+              <button class="btn">
+                🕐 Rapid
+              </button>
 
-<div id="coachOutput" class="card">
-Choose a coaching option.
-</div>
+              <button class="btn">
+                🧠 Training
+              </button>
 
-</div>
+              <button class="btn">
+                🏆 Ranked
+              </button>
 
-<!-- STATS -->
+            </div>
 
-<div id="chess-stats" class="chess-tool">
+          </div>
 
-<h2>📊 Chess Statistics</h2>
+        </div>
 
-<div class="grid">
+      </div>
 
-<div class="card">
-<h3>⭐ Rating</h3>
-<div style="font-size:40px;color:var(--green)" id="chessRating">1200</div>
-</div>
+    </div>
 
-<div class="card">
-<h3>🏆 Wins</h3>
-<div style="font-size:40px;color:var(--gold)" id="chessWins">0</div>
-</div>
+  </section>
 
-<div class="card">
-<h3>💀 Losses</h3>
-<div style="font-size:40px;color:#ff6378" id="chessLosses">0</div>
-</div>
+  <!-- WORLD -->
 
-<div class="card">
-<h3>🔥 Streak</h3>
-<div style="font-size:40px;color:var(--green)" id="chessStreak">0</div>
-</div>
+  <section class="page" id="page-world">
 
-</div>
+    <div class="pageHeader">
+      <h1>Foxie World 🌎</h1>
+      <p>Explore cities, islands, forests and secret places.</p>
+    </div>
 
-</div>
+    <div class="placeholderGrid">
 
-</section>
+      <div class="card placeholder">
+        <div class="big">🏙️</div>
+        <strong>Foxie City</strong>
+      </div>
 
-<!-- ADVENTURE -->
+      <div class="card placeholder">
+        <div class="big">🌲</div>
+        <strong>Forest</strong>
+      </div>
 
-<section id="adventure" class="page">
+      <div class="card placeholder">
+        <div class="big">🏝️</div>
+        <strong>Islands</strong>
+      </div>
 
-<h1>🌎 Foxie Adventure</h1>
+      <div class="card placeholder">
+        <div class="big">🚀</div>
+        <strong>Space</strong>
+      </div>
 
-<div class="hero">
-<h2>A growing world.</h2>
-<p>
-Explore cities, forests, beaches, mountains, caves, islands and secret areas.
-</p>
-</div>
+    </div>
 
-<div class="grid">
+  </section>
 
-<div class="card"><h3>🌲 Forest</h3><p>Wild Foxies and hidden paths.</p></div>
-<div class="card"><h3>🏔️ Mountains</h3><p>High-altitude adventure zones.</p></div>
-<div class="card"><h3>🏝️ Islands</h3><p>Discover hidden islands.</p></div>
-<div class="card"><h3>🌊 Ocean</h3><p>Explore underwater locations.</p></div>
-<div class="card"><h3>🌌 Space</h3><p>A future Foxie space region.</p></div>
-<div class="card"><h3>🚪 Secret Areas</h3><p>Some locations aren't shown on the map.</p></div>
+  <!-- AVATAR -->
 
-</div>
+  <section class="page" id="page-avatar">
 
-</section>
+    <div class="pageHeader">
+      <h1>Avatar 🧑</h1>
+      <p>Customize your Foxie character.</p>
+    </div>
 
-<!-- GENERIC PAGES -->
+    <div class="card">
+      <div style="font-size:100px;text-align:center">🦊</div>
+      <h2 style="text-align:center">Foxie Avatar</h2>
+      <p style="text-align:center;color:#718b77">
+        More avatar customization coming here.
+      </p>
+    </div>
 
-<section id="foxies" class="page"><Generic title="🦊 Foxies" text="Collect, train, evolve and customise original Foxie creatures." /></section>
-<section id="dex" class="page"><Generic title="📖 FoxieDex" text="Your complete Foxie collection." /></section>
-<section id="map" class="page"><Generic title="🗺️ World Map" text="Explore Foxie World and discover new locations." /></section>
-<section id="items" class="page"><Generic title="🎒 Items" text="Your inventory will live here." /></section>
-<section id="eggs" class="page"><Generic title="🥚 Eggs" text="Discover what can hatch from Foxie eggs." /></section>
-<section id="training" class="page"><Generic title="⚡ Training" text="Train your Foxies and improve their abilities." /></section>
-<section id="evolution" class="page"><Generic title="✨ Evolution" text="Evolve your Foxies through progression." /></section>
-<section id="battles" class="page"><Generic title="⚔️ Battles" text="Battle other players and creatures." /></section>
-<section id="gyms" class="page"><Generic title="🏟️ Gyms" text="Compete in Foxie gyms." /></section>
-<section id="raids" class="page"><Generic title="👹 Raids" text="Take on powerful world bosses." /></section>
-<section id="trading" class="page"><Generic title="🤝 Trading" text="Trade creatures and items with other players." /></section>
-<section id="quests" class="page"><Generic title="🎯 Quests" text="Complete quests and earn rewards." /></section>
-<section id="rewards" class="page"><Generic title="🎁 Rewards" text="Claim XP, coins, cosmetics and event rewards." /></section>
-<section id="achievements" class="page"><Generic title="🏅 Achievements" text="Unlock achievements across Foxie." /></section>
-<section id="events" class="page"><Generic title="🎉 Events" text="Seasonal and special Foxie events." /></section>
-<section id="shop" class="page"><Generic title="🏪 Shop" text="Cosmetics, items and special event content." /></section>
-<section id="trainer" class="page"><Generic title="👤 Trainer" text="Your Foxie trainer profile." /></section>
-<section id="games" class="page"><Generic title="🎮 Game Hub" text="A growing collection of Foxie games." /></section>
-<section id="racing" class="page"><Generic title="🏎️ Racing" text="Original Foxie racing games are planned here." /></section>
-<section id="arcade" class="page"><Generic title="🕹️ Arcade" text="Fast Foxie mini-games." /></section>
-<section id="puzzles" class="page"><Generic title="🧩 Puzzles" text="Puzzle games and challenges." /></section>
-<section id="sports" class="page"><Generic title="🏀 Sports" text="Foxie sports games." /></section>
-<section id="tournaments" class="page"><Generic title="🏆 Tournaments" text="Hourly, daily, weekly and seasonal competitions." /></section>
-<section id="social" class="page"><Generic title="🎬 Social" text="Posts, creators, communities and clips." /></section>
-<section id="friends" class="page"><Generic title="👥 Friends" text="Manage your Foxie friends." /></section>
-<section id="messages" class="page"><Generic title="💬 Messages" text="Private messages and conversations." /></section>
-<section id="notifications" class="page"><Generic title="🔔 Notifications" text="Your Foxie notifications." /></section>
-<section id="avatar" class="page"><Generic title="🧍 Avatar" text="Build your Foxie-themed avatar." /></section>
-<section id="music" class="page"><Generic title="🎵 Music" text="Music, playlists and Foxie Radio." /></section>
-<section id="creator" class="page"><Generic title="👑 Creator Mode" text="Secure creator tools and project management." /></section>
-<section id="learn" class="page"><Generic title="📚 Learn" text="Coding, languages, science, maths and more." /></section>
-<section id="search" class="page"><Generic title="🔎 Search" text="Search the Foxie universe." /></section>
-<section id="weather" class="page"><Generic title="🌦️ Weather" text="Dynamic weather systems will appear here." /></section>
-<section id="news" class="page"><Generic title="📰 News" text="Foxie news and community updates." /></section>
-<section id="settings" class="page"><Generic title="⚙️ Settings" text="Manage your Foxie preferences." /></section>
+  </section>
 
-</div>
+  <!-- SOCIAL -->
+
+  <section class="page" id="page-social">
+
+    <div class="pageHeader">
+      <h1>Social 👥</h1>
+      <p>Friends, posts, groups and Foxie community.</p>
+    </div>
+
+    <div class="placeholderGrid">
+
+      <div class="card placeholder">
+        <div class="big">👥</div>
+        <strong>Friends</strong>
+      </div>
+
+      <div class="card placeholder">
+        <div class="big">📝</div>
+        <strong>Posts</strong>
+      </div>
+
+      <div class="card placeholder">
+        <div class="big">💬</div>
+        <strong>Groups</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MESSAGES -->
+
+  <section class="page" id="page-messages">
+
+    <div class="pageHeader">
+      <h1>Messages ✉️</h1>
+      <p>Your Foxie conversations.</p>
+    </div>
+
+    <div class="card">
+      No messages yet.
+    </div>
+
+  </section>
+
+  <!-- LEADERBOARD -->
+
+  <section class="page" id="page-leaderboard">
+
+    <div class="pageHeader">
+      <h1>Leaderboard 🏆</h1>
+      <p>Top Foxie players.</p>
+    </div>
+
+    <div class="card">
+
+      <div style="
+        display:grid;
+        grid-template-columns:50px 1fr 100px;
+        padding:12px;
+        border-bottom:1px solid #173820;
+      ">
+        <strong>#</strong>
+        <strong>Player</strong>
+        <strong>Rating</strong>
+      </div>
+
+      <div style="
+        display:grid;
+        grid-template-columns:50px 1fr 100px;
+        padding:14px 12px;
+      ">
+        <span>1</span>
+        <span>Foxie</span>
+        <span>1200</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ACADEMY -->
+
+  <section class="page" id="page-academy">
+
+    <div class="pageHeader">
+      <h1>Foxie Academy 🎓</h1>
+      <p>Learn, practise and improve.</p>
+    </div>
+
+    <div class="placeholderGrid">
+
+      <div class="card placeholder">
+        <div class="big">💻</div>
+        <strong>Coding</strong>
+      </div>
+
+      <div class="card placeholder">
+        <div class="big">🔢</div>
+        <strong>Maths</strong>
+      </div>
+
+      <div class="card placeholder">
+        <div class="big">🌍</div>
+        <strong>Languages</strong>
+      </div>
+
+      <div class="card placeholder">
+        <div class="big">♟️</div>
+        <strong>Chess Academy</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MAPS -->
+
+  <section class="page" id="page-maps">
+
+    <div class="pageHeader">
+      <h1>Foxie Maps 🗺️</h1>
+      <p>Find places, games, events and quests.</p>
+    </div>
+
+    <div
+      class="card"
+      style="
+        min-height:450px;
+        display:grid;
+        place-items:center;
+        background:
+          radial-gradient(circle,#12361b 1px,transparent 1px);
+        background-size:25px 25px;
+      "
+    >
+      <div style="text-align:center">
+        <div style="font-size:70px">🗺️</div>
+        <h2>Foxie World Map</h2>
+        <p style="color:#78937f">
+          Interactive map coming here.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- EVENTS -->
+
+  <section class="page" id="page-events">
+
+    <div class="pageHeader">
+      <h1>Events 🎉</h1>
+      <p>Foxie tournaments and special events.</p>
+    </div>
+
+    <div class="placeholderGrid">
+
+      <div class="card placeholder">
+        <div class="big">🏆</div>
+        <strong>Hourly Tournaments</strong>
+      </div>
+
+      <div class="card placeholder">
+        <div class="big">🎃</div>
+        <strong>Seasonal Events</strong>
+      </div>
+
+      <div class="card placeholder">
+        <div class="big">🦊</div>
+        <strong>Foxie Hunts</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CREATOR -->
+
+  <section class="page" id="page-creator">
+
+    <div class="pageHeader">
+      <h1>Creator Mode ⚙️</h1>
+      <p>Foxie owner controls.</p>
+    </div>
+
+    <div class="card">
+
+      <h3>Creator Authentication</h3>
+
+      <p style="color:#718b77">
+        Creator Mode requires secure authentication.
+        Your display name alone never grants owner access.
+      </p>
+
+      <input
+        id="creatorCode"
+        type="password"
+        placeholder="Creator code"
+        style="
+          width:100%;
+          padding:12px;
+          background:#020805;
+          border:1px solid #204628;
+          color:white;
+          border-radius:8px;
+        "
+      >
+
+      <button
+        class="btn primary"
+        style="margin-top:8px"
+        onclick="creatorLogin()"
+      >
+        Authenticate
+      </button>
+
+      <div id="creatorStatus"
+        style="
+          margin-top:12px;
+          color:#75917b;
+        "
+      >
+      </div>
+
+    </div>
+
+  </section>
+
 </main>
 </div>
 
-<script type="module">
+<!-- SETTINGS MODAL -->
 
-/* ==========================================
-   CHESS.JS
-========================================== */
+<div
+  class="settingsOverlay"
+  id="settingsOverlay"
+  onclick="if(event.target===this)closeSettings()"
+>
 
-import { Chess } from "https://esm.sh/chess.js@1.4.0";
+  <div class="settingsModal">
 
-window.Chess = Chess;
+    <div class="settingsHead">
 
-/* ==========================================
-   PAGE SYSTEM
-========================================== */
+      <h2>Board Settings ⚙️</h2>
 
-function showPage(id,button){
+      <button
+        class="closeBtn"
+        onclick="closeSettings()"
+      >
+        ×
+      </button>
 
-document.querySelectorAll(".page").forEach(p=>{
-  p.classList.remove("active");
-});
+    </div>
 
-const page=document.getElementById(id);
+    <div class="settingsBody">
 
-if(page){
-  page.classList.add("active");
+      <!-- THEME -->
+
+      <div class="setting">
+
+        <div class="settingLabel">
+          Board Theme
+        </div>
+
+        <div class="settingDesc">
+          Choose the colours of your Foxie chess board.
+        </div>
+
+        <select id="boardTheme">
+          <option value="green">Foxie Green</option>
+          <option value="classic">Classic Brown</option>
+          <option value="blue">Ocean Blue</option>
+          <option value="purple">Royal Purple</option>
+          <option value="neon">Neon Foxie</option>
+          <option value="dark">Dark Stone</option>
+        </select>
+
+      </div>
+
+      <!-- COORDINATES -->
+
+      <div class="setting">
+
+        <div class="settingLabel">
+          Coordinates
+        </div>
+
+        <div class="settingDesc">
+          Show a-h and 1-8 around the board.
+        </div>
+
+        <select id="coordinates">
+          <option value="inside">Inside board</option>
+          <option value="none">Hidden</option>
+        </select>
+
+      </div>
+
+      <!-- LEGAL MOVES -->
+
+      <div class="setting">
+
+        <div class="toggle">
+
+          <div>
+            <div class="settingLabel">
+              Show Legal Moves
+            </div>
+
+            <div class="settingDesc">
+              Display dots for legal destinations.
+            </div>
+          </div>
+
+          <div
+            class="switch on"
+            id="legalToggle"
+            onclick="toggleSetting('legal')"
+          >
+            <span></span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- HIGHLIGHT -->
+
+      <div class="setting">
+
+        <div class="toggle">
+
+          <div>
+            <div class="settingLabel">
+              Highlight Last Move
+            </div>
+
+            <div class="settingDesc">
+              Highlight the previous move.
+            </div>
+          </div>
+
+          <div
+            class="switch on"
+            id="highlightToggle"
+            onclick="toggleSetting('highlight')"
+          >
+            <span></span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SOUNDS -->
+
+      <div class="setting">
+
+        <div class="toggle">
+
+          <div>
+            <div class="settingLabel">
+              Move Sounds
+            </div>
+
+            <div class="settingDesc">
+              Play a sound when pieces move.
+            </div>
+          </div>
+
+          <div
+            class="switch on"
+            id="soundToggle"
+            onclick="toggleSetting('sound')"
+          >
+            <span></span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ANIMATION -->
+
+      <div class="setting">
+
+        <div class="toggle">
+
+          <div>
+            <div class="settingLabel">
+              Piece Animation
+            </div>
+
+            <div class="settingDesc">
+              Add movement animation to pieces.
+            </div>
+          </div>
+
+          <div
+            class="switch on"
+            id="animationToggle"
+            onclick="toggleSetting('animation')"
+          >
+            <span></span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SAVE -->
+
+      <button
+        class="btn primary"
+        style="width:100%;margin-top:10px"
+        onclick="saveSettings()"
+      >
+        Save Settings
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* =========================================================
+   FOXIE GLOBAL
+========================================================= */
+
+const BACKEND =
+  "https://foxie-ai-backend.onrender.com";
+
+let displayName =
+  localStorage.getItem("foxieDisplayName") || "";
+
+function enterFoxie(){
+
+  const input =
+    document.getElementById("loginName");
+
+  const name =
+    input.value.trim();
+
+  if(!name){
+    showToast("Choose a display name first.");
+    return;
+  }
+
+  displayName = name;
+
+  localStorage.setItem(
+    "foxieDisplayName",
+    name
+  );
+
+  document.getElementById(
+    "login"
+  ).classList.add("hidden");
+
+  document.getElementById(
+    "playerDisplay"
+  ).textContent = name;
 }
 
-document.querySelectorAll(".nav-btn").forEach(b=>{
-  b.classList.remove("active");
-});
+if(displayName){
 
-if(button){
-  button.classList.add("active");
+  document.getElementById(
+    "login"
+  ).classList.add("hidden");
+
+  document.getElementById(
+    "playerDisplay"
+  ).textContent =
+    displayName;
 }
 
-if(id==="chess"){
-  renderChess();
-}
-
-}
-
-window.showPage=showPage;
-
-window.showPageById=function(id){
-
-const btn=[...document.querySelectorAll(".nav-btn")]
-.find(b=>b.getAttribute("onclick")?.includes("'"+id+"'"));
-
-showPage(id,btn);
-
-};
-
-/* ==========================================
-   GENERIC PAGE HELPER
-========================================== */
-
-window.Generic=function(){};
-
-/* ==========================================
+/* =========================================================
    CLOCK
-========================================== */
+========================================================= */
 
-function updateClock(){
+function updateGlobalClock(){
 
-const now=new Date();
+  const now = new Date();
 
-document.getElementById("clock").textContent=
-now.toLocaleTimeString();
-
+  document.getElementById(
+    "globalClock"
+  ).textContent =
+    now.toLocaleTimeString(
+      [],
+      {
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit"
+      }
+    );
 }
 
-setInterval(updateClock,1000);
-updateClock();
+setInterval(updateGlobalClock,1000);
+updateGlobalClock();
 
-/* ==========================================
+/* =========================================================
    MATRIX
-========================================== */
+========================================================= */
 
-const canvas=document.getElementById("matrix");
-const ctx=canvas.getContext("2d");
+const canvas =
+  document.getElementById("matrix");
+
+const ctx =
+  canvas.getContext("2d");
 
 function resizeMatrix(){
 
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+  canvas.width =
+    window.innerWidth;
 
+  canvas.height =
+    window.innerHeight;
 }
 
 resizeMatrix();
 
-addEventListener("resize",resizeMatrix);
+window.addEventListener(
+  "resize",
+  resizeMatrix
+);
 
-const chars="FOXIE01🦊";
-const size=15;
+const chars =
+  "01FOXIE";
 
-let drops=[];
+let drops = [];
 
 function resetDrops(){
 
-drops=Array(Math.ceil(canvas.width/size))
-.fill(1);
+  const count =
+    Math.floor(canvas.width / 14);
 
+  drops =
+    Array.from(
+      {length:count},
+      () => Math.random() * -50
+    );
 }
 
 resetDrops();
 
 function matrix(){
 
-ctx.fillStyle="rgba(0,0,0,.05)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle =
+    "rgba(0,5,2,.13)";
 
-ctx.fillStyle="#39ff14";
-ctx.font=size+"px monospace";
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
-for(let i=0;i<drops.length;i++){
+  ctx.fillStyle =
+    "#39ff14";
 
-const char=chars[Math.floor(Math.random()*chars.length)];
+  ctx.font =
+    "12px monospace";
 
-ctx.fillText(char,i*size,drops[i]*size);
+  for(let i=0;i<drops.length;i++){
 
-if(drops[i]*size>canvas.height && Math.random()>.975){
-drops[i]=0;
-}
+    const text =
+      chars[
+        Math.floor(
+          Math.random()*chars.length
+        )
+      ];
 
-drops[i]++;
+    ctx.fillText(
+      text,
+      i*14,
+      drops[i]*14
+    );
 
-}
+    if(
+      drops[i]*14 >
+      canvas.height &&
+      Math.random() > .975
+    ){
+      drops[i]=0;
+    }
 
-requestAnimationFrame(matrix);
+    drops[i]+=.45;
+  }
 
+  requestAnimationFrame(matrix);
 }
 
 matrix();
 
-/* ==========================================
-   CHAT
-========================================== */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-window.addChatMessage=function(text,type){
+document.querySelectorAll(
+  ".navBtn"
+).forEach(btn => {
 
-const box=document.getElementById("chatMessages");
+  btn.addEventListener(
+    "click",
+    () => {
 
-const div=document.createElement("div");
+      const page =
+        btn.dataset.page;
 
-div.className="msg "+type;
+      document.querySelectorAll(
+        ".navBtn"
+      ).forEach(b =>
+        b.classList.remove("active")
+      );
 
-div.textContent=text;
+      btn.classList.add("active");
 
-box.appendChild(div);
+      document.querySelectorAll(
+        ".page"
+      ).forEach(p =>
+        p.classList.remove("active")
+      );
 
-box.scrollTop=box.scrollHeight;
+      const target =
+        document.getElementById(
+          "page-" + page
+        );
+
+      if(target){
+        target.classList.add("active");
+      }
+
+      document.getElementById(
+        "topTitle"
+      ).textContent =
+        btn.innerText.trim();
+
+      if(page==="chess"){
+        renderBoard();
+      }
+
+    }
+  );
+
+});
+
+/* =========================================================
+   FOXIE CHAT
+========================================================= */
+
+async function sendChat(){
+
+  const input =
+    document.getElementById(
+      "chatInput"
+    );
+
+  const text =
+    input.value.trim();
+
+  if(!text) return;
+
+  const box =
+    document.getElementById(
+      "chatMessages"
+    );
+
+  const userMsg =
+    document.createElement("div");
+
+  userMsg.className =
+    "msg user";
+
+  userMsg.textContent =
+    text;
+
+  box.appendChild(userMsg);
+
+  input.value="";
+
+  const thinking =
+    document.createElement("div");
+
+  thinking.className =
+    "msg ai";
+
+  thinking.textContent =
+    "Foxie is thinking...";
+
+  box.appendChild(thinking);
+
+  box.scrollTop =
+    box.scrollHeight;
+
+  try{
+
+    const response =
+      await fetch(
+        BACKEND + "/chat",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:JSON.stringify({
+            message:text
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    thinking.textContent =
+      data.reply ||
+      data.message ||
+      "Foxie didn't return a response.";
+
+  }catch(error){
+
+    thinking.textContent =
+      "I couldn't connect to Foxie AI right now.";
+
+  }
+
+  box.scrollTop =
+    box.scrollHeight;
+}
+
+/* =========================================================
+   CHESS
+========================================================= */
+
+let chess =
+  new Chess();
+
+let selectedSquare =
+  null;
+
+let boardFlipped =
+  false;
+
+let lastMove =
+  null;
+
+let gameMode =
+  "bot";
+
+let playerColor =
+  "w";
+
+let whiteTime =
+  600;
+
+let blackTime =
+  600;
+
+let clockInterval =
+  null;
+
+let gameStarted =
+  false;
+
+let settings = {
+
+  theme:"green",
+
+  coordinates:"inside",
+
+  legal:true,
+
+  highlight:true,
+
+  sound:true,
+
+  animation:true
 
 };
 
-window.sendChat=async function(){
+let wins =
+  Number(
+    localStorage.getItem(
+      "foxieChessWins"
+    ) || 0
+  );
 
-const input=document.getElementById("chatInput");
+let draws =
+  Number(
+    localStorage.getItem(
+      "foxieChessDraws"
+    ) || 0
+  );
 
-const text=input.value.trim();
+let losses =
+  Number(
+    localStorage.getItem(
+      "foxieChessLosses"
+    ) || 0
+  );
 
-if(!text)return;
+let rating =
+  Number(
+    localStorage.getItem(
+      "foxieChessRating"
+    ) || 1000
+  );
 
-addChatMessage(text,"user");
+document.getElementById(
+  "winsStat"
+).textContent = wins;
 
-input.value="";
+document.getElementById(
+  "drawsStat"
+).textContent = draws;
 
-addChatMessage("🦊 Foxie is thinking...","foxie");
+document.getElementById(
+  "lossesStat"
+).textContent = losses;
 
-const box=document.getElementById("chatMessages");
+document.getElementById(
+  "ratingDisplay"
+).textContent = rating;
 
-const loading=box.lastElementChild;
+/* PIECES */
 
-try{
+const pieces = {
 
-const response=await fetch(
-"https://foxie-ai-backend.onrender.com/chat",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-message:text
-})
-}
-);
+  wp:"♙",
+  wn:"♘",
+  wb:"♗",
+  wr:"♖",
+  wq:"♕",
+  wk:"♔",
 
-const data=await response.json();
-
-loading.remove();
-
-addChatMessage(
-data.reply ||
-data.response ||
-"🦊 I couldn't get a response.",
-"foxie"
-);
-
-}catch(error){
-
-loading.remove();
-
-addChatMessage(
-"🦊 I couldn't connect to my AI server right now.",
-"foxie"
-);
-
-}
-
-};
-
-/* ==========================================
-   CHESS STATE
-========================================== */
-
-let chessGame=new Chess();
-
-let selectedSquare=null;
-let boardFlipped=false;
-
-let chessWhiteSeconds=600;
-let chessBlackSeconds=600;
-
-let chessTimer=null;
-
-let chessStats=
-JSON.parse(
-localStorage.getItem("foxieChessStats")
-) || {
-rating:1200,
-wins:0,
-losses:0,
-streak:0
-};
-
-const pieceSymbols={
-
-w:{
-p:"♙",
-n:"♘",
-b:"♗",
-r:"♖",
-q:"♕",
-k:"♔"
-},
-
-b:{
-p:"♟",
-n:"♞",
-b:"♝",
-r:"♜",
-q:"♛",
-k:"♚"
-}
+  bp:"♟",
+  bn:"♞",
+  bb:"♝",
+  br:"♜",
+  bq:"♛",
+  bk:"♚"
 
 };
 
-/* ==========================================
-   CHESS BOARD
-========================================== */
+/* FILES */
 
-function renderChess(){
+const files =
+  ["a","b","c","d","e","f","g","h"];
 
-const board=document.getElementById("chessBoard");
+const ranks =
+  ["8","7","6","5","4","3","2","1"];
 
-if(!board)return;
+/* RENDER BOARD */
 
-board.innerHTML="";
+function renderBoard(){
 
-const files=["a","b","c","d","e","f","g","h"];
+  const board =
+    document.getElementById(
+      "chessBoard"
+    );
 
-const ranks=[8,7,6,5,4,3,2,1];
+  board.innerHTML="";
 
-const displayRanks=boardFlipped?[1,2,3,4,5,6,7,8]:ranks;
+  let rows =
+    boardFlipped
+      ? [...ranks].reverse()
+      : [...ranks];
 
-const displayFiles=boardFlipped?
-[...files].reverse():
-files;
+  let cols =
+    boardFlipped
+      ? [...files].reverse()
+      : [...files];
 
-const legalMoves=selectedSquare?
-chessGame.moves({
-square:selectedSquare,
-verbose:true
-}):[];
+  const current =
+    chess.turn();
 
-const legalTargets=legalMoves.map(m=>m.to);
+  const selectedMoves =
+    selectedSquare
+      ? chess.moves({
+          square:selectedSquare,
+          verbose:true
+        })
+      : [];
 
-for(const rank of displayRanks){
+  const legalTargets =
+    new Set(
+      selectedMoves.map(
+        move => move.to
+      )
+    );
 
-for(const file of displayFiles){
+  const checkedKing =
+    chess.inCheck()
+      ? findKing(chess.turn())
+      : null;
 
-const squareName=file+rank;
+  rows.forEach(
+    (rank,rowIndex) => {
 
-const square=document.createElement("div");
+      cols.forEach(
+        (file,colIndex) => {
 
-const dark=
-(files.indexOf(file)+rank)%2===1;
+          const squareName =
+            file + rank;
 
-square.className=
-"square "+(dark?"dark":"light");
+          const square =
+            document.createElement(
+              "div"
+            );
 
-if(squareName===selectedSquare){
-square.classList.add("selected");
+          const realRow =
+            rowIndex;
+
+          const realCol =
+            colIndex;
+
+          square.className =
+            "square " +
+            (
+              (files.indexOf(file) +
+               ranks.indexOf(rank))
+               % 2 === 0
+              ? "light"
+              : "dark"
+            );
+
+          if(
+            lastMove &&
+            settings.highlight &&
+            (
+              squareName===lastMove.from ||
+              squareName===lastMove.to
+            )
+          ){
+            square.classList.add(
+              "lastMove"
+            );
+          }
+
+          if(
+            squareName===
+            selectedSquare
+          ){
+            square.classList.add(
+              "selected"
+            );
+          }
+
+          if(
+            squareName===
+            checkedKing
+          ){
+            square.classList.add(
+              "check"
+            );
+          }
+
+          if(
+            settings.legal &&
+            legalTargets.has(squareName)
+          ){
+
+            const move =
+              selectedMoves.find(
+                m => m.to===squareName
+              );
+
+            if(
+              move &&
+              chess.get(squareName)
+            ){
+              square.classList.add(
+                "captureTarget"
+              );
+            }else{
+
+              const dot =
+                document.createElement(
+                  "div"
+                );
+
+              dot.className =
+                "moveDot";
+
+              square.appendChild(dot);
+
+            }
+
+          }
+
+          /* COORDINATES */
+
+          if(
+            settings.coordinates!=="none"
+          ){
+
+            if(
+              realRow === 7
+            ){
+
+              const coord =
+                document.createElement(
+                  "span"
+                );
+
+              coord.className =
+                "coord file";
+
+              coord.textContent =
+                file;
+
+              square.appendChild(
+                coord
+              );
+
+            }
+
+            if(
+              realCol === 0
+            ){
+
+              const coord =
+                document.createElement(
+                  "span"
+                );
+
+              coord.className =
+                "coord rank";
+
+              coord.textContent =
+                rank;
+
+              square.appendChild(
+                coord
+              );
+
+            }
+
+          }
+
+          const piece =
+            chess.get(
+              squareName
+            );
+
+          if(piece){
+
+            const pieceEl =
+              document.createElement(
+                "div"
+              );
+
+            pieceEl.className =
+              "piece " +
+              (
+                piece.color==="w"
+                  ? "white"
+                  : "black"
+              );
+
+            pieceEl.textContent =
+              pieces[
+                piece.color +
+                piece.type
+              ];
+
+            if(
+              settings.animation
+            ){
+              pieceEl.style.transition =
+                "transform .12s ease";
+            }else{
+              pieceEl.style.transition =
+                "none";
+            }
+
+            square.appendChild(
+              pieceEl
+            );
+
+          }
+
+          square.addEventListener(
+            "click",
+            () =>
+              handleSquareClick(
+                squareName
+              )
+          );
+
+          board.appendChild(
+            square
+          );
+
+        }
+      );
+
+    }
+  );
+
+  updateClocksUI();
+
+  updateStatus();
+
 }
 
-if(legalTargets.includes(squareName)){
+/* FIND KING */
 
-const target=chessGame.get(squareName);
+function findKing(color){
 
-square.classList.add(
-target?"capture":"legal"
-);
+  const board =
+    chess.board();
+
+  for(
+    let row=0;
+    row<8;
+    row++
+  ){
+
+    for(
+      let col=0;
+      col<8;
+      col++
+    ){
+
+      const p =
+        board[row][col];
+
+      if(
+        p &&
+        p.type==="k" &&
+        p.color===color
+      ){
+
+        return (
+          files[col] +
+          (8-row)
+        );
+
+      }
+
+    }
+
+  }
+
+  return null;
+}
+
+/* HANDLE SQUARE */
+
+function handleSquareClick(square){
+
+  if(chess.isGameOver())
+    return;
+
+  if(
+    gameMode==="bot" &&
+    chess.turn()!=="w"
+  ){
+    return;
+  }
+
+  const piece =
+    chess.get(square);
+
+  /* SELECT */
+
+  if(!selectedSquare){
+
+    if(
+      piece &&
+      piece.color===chess.turn()
+    ){
+
+      selectedSquare =
+        square;
+
+      renderBoard();
+
+    }
+
+    return;
+  }
+
+  /* SELECT ANOTHER FRIENDLY PIECE */
+
+  if(
+    piece &&
+    piece.color===chess.turn()
+  ){
+
+    selectedSquare =
+      square;
+
+    renderBoard();
+
+    return;
+  }
+
+  /* ATTEMPT MOVE */
+
+  try{
+
+    const move =
+      chess.move({
+        from:selectedSquare,
+        to:square,
+        promotion:"q"
+      });
+
+    if(move){
+
+      lastMove = {
+        from:move.from,
+        to:move.to
+      };
+
+      selectedSquare=null;
+
+      gameStarted=true;
+
+      playMoveSound(
+        move.captured
+          ? "capture"
+          : "move"
+      );
+
+      renderBoard();
+
+      updateMoveList();
+
+      if(
+        checkGameEnd()
+      ){
+        return;
+      }
+
+      if(
+        gameMode==="bot" &&
+        chess.turn()==="b"
+      ){
+
+        document.getElementById(
+          "gameStatus"
+        ).textContent =
+          "Foxie is thinking...";
+
+        setTimeout(
+          botMove,
+          400
+        );
+
+      }
+
+    }
+
+  }catch(error){
+
+    selectedSquare=null;
+
+    renderBoard();
+
+  }
 
 }
 
-const history=chessGame.history({
-verbose:true
-});
+/* BOT */
 
-const last=history[history.length-1];
+function botMove(){
 
-if(last &&
-(last.from===squareName || last.to===squareName)){
-square.classList.add("last");
-}
+  if(
+    chess.isGameOver()
+  ){
+    return;
+  }
 
-const piece=chessGame.get(squareName);
+  if(
+    chess.turn()!=="b"
+  ){
+    return;
+  }
 
-if(piece){
+  const moves =
+    chess.moves({
+      verbose:true
+    });
 
-const span=document.createElement("span");
+  if(!moves.length){
+    checkGameEnd();
+    return;
+  }
 
-span.className=
-"piece "+
-(piece.color==="w"?"white-piece":"black-piece");
+  let chosen =
+    moves[
+      Math.floor(
+        Math.random()*
+        moves.length
+      )
+    ];
 
-span.textContent=
-pieceSymbols[piece.color][piece.type];
+  /*
+    Small preference system so the bot
+    doesn't feel completely random.
+  */
 
-square.appendChild(span);
+  const captures =
+    moves.filter(
+      m => m.captured
+    );
 
-}
+  if(
+    captures.length &&
+    Math.random() > .35
+  ){
 
-square.onclick=()=>clickChessSquare(squareName);
+    chosen =
+      captures[
+        Math.floor(
+          Math.random()*
+          captures.length
+        )
+      ];
 
-board.appendChild(square);
+  }
 
-}
+  try{
 
-}
+    const move =
+      chess.move({
+        from:chosen.from,
+        to:chosen.to,
+        promotion:"q"
+      });
 
-updateChessInfo();
+    lastMove = {
+      from:move.from,
+      to:move.to
+    };
 
-}
+    playMoveSound(
+      move.captured
+        ? "capture"
+        : "move"
+    );
 
-function clickChessSquare(square){
+    renderBoard();
 
-if(chessGame.isGameOver())return;
+    updateMoveList();
 
-const piece=chessGame.get(square);
+    checkGameEnd();
 
-if(!selectedSquare){
+  }catch(error){
 
-if(piece && piece.color===chessGame.turn()){
+    console.error(error);
 
-selectedSquare=square;
-
-renderChess();
-
-}
-
-return;
-
-}
-
-const legal=
-chessGame.moves({
-square:selectedSquare,
-verbose:true
-});
-
-const move=legal.find(m=>m.to===square);
-
-if(move){
-
-try{
-
-chessGame.move({
-from:selectedSquare,
-to:square,
-promotion:"q"
-});
-
-selectedSquare=null;
-
-afterChessMove();
-
-}catch(e){
-
-selectedSquare=null;
-renderChess();
-
-}
-
-return;
-
-}
-
-if(piece && piece.color===chessGame.turn()){
-
-selectedSquare=square;
-renderChess();
-
-}else{
-
-selectedSquare=null;
-renderChess();
+  }
 
 }
 
-}
-
-window.clickChessSquare=clickChessSquare;
-
-/* ==========================================
-   CHESS MOVE HANDLER
-========================================== */
-
-function afterChessMove(){
-
-updateMoveList();
-
-updateChessInfo();
-
-renderChess();
-
-if(chessGame.isGameOver()){
-
-finishChessGame();
-
-return;
-
-}
-
-if(
-document.getElementById("chessMode").value==="bot" &&
-chessGame.turn()==="b"
-){
-
-setTimeout(makeFoxieMove,450);
-
-}
-
-}
-
-function makeFoxieMove(){
-
-if(chessGame.isGameOver())return;
-
-const moves=chessGame.moves({
-verbose:true
-});
-
-if(!moves.length)return;
-
-const move=
-moves[Math.floor(Math.random()*moves.length)];
-
-chessGame.move({
-from:move.from,
-to:move.to,
-promotion:"q"
-});
-
-afterChessMove();
-
-}
-
-/* ==========================================
-   MOVE LIST
-========================================== */
+/* MOVE LIST */
 
 function updateMoveList(){
 
-const list=document.getElementById("moveList");
+  const list =
+    document.getElementById(
+      "moveList"
+    );
 
-if(!list)return;
+  const history =
+    chess.history();
 
-list.innerHTML="";
+  list.innerHTML="";
 
-const history=chessGame.history();
+  for(
+    let i=0;
+    i<history.length;
+    i+=2
+  ){
 
-for(let i=0;i<history.length;i++){
+    const row =
+      document.createElement(
+        "div"
+      );
 
-const div=document.createElement("div");
+    row.className =
+      "moveRow";
 
-div.className="move";
+    const num =
+      document.createElement(
+        "div"
+      );
 
-div.textContent=
-(i%2===0?
-Math.floor(i/2)+1+". ":"")
-+history[i];
+    num.className =
+      "moveNum";
 
-list.appendChild(div);
+    num.textContent =
+      (i/2+1) + ".";
 
-}
+    const white =
+      document.createElement(
+        "div"
+      );
 
-}
+    white.className =
+      "moveCell";
 
-/* ==========================================
-   CHESS INFO
-========================================== */
+    white.textContent =
+      history[i] || "";
 
-function updateChessInfo(){
+    if(
+      i===history.length-1
+    ){
+      white.classList.add(
+        "current"
+      );
+    }
 
-const turn=
-chessGame.turn()==="w"?
-"White":
-"Black";
+    const black =
+      document.createElement(
+        "div"
+      );
 
-document.getElementById("positionTurn").textContent=turn;
+    black.className =
+      "moveCell";
 
-document.getElementById("positionMoves").textContent=
-chessGame.history().length;
+    black.textContent =
+      history[i+1] || "";
 
-let status="Playing";
+    if(
+      i+1===history.length-1
+    ){
+      black.classList.add(
+        "current"
+      );
+    }
 
-if(chessGame.isCheckmate()){
-status="Checkmate";
-}
-else if(chessGame.isDraw()){
-status="Draw";
-}
-else if(chessGame.inCheck()){
-status="Check";
-}
+    row.appendChild(num);
+    row.appendChild(white);
+    row.appendChild(black);
 
-document.getElementById("positionStatus").textContent=status;
+    list.appendChild(row);
 
-document.getElementById("chessStatus").textContent=
-status==="Playing"?
-turn+" to move":
-status;
+  }
 
-document.getElementById("whiteClockBox").classList.toggle(
-"active",
-chessGame.turn()==="w"
-);
+  list.scrollTop =
+    list.scrollHeight;
 
-document.getElementById("blackClockBox").classList.toggle(
-"active",
-chessGame.turn()==="b"
-);
-
-}
-
-/* ==========================================
-   NEW GAME
-========================================== */
-
-window.newChessGame=function(){
-
-chessGame=new Chess();
-
-selectedSquare=null;
-
-chessWhiteSeconds=600;
-chessBlackSeconds=600;
-
-startChessClock();
-
-updateMoveList();
-
-renderChess();
-
-};
-
-/* ==========================================
-   UNDO
-========================================== */
-
-window.undoChess=function(){
-
-if(chessGame.history().length===0)return;
-
-chessGame.undo();
-
-if(
-document.getElementById("chessMode").value==="bot" &&
-chessGame.history().length>0
-){
-
-chessGame.undo();
+  updateCaptured();
 
 }
 
-selectedSquare=null;
+/* CAPTURED */
 
-renderChess();
-updateMoveList();
+function updateCaptured(){
 
-};
+  const history =
+    chess.history({
+      verbose:true
+    });
 
-/* ==========================================
-   FLIP BOARD
-========================================== */
+  const captured = {
+    w:[],
+    b:[]
+  };
 
-window.flipBoard=function(){
+  history.forEach(
+    move => {
 
-boardFlipped=!boardFlipped;
+      if(move.captured){
 
-renderChess();
+        captured[
+          move.color
+        ].push(
+          pieces[
+            (
+              move.color==="w"
+                ? "b"
+                : "w"
+            ) +
+            move.captured
+          ]
+        );
 
-};
+      }
 
-/* ==========================================
-   RESIGN
-========================================== */
+    }
+  );
 
-window.resignChess=function(){
-
-if(chessGame.isGameOver())return;
-
-if(!confirm("Resign this game?"))return;
-
-if(chessGame.turn()==="w"){
-
-recordChessLoss();
-
-}else{
-
-recordChessWin();
-
-}
-
-document.getElementById("chessStatus").textContent=
-"You resigned.";
-
-};
-
-/* ==========================================
-   DRAW
-========================================== */
-
-window.offerDraw=function(){
-
-if(chessGame.isGameOver())return;
-
-alert("🤝 Draw agreed for this local game.");
-
-};
-
-/* ==========================================
-   GAME FINISH
-========================================== */
-
-function finishChessGame(){
-
-if(chessGame.isCheckmate()){
-
-if(chessGame.turn()==="w"){
-
-recordChessLoss();
-
-}else{
-
-recordChessWin();
+  document.getElementById(
+    "capturedPieces"
+  ).textContent =
+    "Captured: " +
+    (
+      captured.w.join("") ||
+      "—"
+    ) +
+    "   " +
+    (
+      captured.b.join("") ||
+      ""
+    );
 
 }
 
+/* GAME END */
+
+function checkGameEnd(){
+
+  if(
+    !chess.isGameOver()
+  ){
+
+    updateStatus();
+
+    return false;
+
+  }
+
+  stopClock();
+
+  let title =
+    "Game Over";
+
+  let text =
+    "Well played!";
+
+  let icon =
+    "🦊";
+
+  if(
+    chess.isCheckmate()
+  ){
+
+    const winner =
+      chess.turn()==="w"
+        ? "Foxie"
+        : "You";
+
+    if(
+      winner==="You"
+    ){
+
+      wins++;
+      rating += 12;
+
+      localStorage.setItem(
+        "foxieChessWins",
+        wins
+      );
+
+      localStorage.setItem(
+        "foxieChessRating",
+        rating
+      );
+
+      title =
+        "You won!";
+
+      text =
+        "Checkmate — great game!";
+
+      icon =
+        "🏆";
+
+      celebrate();
+
+    }else{
+
+      losses++;
+      rating =
+        Math.max(
+          100,
+          rating-12
+        );
+
+      localStorage.setItem(
+        "foxieChessLosses",
+        losses
+      );
+
+      localStorage.setItem(
+        "foxieChessRating",
+        rating
+      );
+
+      title =
+        "Foxie wins";
+
+      text =
+        "Checkmate. Try again!";
+
+      icon =
+        "🦊";
+
+    }
+
+  }else{
+
+    draws++;
+
+    localStorage.setItem(
+      "foxieChessDraws",
+      draws
+    );
+
+    title =
+      "Draw";
+
+    text =
+      "The game ended in a draw.";
+
+    icon =
+      "🤝";
+
+  }
+
+  document.getElementById(
+    "winsStat"
+  ).textContent=wins;
+
+  document.getElementById(
+    "drawsStat"
+  ).textContent=draws;
+
+  document.getElementById(
+    "lossesStat"
+  ).textContent=losses;
+
+  document.getElementById(
+    "ratingDisplay"
+  ).textContent=rating;
+
+  document.getElementById(
+    "resultIcon"
+  ).textContent=icon;
+
+  document.getElementById(
+    "resultTitle"
+  ).textContent=title;
+
+  document.getElementById(
+    "resultText"
+  ).textContent=text;
+
+  document.getElementById(
+    "resultOverlay"
+  ).classList.add("show");
+
+  updateStatus();
+
+  return true;
 }
 
-}
+/* STATUS */
 
-function recordChessWin(){
+function updateStatus(){
 
-chessStats.wins++;
+  const status =
+    document.getElementById(
+      "gameStatus"
+    );
 
-chessStats.streak++;
+  if(
+    chess.isCheckmate()
+  ){
 
-chessStats.rating+=15;
+    status.textContent =
+      "Checkmate";
 
-saveChessStats();
+    return;
 
-}
+  }
 
-function recordChessLoss(){
+  if(
+    chess.isDraw()
+  ){
 
-chessStats.losses++;
+    status.textContent =
+      "Draw";
 
-chessStats.streak=0;
+    return;
 
-chessStats.rating=
-Math.max(100,chessStats.rating-10);
+  }
 
-saveChessStats();
+  if(
+    chess.isCheck()
+  ){
 
-}
+    status.textContent =
+      chess.turn()==="w"
+        ? "Your king is in check!"
+        : "Foxie is in check!";
 
-function saveChessStats(){
+    return;
 
-localStorage.setItem(
-"foxieChessStats",
-JSON.stringify(chessStats)
-);
+  }
 
-document.getElementById("chessRating").textContent=
-chessStats.rating;
-
-document.getElementById("chessWins").textContent=
-chessStats.wins;
-
-document.getElementById("chessLosses").textContent=
-chessStats.losses;
-
-document.getElementById("chessStreak").textContent=
-chessStats.streak;
-
-}
-
-/* ==========================================
-   CHESS CLOCK
-========================================== */
-
-function startChessClock(){
-
-clearInterval(chessTimer);
-
-chessTimer=setInterval(()=>{
-
-if(chessGame.isGameOver())return;
-
-if(chessGame.turn()==="w"){
-
-chessWhiteSeconds--;
-
-}else{
-
-chessBlackSeconds--;
+  status.textContent =
+    chess.turn()==="w"
+      ? "Your move"
+      : "Foxie's move";
 
 }
 
-if(chessWhiteSeconds<=0){
+/* NEW GAME */
 
-chessWhiteSeconds=0;
+function newGame(){
 
-recordChessLoss();
+  stopClock();
 
-}
+  chess =
+    new Chess();
 
-if(chessBlackSeconds<=0){
+  selectedSquare=null;
 
-chessBlackSeconds=0;
+  lastMove=null;
 
-recordChessWin();
+  whiteTime=600;
 
-}
+  blackTime=600;
 
-document.getElementById("whiteClock").textContent=
-formatChessTime(chessWhiteSeconds);
+  gameStarted=false;
 
-document.getElementById("blackClock").textContent=
-formatChessTime(chessBlackSeconds);
+  document.getElementById(
+    "resultOverlay"
+  ).classList.remove(
+    "show"
+  );
 
-},1000);
+  updateMoveList();
 
-}
+  renderBoard();
 
-function formatChessTime(seconds){
-
-const m=Math.floor(seconds/60);
-
-const s=seconds%60;
-
-return String(m).padStart(2,"0")+
-":"+
-String(s).padStart(2,"0");
+  startClock();
 
 }
 
-startChessClock();
+/* UNDO */
 
-/* ==========================================
-   CHESS MODE
-========================================== */
+function undoMove(){
 
-window.changeChessMode=function(){
+  if(
+    !chess.history().length
+  ){
+    return;
+  }
 
-const mode=
-document.getElementById("chessMode").value;
+  /*
+    Against the bot, undo the bot move
+    and the player's move together.
+  */
 
-document.getElementById("botLevelText").textContent=
-mode==="bot"?
-"Foxie Bot currently uses legal move generation. A stronger chess engine can be connected later.":
-"Local 2-player mode. Both sides use the same board.";
+  chess.undo();
 
-newChessGame();
+  if(
+    gameMode==="bot" &&
+    chess.turn()==="w" &&
+    chess.history().length
+  ){
 
-};
+    chess.undo();
 
-/* ==========================================
-   OPENING LIBRARY
-========================================== */
+  }
 
-const openings=[
+  const history =
+    chess.history({
+      verbose:true
+    });
 
-{
-name:"Italian Game",
-moves:"1.e4 e5 2.Nf3 Nc6 3.Bc4",
-style:"Open • Tactical",
-difficulty:"Beginner"
-},
+  const last =
+    history[
+      history.length-1
+    ];
 
-{
-name:"Sicilian Defense",
-moves:"1.e4 c5",
-style:"Sharp • Dynamic",
-difficulty:"Intermediate"
-},
+  lastMove =
+    last
+      ? {
+          from:last.from,
+          to:last.to
+        }
+      : null;
 
-{
-name:"French Defense",
-moves:"1.e4 e6",
-style:"Solid • Counterattacking",
-difficulty:"Intermediate"
-},
+  selectedSquare=null;
 
-{
-name:"Caro-Kann Defense",
-moves:"1.e4 c6",
-style:"Solid • Strategic",
-difficulty:"Beginner"
-},
+  document.getElementById(
+    "resultOverlay"
+  ).classList.remove(
+    "show"
+  );
 
-{
-name:"Queen's Gambit",
-moves:"1.d4 d5 2.c4",
-style:"Strategic • Classical",
-difficulty:"Intermediate"
-},
+  renderBoard();
 
-{
-name:"King's Indian Defense",
-moves:"1.d4 Nf6 2.c4 g6",
-style:"Aggressive • Dynamic",
-difficulty:"Advanced"
-},
+  updateMoveList();
 
-{
-name:"Ruy Lopez",
-moves:"1.e4 e5 2.Nf3 Nc6 3.Bb5",
-style:"Strategic • Classical",
-difficulty:"Advanced"
-},
+  startClock();
 
-{
-name:"English Opening",
-moves:"1.c4",
-style:"Flexible • Positional",
-difficulty:"Intermediate"
-},
-
-{
-name:"Scotch Game",
-moves:"1.e4 e5 2.Nf3 Nc6 3.d4",
-style:"Open • Active",
-difficulty:"Intermediate"
-},
-
-{
-name:"London System",
-moves:"1.d4 d5 2.Nf3 Nf6 3.Bf4",
-style:"Solid • Positional",
-difficulty:"Beginner"
-},
-
-{
-name:"Pirc Defense",
-moves:"1.e4 d6",
-style:"Flexible • Counterattacking",
-difficulty:"Advanced"
-},
-
-{
-name:"Nimzo-Indian Defense",
-moves:"1.d4 Nf6 2.c4 e6 3.Nc3 Bb4",
-style:"Strategic • Complex",
-difficulty:"Advanced"
 }
 
-];
+/* FLIP */
 
-function renderOpenings(){
+function flipBoard(){
 
-const grid=document.getElementById("openingGrid");
+  boardFlipped =
+    !boardFlipped;
 
-if(!grid)return;
+  renderBoard();
 
-grid.innerHTML="";
+}
 
-openings.forEach((opening,index)=>{
+/* RESIGN */
 
-const card=document.createElement("div");
+function resignGame(){
 
-card.className="card opening-card";
+  if(
+    chess.isGameOver()
+  ){
+    return;
+  }
 
-card.dataset.search=
-(opening.name+" "+opening.moves+" "+opening.style).toLowerCase();
+  losses++;
 
-card.innerHTML=`
+  rating =
+    Math.max(
+      100,
+      rating-10
+    );
 
-<h3>📖 ${opening.name}</h3>
+  localStorage.setItem(
+    "foxieChessLosses",
+    losses
+  );
 
-<p>
-<strong>Moves:</strong> ${opening.moves}
-</p>
+  localStorage.setItem(
+    "foxieChessRating",
+    rating
+  );
 
-<p>
-<strong>Style:</strong> ${opening.style}<br>
-<strong>Difficulty:</strong> ${opening.difficulty}
-</p>
+  stopClock();
 
-<button onclick="studyOpening(${index})">
-Study Opening
-</button>
+  document.getElementById(
+    "winsStat"
+  ).textContent=wins;
 
-`;
+  document.getElementById(
+    "lossesStat"
+  ).textContent=losses;
 
-grid.appendChild(card);
+  document.getElementById(
+    "ratingDisplay"
+  ).textContent=rating;
+
+  document.getElementById(
+    "resultIcon"
+  ).textContent="🏳️";
+
+  document.getElementById(
+    "resultTitle"
+  ).textContent="You resigned";
+
+  document.getElementById(
+    "resultText"
+  ).textContent="Foxie wins this game.";
+
+  document.getElementById(
+    "resultOverlay"
+  ).classList.add("show");
+
+}
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function startClock(){
+
+  stopClock();
+
+  clockInterval =
+    setInterval(
+      () => {
+
+        if(
+          !gameStarted
+        ){
+          return;
+        }
+
+        if(
+          chess.isGameOver()
+        ){
+          stopClock();
+          return;
+        }
+
+        if(
+          chess.turn()==="w"
+        ){
+
+          whiteTime--;
+
+          if(
+            whiteTime<=0
+          ){
+
+            whiteTime=0;
+
+            stopClock();
+
+            losses++;
+
+            localStorage.setItem(
+              "foxieChessLosses",
+              losses
+            );
+
+            finishByTime(
+              "Foxie wins on time."
+            );
+
+            return;
+          }
+
+        }else{
+
+          blackTime--;
+
+          if(
+            blackTime<=0
+          ){
+
+            blackTime=0;
+
+            stopClock();
+
+            wins++;
+
+            rating+=12;
+
+            localStorage.setItem(
+              "foxieChessWins",
+              wins
+            );
+
+            localStorage.setItem(
+              "foxieChessRating",
+              rating
+            );
+
+            finishByTime(
+              "You win on time!"
+            );
+
+            return;
+          }
+
+        }
+
+        updateClocksUI();
+
+      },
+      1000
+    );
+
+}
+
+function stopClock(){
+
+  if(clockInterval){
+
+    clearInterval(
+      clockInterval
+    );
+
+    clockInterval=null;
+
+  }
+
+}
+
+function finishByTime(message){
+
+  document.getElementById(
+    "winsStat"
+  ).textContent=wins;
+
+  document.getElementById(
+    "lossesStat"
+  ).textContent=losses;
+
+  document.getElementById(
+    "ratingDisplay"
+  ).textContent=rating;
+
+  document.getElementById(
+    "resultIcon"
+  ).textContent =
+    message.includes("You")
+      ? "🏆"
+      : "🦊";
+
+  document.getElementById(
+    "resultTitle"
+  ).textContent =
+    message.includes("You")
+      ? "You won!"
+      : "Foxie wins";
+
+  document.getElementById(
+    "resultText"
+  ).textContent =
+    message;
+
+  document.getElementById(
+    "resultOverlay"
+  ).classList.add("show");
+
+  if(
+    message.includes("You")
+  ){
+    celebrate();
+  }
+
+}
+
+function updateClocksUI(){
+
+  const white =
+    document.getElementById(
+      "whiteClock"
+    );
+
+  const black =
+    document.getElementById(
+      "blackClock"
+    );
+
+  white.textContent =
+    formatTime(
+      whiteTime
+    );
+
+  black.textContent =
+    formatTime(
+      blackTime
+    );
+
+  white.classList.toggle(
+    "active",
+    chess.turn()==="w"
+  );
+
+  black.classList.toggle(
+    "active",
+    chess.turn()==="b"
+  );
+
+  white.classList.toggle(
+    "low",
+    whiteTime<=30
+  );
+
+  black.classList.toggle(
+    "low",
+    blackTime<=30
+  );
+
+}
+
+function formatTime(seconds){
+
+  const mins =
+    Math.floor(
+      seconds/60
+    );
+
+  const secs =
+    seconds%60;
+
+  return (
+    String(mins)
+      .padStart(2,"0")
+    +
+    ":" +
+    String(secs)
+      .padStart(2,"0")
+  );
+
+}
+
+/* =========================================================
+   SOUND
+========================================================= */
+
+let audioContext =
+  null;
+
+function playMoveSound(type){
+
+  if(
+    !settings.sound
+  ){
+    return;
+  }
+
+  try{
+
+    if(!audioContext){
+
+      audioContext =
+        new (
+          window.AudioContext ||
+          window.webkitAudioContext
+        )();
+
+    }
+
+    const oscillator =
+      audioContext.createOscillator();
+
+    const gain =
+      audioContext.createGain();
+
+    oscillator.type =
+      "sine";
+
+    oscillator.frequency.value =
+      type==="capture"
+        ? 220
+        : 340;
+
+    gain.gain.setValueAtTime(
+      .0001,
+      audioContext.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .08,
+      audioContext.currentTime+.01
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .0001,
+      audioContext.currentTime+.09
+    );
+
+    oscillator.connect(gain);
+    gain.connect(
+      audioContext.destination
+    );
+
+    oscillator.start();
+
+    oscillator.stop(
+      audioContext.currentTime+.1
+    );
+
+  }catch(e){}
+
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function openSettings(){
+
+  document.getElementById(
+    "settingsOverlay"
+  ).classList.add("open");
+
+}
+
+function closeSettings(){
+
+  document.getElementById(
+    "settingsOverlay"
+  ).classList.remove("open");
+
+}
+
+function toggleSetting(name){
+
+  settings[name] =
+    !settings[name];
+
+  const ids = {
+    legal:"legalToggle",
+    highlight:"highlightToggle",
+    sound:"soundToggle",
+    animation:"animationToggle"
+  };
+
+  const element =
+    document.getElementById(
+      ids[name]
+    );
+
+  element.classList.toggle(
+    "on",
+    settings[name]
+  );
+
+}
+
+function saveSettings(){
+
+  settings.theme =
+    document.getElementById(
+      "boardTheme"
+    ).value;
+
+  settings.coordinates =
+    document.getElementById(
+      "coordinates"
+    ).value;
+
+  localStorage.setItem(
+    "foxieChessSettings",
+    JSON.stringify(settings)
+  );
+
+  applySettings();
+
+  closeSettings();
+
+  showToast(
+    "Chess settings saved."
+  );
+
+}
+
+function applySettings(){
+
+  const boardWrap =
+    document.getElementById(
+      "boardWrap"
+    );
+
+  boardWrap.className =
+    "boardWrap theme-" +
+    settings.theme;
+
+  const board =
+    document.getElementById(
+      "chessBoard"
+    );
+
+  board.classList.toggle(
+    "coordsInside",
+    settings.coordinates==="inside"
+  );
+
+  board.classList.toggle(
+    "coordsNone",
+    settings.coordinates==="none"
+  );
+
+  document.getElementById(
+    "legalToggle"
+  ).classList.toggle(
+    "on",
+    settings.legal
+  );
+
+  document.getElementById(
+    "highlightToggle"
+  ).classList.toggle(
+    "on",
+    settings.highlight
+  );
+
+  document.getElementById(
+    "soundToggle"
+  ).classList.toggle(
+    "on",
+    settings.sound
+  );
+
+  document.getElementById(
+    "animationToggle"
+  ).classList.toggle(
+    "on",
+    settings.animation
+  );
+
+  document.getElementById(
+    "boardTheme"
+  ).value =
+    settings.theme;
+
+  document.getElementById(
+    "coordinates"
+  ).value =
+    settings.coordinates;
+
+  renderBoard();
+
+}
+
+const savedSettings =
+  localStorage.getItem(
+    "foxieChessSettings"
+  );
+
+if(savedSettings){
+
+  try{
+
+    settings =
+      Object.assign(
+        settings,
+        JSON.parse(
+          savedSettings
+        )
+      );
+
+  }catch(e){}
+
+}
+
+applySettings();
+
+/* =========================================================
+   CONFETTI
+========================================================= */
+
+function celebrate(){
+
+  for(
+    let i=0;
+    i<70;
+    i++
+  ){
+
+    const piece =
+      document.createElement(
+        "div"
+      );
+
+    piece.className =
+      "confetti";
+
+    piece.style.left =
+      Math.random()*100 + "%";
+
+    piece.style.top =
+      "-20px";
+
+    piece.style.background =
+      [
+        "#39ff14",
+        "#ffffff",
+        "#ffd84d",
+        "#43a9ff",
+        "#ff4f7b"
+      ][
+        Math.floor(
+          Math.random()*5
+        )
+      ];
+
+    piece.style.animationDelay =
+      Math.random()*0.8 + "s";
+
+    document.body.appendChild(
+      piece
+    );
+
+    setTimeout(
+      () => piece.remove(),
+      3000
+    );
+
+  }
+
+}
+
+/* =========================================================
+   CREATOR LOGIN
+========================================================= */
+
+async function creatorLogin(){
+
+  const code =
+    document.getElementById(
+      "creatorCode"
+    ).value;
+
+  if(!code){
+
+    showToast(
+      "Enter your creator code."
+    );
+
+    return;
+
+  }
+
+  try{
+
+    const response =
+      await fetch(
+        BACKEND +
+        "/creator-login",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:JSON.stringify({
+            code:code
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    document.getElementById(
+      "creatorStatus"
+    ).textContent =
+      data.message ||
+      (
+        data.success
+          ? "Creator authenticated."
+          : "Authentication failed."
+      );
+
+  }catch(error){
+
+    document.getElementById(
+      "creatorStatus"
+    ).textContent =
+      "Could not connect to Creator Mode.";
+
+  }
+
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+  toast.textContent =
+    message;
+
+  toast.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    toastTimer
+  );
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2500
+    );
+
+}
+
+/* =========================================================
+   CHESS TAB VISUALS
+========================================================= */
+
+document.querySelectorAll(
+  ".chessTab"
+).forEach(tab => {
+
+  tab.addEventListener(
+    "click",
+    () => {
+
+      document.querySelectorAll(
+        ".chessTab"
+      ).forEach(t =>
+        t.classList.remove("active")
+      );
+
+      tab.classList.add(
+        "active"
+      );
+
+      showToast(
+        tab.textContent.trim() +
+        " section selected."
+      );
+
+    }
+  );
 
 });
 
-}
-
-window.filterOpenings=function(){
-
-const q=
-document.getElementById("openingSearch")
-.value
-.toLowerCase();
-
-document.querySelectorAll(".opening-card")
-.forEach(card=>{
-
-card.style.display=
-card.dataset.search.includes(q)?
-"block":
-"none";
-
-});
-
-};
-
-window.studyOpening=function(index){
-
-const o=openings[index];
-
-alert(
-"📖 "+o.name+
-"\n\n"+
-o.moves+
-"\n\nStyle: "+
-o.style+
-"\nDifficulty: "+
-o.difficulty+
-"\n\nMore variations can be added to this opening database."
-);
-
-};
-
-/* ==========================================
-   TRAINING
-========================================== */
-
-window.startTraining=function(type){
-
-const output=
-document.getElementById("trainingOutput");
-
-const data={
-
-puzzles:[
-"Find the best move.",
-"Look for checks first.",
-"Look for captures.",
-"Look for threats."
-],
-
-tactics:[
-"Fork",
-"Pin",
-"Skewer",
-"Discovered attack",
-"Double attack",
-"Deflection",
-"Zwischenzug",
-"Sacrifice"
-],
-
-mates:[
-"Back rank mate",
-"Smothered mate",
-"Fool's mate pattern",
-"Scholar's mate pattern",
-"Queen and rook mating nets"
-],
-
-endgames:[
-"King and pawn",
-"Rook endgame",
-"Queen endgame",
-"Opposite-coloured bishops",
-"Passed pawns"
-],
-
-calculation:[
-"Find candidate moves.",
-"Calculate forcing moves.",
-"Compare resulting positions.",
-"Check the opponent's threats."
-],
-
-traps:[
-"Opening traps",
-"Common tactical traps",
-"Queen traps",
-"Piece traps",
-"Early check traps"
-]
-
-};
-
-const list=data[type]||[];
-
-output.innerHTML=`
-
-<h3>🧠 ${type.toUpperCase()} TRAINING</h3>
-
-<p>
-Training system ready.
-</p>
-
-<div class="grid">
-
-${list.map(x=>`
-<div class="card">
-<h3>${x}</h3>
-<button onclick="trainingQuestion('${x.replace(/'/g,"")}')">
-Practice
-</button>
-</div>
-`).join("")}
-
-</div>
-
-`;
-
-};
-
-window.trainingQuestion=function(name){
-
-document.getElementById("trainingOutput").innerHTML=`
-
-<h3>🎯 ${name}</h3>
-
-<p>
-Think about the position before revealing the answer.
-</p>
-
-<button class="action"
-onclick="alert('🦊 Keep looking for forcing moves: checks, captures and threats.')">
-Ask Foxie
-</button>
-
-`;
-
-};
-
-/* ==========================================
-   ANALYSIS
-========================================== */
-
-window.analyseGame=function(){
-
-const history=chessGame.history();
-
-document.getElementById("analysisOutput").innerHTML=`
-
-<h3>🔬 Game Review</h3>
-
-<p>
-Moves played: <strong>${history.length}</strong>
-</p>
-
-<p>
-PGN:
-</p>
-
-<pre style="
-white-space:pre-wrap;
-background:#020604;
-padding:15px;
-border-radius:10px;
-border:1px solid #183b23;
-">${chessGame.pgn() || "No moves yet."}</pre>
-
-<p class="subtitle">
-The deeper engine analysis layer can later calculate evaluations,
-blunders, inaccuracies, best moves and alternative lines.
-</p>
-
-`;
-
-};
-
-window.analysePosition=function(){
-
-const output=document.getElementById("analysisOutput");
-
-output.innerHTML=`
-
-<h3>🔬 Current Position</h3>
-
-<p>
-FEN:
-</p>
-
-<pre style="
-white-space:pre-wrap;
-background:#020604;
-padding:15px;
-border-radius:10px;
-">${chessGame.fen()}</pre>
-
-<p>
-Turn: ${chessGame.turn()==="w"?"White":"Black"}
-</p>
-
-<p class="subtitle">
-Foxie can use this position as the starting point for deeper engine analysis.
-</p>
-
-`;
-
-};
-
-/* ==========================================
-   COACH
-========================================== */
-
-window.coachQuestion=function(type){
-
-const output=document.getElementById("coachOutput");
-
-const questions={
-
-position:"A strong way to study a position is to identify king safety, material, pawn structure, piece activity, threats and candidate moves.",
-
-move:"When reviewing a move, ask: what changed, what did the opponent threaten, and what stronger alternatives were available?",
-
-opening:"Study the purpose of each opening move instead of memorising moves alone. Look at development, centre control, king safety and typical plans.",
-
-mistake:"A useful mistake review checks whether the move lost material, missed a tactic, ignored a threat or created a strategic weakness."
-
-};
-
-output.innerHTML=`
-
-<h3>🤖 Foxie Coach</h3>
-
-<p>${questions[type]}</p>
-
-<p class="subtitle">
-Current FEN: ${chessGame.fen()}
-</p>
-
-`;
-
-};
-
-/* ==========================================
-   CHESS TABS
-========================================== */
-
-window.chessTab=function(tab,button){
-
-document.querySelectorAll(".chess-tool")
-.forEach(x=>x.classList.remove("active"));
-
-document.getElementById("chess-"+tab)
-.classList.add("active");
-
-document.querySelectorAll(".chess-tab")
-.forEach(x=>x.classList.remove("active"));
-
-button.classList.add("active");
-
-};
-
-/* ==========================================
+/* =========================================================
    INITIALISE
-========================================== */
+========================================================= */
 
-renderOpenings();
+renderBoard();
 
-saveChessStats();
+updateMoveList();
 
-renderChess();
+updateClocksUI();
 
-</script>
-
-<script>
-
-/*
-  Tiny helper for the placeholder pages.
-
-  It turns:
-  <Generic title="..." text="..." />
-  into normal HTML after page load.
-*/
-
-document.querySelectorAll("Generic").forEach(el=>{
-
-const title=el.getAttribute("title")||"Foxie";
-
-const text=el.getAttribute("text")||"";
-
-el.innerHTML=`
-
-<div class="hero">
-
-<h1>${title}</h1>
-
-<p class="subtitle">${text}</p>
-
-</div>
-
-<div class="grid">
-
-<div class="card">
-<h3>🚧 Building</h3>
-<p>
-This part of Foxie is being expanded. The system is designed so more
-content can be added without rebuilding the whole website.
-</p>
-</div>
-
-<div class="card">
-<h3>🦊 Foxie AI</h3>
-<p>
-Ask Foxie what you want this section to become.
-</p>
-</div>
-
-<div class="card">
-<h3>✨ Coming</h3>
-<p>
-More systems, content, progression and multiplayer features can be connected here.
-</p>
-</div>
-
-</div>
-
-`;
-
-});
+startClock();
 
 </script>
 
